@@ -1,4 +1,4 @@
-package com.cd.statussaver.util;
+package com.appska.tiktokvideodownloader.util;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -17,7 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 
-import com.cd.statussaver.R;
+import com.appska.tiktokvideodownloader.R;
 
 import java.io.File;
 

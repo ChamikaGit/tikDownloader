@@ -1,4 +1,4 @@
-package com.cd.statussaver;
+package com.appska.tiktokvideodownloader;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -11,7 +11,7 @@ import android.os.Build;
 import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import com.cd.statussaver.activity.MainActivity;
+import com.appska.tiktokvideodownloader.activity.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;

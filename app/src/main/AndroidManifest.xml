@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.cd.statussaver">
+    package="com.appska.tiktokvideodownloader">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
 
     <application
-        android:name="com.cd.statussaver.MyApplication"
+        android:name="com.appska.tiktokvideodownloader.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -23,28 +23,28 @@
         tools:ignore="GoogleAppIndexingWarning">
 
 
-        <activity android:name="com.cd.statussaver.activity.AboutUsActivity"
+        <activity android:name="com.appska.tiktokvideodownloader.activity.AboutUsActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name="com.cd.statussaver.activity.FacebookActivity"
+        <activity android:name="com.appska.tiktokvideodownloader.activity.FacebookActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="com.cd.statussaver.activity.TikTokActivity"
+        <activity android:name="com.appska.tiktokvideodownloader.activity.TikTokActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="com.cd.statussaver.activity.WhatsappActivity"
+        <activity android:name="com.appska.tiktokvideodownloader.activity.WhatsappActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="com.cd.statussaver.activity.InstagramActivity"
+        <activity android:name="com.appska.tiktokvideodownloader.activity.InstagramActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="com.cd.statussaver.activity.FullViewActivity"
+        <activity android:name="com.appska.tiktokvideodownloader.activity.FullViewActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="com.cd.statussaver.activity.SplashScreen"
+        <activity android:name="com.appska.tiktokvideodownloader.activity.SplashScreen"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.cd.statussaver.activity.GalleryActivity"
+        <activity android:name="com.appska.tiktokvideodownloader.activity.GalleryActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="com.cd.statussaver.activity.MainActivity"
+        <activity android:name="com.appska.tiktokvideodownloader.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -62,16 +62,16 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
-        <activity android:name="com.cd.statussaver.activity.WebviewAcitivity"
+        <activity android:name="com.appska.tiktokvideodownloader.activity.WebviewAcitivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".activity.TwitterActivity"
+        <activity android:name="com.appska.tiktokvideodownloader.activity.TwitterActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_app_id" />
         <service
-            android:name="com.cd.statussaver.MyFirebaseMessagingService"
+            android:name="com.appska.tiktokvideodownloader.MyFirebaseMessagingService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

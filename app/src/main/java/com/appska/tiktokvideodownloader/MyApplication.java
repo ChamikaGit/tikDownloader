@@ -1,4 +1,4 @@
-package com.cd.statussaver;
+package com.appska.tiktokvideodownloader;
 
 import android.app.Application;
 

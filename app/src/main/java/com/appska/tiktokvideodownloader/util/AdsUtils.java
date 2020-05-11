@@ -1,12 +1,11 @@
-package com.cd.statussaver.util;
+package com.appska.tiktokvideodownloader.util;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 
-import com.cd.statussaver.R;
+import com.appska.tiktokvideodownloader.R;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.AdSize;
@@ -18,8 +17,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-
-import static com.facebook.ads.AudienceNetworkAds.TAG;
 
 public class AdsUtils {
 

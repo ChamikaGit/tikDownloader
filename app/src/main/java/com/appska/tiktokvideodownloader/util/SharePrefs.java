@@ -1,4 +1,4 @@
-package com.cd.statussaver.util;
+package com.appska.tiktokvideodownloader.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
