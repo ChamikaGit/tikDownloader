@@ -1,4 +1,4 @@
-package com.cd.statussaver.activity;
+package com.appska.tiktokvideodownloader.activity;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -10,30 +10,24 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import com.cd.statussaver.R;
-import com.cd.statussaver.api.CommonClassForAPI;
-import com.cd.statussaver.databinding.ActivityTwitterBinding;
-import com.cd.statussaver.model.TwitterResponse;
-import com.cd.statussaver.model.TwitterResponseModel;
-import com.cd.statussaver.util.AdsUtils;
-import com.cd.statussaver.util.SharePrefs;
-import com.cd.statussaver.util.Utils;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
+import com.appska.tiktokvideodownloader.R;
+import com.appska.tiktokvideodownloader.api.CommonClassForAPI;
+import com.appska.tiktokvideodownloader.databinding.ActivityTwitterBinding;
+import com.appska.tiktokvideodownloader.model.TwitterResponse;
+import com.appska.tiktokvideodownloader.util.AdsUtils;
+import com.appska.tiktokvideodownloader.util.SharePrefs;
+import com.appska.tiktokvideodownloader.util.Utils;
 
 import java.io.File;
-import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import io.reactivex.observers.DisposableObserver;
-import okhttp3.internal.Util;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
-import static com.cd.statussaver.util.Utils.RootDirectoryTwitter;
-import static com.cd.statussaver.util.Utils.createFileFolder;
-import static com.cd.statussaver.util.Utils.startDownload;
+import static com.appska.tiktokvideodownloader.util.Utils.RootDirectoryTwitter;
+import static com.appska.tiktokvideodownloader.util.Utils.createFileFolder;
+import static com.appska.tiktokvideodownloader.util.Utils.startDownload;
 
 public class TwitterActivity extends AppCompatActivity {
     private ActivityTwitterBinding binding;

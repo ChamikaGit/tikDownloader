@@ -1,4 +1,4 @@
-package com.cd.statussaver.activity;
+package com.appska.tiktokvideodownloader.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,18 +11,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-import com.cd.statussaver.fragment.WhatsappImageFragment;
-import com.cd.statussaver.fragment.WhatsappVideoFragment;
-import com.cd.statussaver.util.AdsUtils;
-import com.cd.statussaver.R;
-import com.cd.statussaver.databinding.ActivityWhatsappBinding;
-import com.cd.statussaver.util.Utils;
+import com.appska.tiktokvideodownloader.fragment.WhatsappImageFragment;
+import com.appska.tiktokvideodownloader.fragment.WhatsappVideoFragment;
+import com.appska.tiktokvideodownloader.util.AdsUtils;
+import com.appska.tiktokvideodownloader.R;
+import com.appska.tiktokvideodownloader.databinding.ActivityWhatsappBinding;
+import com.appska.tiktokvideodownloader.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
-import static com.cd.statussaver.util.Utils.createFileFolder;
+import static com.appska.tiktokvideodownloader.util.Utils.createFileFolder;
 
 public class WhatsappActivity extends AppCompatActivity {
     private ActivityWhatsappBinding binding;

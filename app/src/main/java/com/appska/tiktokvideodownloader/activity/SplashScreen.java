@@ -1,13 +1,13 @@
-package com.cd.statussaver.activity;
+package com.appska.tiktokvideodownloader.activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
-import com.cd.statussaver.R;
+import com.appska.tiktokvideodownloader.R;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;

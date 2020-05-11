@@ -1,10 +1,9 @@
-package com.cd.statussaver.model;
+package com.appska.tiktokvideodownloader.model;
 
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class TiktokModel implements Serializable {
 

@@ -1,4 +1,4 @@
-package com.cd.statussaver.model;
+package com.appska.tiktokvideodownloader.model;
 
 import com.google.gson.annotations.SerializedName;
 

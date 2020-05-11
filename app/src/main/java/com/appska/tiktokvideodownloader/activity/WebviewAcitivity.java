@@ -1,4 +1,4 @@
-package com.cd.statussaver.activity;
+package com.appska.tiktokvideodownloader.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,8 +8,8 @@ import android.webkit.WebViewClient;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import com.cd.statussaver.R;
-import com.cd.statussaver.databinding.ActivityWebviewBinding;
+import com.appska.tiktokvideodownloader.R;
+import com.appska.tiktokvideodownloader.databinding.ActivityWebviewBinding;
 
 
 public class WebviewAcitivity extends AppCompatActivity {

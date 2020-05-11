@@ -1,25 +1,24 @@
-package com.cd.statussaver.fragment;
+package com.appska.tiktokvideodownloader.fragment;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import com.cd.statussaver.R;
-import com.cd.statussaver.activity.FullViewActivity;
-import com.cd.statussaver.activity.GalleryActivity;
-import com.cd.statussaver.adapter.FileListAdapter;
-import com.cd.statussaver.databinding.FragmentHistoryBinding;
-import com.cd.statussaver.interfaces.FileListClickInterface;
+import com.appska.tiktokvideodownloader.R;
+import com.appska.tiktokvideodownloader.activity.FullViewActivity;
+import com.appska.tiktokvideodownloader.activity.GalleryActivity;
+import com.appska.tiktokvideodownloader.adapter.FileListAdapter;
+import com.appska.tiktokvideodownloader.databinding.FragmentHistoryBinding;
+import com.appska.tiktokvideodownloader.interfaces.FileListClickInterface;
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.ArrayList;
 import static androidx.databinding.DataBindingUtil.inflate;
-import static com.cd.statussaver.util.Utils.RootDirectoryTikTokShow;
+import static com.appska.tiktokvideodownloader.util.Utils.RootDirectoryTikTokShow;
 
 public class TikTokDownloadedFragment extends Fragment implements FileListClickInterface {
     private FragmentHistoryBinding binding;

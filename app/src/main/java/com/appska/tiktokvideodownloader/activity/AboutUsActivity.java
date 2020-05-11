@@ -1,14 +1,14 @@
-package com.cd.statussaver.activity;
+package com.appska.tiktokvideodownloader.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import com.cd.statussaver.util.AdsUtils;
-import com.cd.statussaver.R;
-import com.cd.statussaver.databinding.ActivityAboutUsBinding;
-import static com.cd.statussaver.util.Utils.PrivacyPolicyUrl;
+import com.appska.tiktokvideodownloader.util.AdsUtils;
+import com.appska.tiktokvideodownloader.R;
+import com.appska.tiktokvideodownloader.databinding.ActivityAboutUsBinding;
+import static com.appska.tiktokvideodownloader.util.Utils.PrivacyPolicyUrl;
 
 public class AboutUsActivity extends AppCompatActivity {
 

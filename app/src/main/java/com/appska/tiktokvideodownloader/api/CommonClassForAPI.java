@@ -1,10 +1,10 @@
-package com.cd.statussaver.api;
+package com.appska.tiktokvideodownloader.api;
 
 import android.app.Activity;
 
-import com.cd.statussaver.model.TiktokModel;
-import com.cd.statussaver.model.TwitterResponse;
-import com.cd.statussaver.util.Utils;
+import com.appska.tiktokvideodownloader.model.TiktokModel;
+import com.appska.tiktokvideodownloader.model.TwitterResponse;
+import com.appska.tiktokvideodownloader.util.Utils;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;

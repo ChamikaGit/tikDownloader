@@ -1,4 +1,4 @@
-package com.cd.statussaver.fragment;
+package com.appska.tiktokvideodownloader.fragment;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
-import com.cd.statussaver.R;
-import com.cd.statussaver.adapter.WhatsappStatusAdapter;
-import com.cd.statussaver.databinding.FragmentWhatsappImageBinding;
-import com.cd.statussaver.model.WhatsappStatusModel;
+import com.appska.tiktokvideodownloader.R;
+import com.appska.tiktokvideodownloader.adapter.WhatsappStatusAdapter;
+import com.appska.tiktokvideodownloader.databinding.FragmentWhatsappImageBinding;
+import com.appska.tiktokvideodownloader.model.WhatsappStatusModel;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;

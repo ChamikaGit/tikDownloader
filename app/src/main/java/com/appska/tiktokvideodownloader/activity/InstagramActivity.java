@@ -1,4 +1,4 @@
-package com.cd.statussaver.activity;
+package com.appska.tiktokvideodownloader.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -9,15 +9,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import com.cd.statussaver.util.AdsUtils;
-import com.cd.statussaver.R;
-import com.cd.statussaver.api.CommonClassForAPI;
-import com.cd.statussaver.databinding.ActivityInstagramBinding;
-import com.cd.statussaver.model.Edge;
-import com.cd.statussaver.model.EdgeSidecarToChildren;
-import com.cd.statussaver.model.ResponseModel;
-import com.cd.statussaver.util.SharePrefs;
-import com.cd.statussaver.util.Utils;
+import com.appska.tiktokvideodownloader.util.AdsUtils;
+import com.appska.tiktokvideodownloader.R;
+import com.appska.tiktokvideodownloader.api.CommonClassForAPI;
+import com.appska.tiktokvideodownloader.databinding.ActivityInstagramBinding;
+import com.appska.tiktokvideodownloader.model.Edge;
+import com.appska.tiktokvideodownloader.model.EdgeSidecarToChildren;
+import com.appska.tiktokvideodownloader.model.ResponseModel;
+import com.appska.tiktokvideodownloader.util.SharePrefs;
+import com.appska.tiktokvideodownloader.util.Utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -29,9 +29,9 @@ import java.net.URL;
 import java.util.List;
 import io.reactivex.observers.DisposableObserver;
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
-import static com.cd.statussaver.util.Utils.RootDirectoryInsta;
-import static com.cd.statussaver.util.Utils.createFileFolder;
-import static com.cd.statussaver.util.Utils.startDownload;
+import static com.appska.tiktokvideodownloader.util.Utils.RootDirectoryInsta;
+import static com.appska.tiktokvideodownloader.util.Utils.createFileFolder;
+import static com.appska.tiktokvideodownloader.util.Utils.startDownload;
 
 public class InstagramActivity extends AppCompatActivity {
     private ActivityInstagramBinding binding;

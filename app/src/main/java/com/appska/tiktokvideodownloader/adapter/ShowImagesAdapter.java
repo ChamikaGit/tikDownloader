@@ -1,23 +1,22 @@
-package com.cd.statussaver.adapter;
+package com.appska.tiktokvideodownloader.adapter;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import androidx.viewpager.widget.PagerAdapter;
 import com.bumptech.glide.Glide;
-import com.cd.statussaver.R;
-import com.cd.statussaver.activity.FullViewActivity;
+import com.appska.tiktokvideodownloader.R;
+import com.appska.tiktokvideodownloader.activity.FullViewActivity;
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.ArrayList;
-import static com.cd.statussaver.util.Utils.shareImage;
-import static com.cd.statussaver.util.Utils.shareVideo;
+import static com.appska.tiktokvideodownloader.util.Utils.shareImage;
+import static com.appska.tiktokvideodownloader.util.Utils.shareVideo;
 
 
 public class ShowImagesAdapter extends PagerAdapter {

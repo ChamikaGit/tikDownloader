@@ -1,7 +1,6 @@
-package com.cd.statussaver.adapter;
+package com.appska.tiktokvideodownloader.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
-import com.cd.statussaver.R;
-import com.cd.statussaver.databinding.ItemsFileViewBinding;
-import com.cd.statussaver.interfaces.FileListClickInterface;
+import com.appska.tiktokvideodownloader.R;
+import com.appska.tiktokvideodownloader.databinding.ItemsFileViewBinding;
+import com.appska.tiktokvideodownloader.interfaces.FileListClickInterface;
 import java.io.File;
 import java.util.ArrayList;
 

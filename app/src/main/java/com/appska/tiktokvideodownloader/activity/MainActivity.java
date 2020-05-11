@@ -1,4 +1,4 @@
-package com.cd.statussaver.activity;
+package com.appska.tiktokvideodownloader.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -20,13 +20,12 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 
-import com.cd.statussaver.R;
-import com.cd.statussaver.databinding.ActivityMainBinding;
-import com.cd.statussaver.util.ClipboardListener;
-import com.cd.statussaver.util.Utils;
+import com.appska.tiktokvideodownloader.R;
+import com.appska.tiktokvideodownloader.databinding.ActivityMainBinding;
+import com.appska.tiktokvideodownloader.util.ClipboardListener;
+import com.appska.tiktokvideodownloader.util.Utils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -35,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.cd.statussaver.util.Utils.createFileFolder;
+import static com.appska.tiktokvideodownloader.util.Utils.createFileFolder;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     MainActivity activity;

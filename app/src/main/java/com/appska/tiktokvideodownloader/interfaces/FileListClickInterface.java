@@ -1,4 +1,4 @@
-package com.cd.statussaver.interfaces;
+package com.appska.tiktokvideodownloader.interfaces;
 
 import java.io.File;
 

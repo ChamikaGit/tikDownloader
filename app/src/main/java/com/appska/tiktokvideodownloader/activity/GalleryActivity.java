@@ -1,7 +1,5 @@
-package com.cd.statussaver.activity;
+package com.appska.tiktokvideodownloader.activity;
 
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,17 +11,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import com.cd.statussaver.R;
-import com.cd.statussaver.databinding.ActivityGalleryBinding;
-import com.cd.statussaver.fragment.FBDownloadedFragment;
-import com.cd.statussaver.fragment.InstaDownloadedFragment;
-import com.cd.statussaver.fragment.TikTokDownloadedFragment;
-import com.cd.statussaver.fragment.TwitterDownloadedFragment;
-import com.cd.statussaver.fragment.WhatsAppDowndlededFragment;
+import com.appska.tiktokvideodownloader.R;
+import com.appska.tiktokvideodownloader.databinding.ActivityGalleryBinding;
+import com.appska.tiktokvideodownloader.fragment.FBDownloadedFragment;
+import com.appska.tiktokvideodownloader.fragment.InstaDownloadedFragment;
+import com.appska.tiktokvideodownloader.fragment.TikTokDownloadedFragment;
+import com.appska.tiktokvideodownloader.fragment.TwitterDownloadedFragment;
+import com.appska.tiktokvideodownloader.fragment.WhatsAppDowndlededFragment;
 import java.util.ArrayList;
 import java.util.List;
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
-import static com.cd.statussaver.util.Utils.createFileFolder;
+import static com.appska.tiktokvideodownloader.util.Utils.createFileFolder;
 
 public class GalleryActivity  extends AppCompatActivity {
     GalleryActivity activity;
