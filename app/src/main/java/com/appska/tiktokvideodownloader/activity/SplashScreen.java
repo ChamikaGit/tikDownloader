@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.appska.tiktokvideodownloader.BuildConfig;
 import com.appska.tiktokvideodownloader.R;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -20,13 +23,16 @@ public class SplashScreen extends AppCompatActivity {
     SplashScreen activity;
     Context context;
     AppUpdateManager appUpdateManager;
+    TextView tvVersionNO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        tvVersionNO = findViewById(R.id.tvVersionNO);
         context = activity = this;
         appUpdateManager = AppUpdateManagerFactory.create(context);
         UpdateApp();
+        tvVersionNO.setText("v"+ BuildConfig.VERSION_NAME);
     }
 
     @Override
@@ -53,7 +59,7 @@ public class SplashScreen extends AppCompatActivity {
                 Intent i = new Intent(SplashScreen.this, MainActivity.class);
                 startActivity(i);
             }
-        }, 1000);
+        }, 2000);
 
     }
 

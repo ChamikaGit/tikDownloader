@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,8 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:fontFamily="casual"
-                    android:text="Gallery"
+                    android:text="TikTok Gallery"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -44,13 +44,27 @@
 
         </RelativeLayout>
 
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            ads:adSize="BANNER"
+            android:layout_below="@+id/RLTopLayout"
+            ads:adUnitId="@string/admob_banner_ad">
+
+        </com.google.android.gms.ads.AdView>
+
+
         <RelativeLayout
             android:id="@+id/RLTab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/RLTopLayout"
             android:paddingStart="2dp"
-            android:paddingEnd="2dp">
+            android:paddingEnd="2dp"
+            android:visibility="gone">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
@@ -73,6 +87,6 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/RLTab" />
+            android:layout_below="@+id/adView" />
     </RelativeLayout>
 </layout>

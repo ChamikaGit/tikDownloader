@@ -24,6 +24,7 @@ import android.view.View;
 
 import com.appska.tiktokvideodownloader.R;
 import com.appska.tiktokvideodownloader.databinding.ActivityMainBinding;
+import com.appska.tiktokvideodownloader.util.AdsUtils;
 import com.appska.tiktokvideodownloader.util.ClipboardListener;
 import com.appska.tiktokvideodownloader.util.Utils;
 import com.google.android.gms.ads.AdListener;
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         activity = this;
+
+        AdsUtils.showGoogleBannerAd(MainActivity.this, binding.adView);
 
         initViews();
     }

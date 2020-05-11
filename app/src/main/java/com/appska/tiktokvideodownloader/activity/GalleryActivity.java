@@ -18,6 +18,8 @@ import com.appska.tiktokvideodownloader.fragment.InstaDownloadedFragment;
 import com.appska.tiktokvideodownloader.fragment.TikTokDownloadedFragment;
 import com.appska.tiktokvideodownloader.fragment.TwitterDownloadedFragment;
 import com.appska.tiktokvideodownloader.fragment.WhatsAppDowndlededFragment;
+import com.appska.tiktokvideodownloader.util.AdsUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
@@ -33,11 +35,13 @@ public class GalleryActivity  extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_gallery);
         activity = this;
         initViews();
+
+        AdsUtils.showGoogleBannerAd(GalleryActivity.this, binding.adView);
     }
 
     public void initViews() {
         setupViewPager(binding.viewpager);
-        binding.tabs.setupWithViewPager(binding.viewpager);
+//        binding.tabs.setupWithViewPager(binding.viewpager);
         binding.imBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,10 +49,10 @@ public class GalleryActivity  extends AppCompatActivity {
             }
         });
 
-        for (int i = 0; i < binding.tabs.getTabCount(); i++) {
-            TextView tv=(TextView) LayoutInflater.from(activity).inflate(R.layout.custom_tab,null);
-            binding.tabs.getTabAt(i).setCustomView(tv);
-        }
+//        for (int i = 0; i < binding.tabs.getTabCount(); i++) {
+//            TextView tv=(TextView) LayoutInflater.from(activity).inflate(R.layout.custom_tab,null);
+//            binding.tabs.getTabAt(i).setCustomView(tv);
+//        }
 
         binding.viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -67,14 +71,14 @@ public class GalleryActivity  extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(activity.getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        adapter.addFragment(new InstaDownloadedFragment(), "Instagram");
-        adapter.addFragment(new WhatsAppDowndlededFragment(), "Whatsapp");
-        adapter.addFragment(new TikTokDownloadedFragment(), "TikTok");
-        adapter.addFragment(new FBDownloadedFragment(), "Facebook");
-        adapter.addFragment(new TwitterDownloadedFragment(), "Twitter");
+//        adapter.addFragment(new InstaDownloadedFragment(), "Instagram");
+//        adapter.addFragment(new WhatsAppDowndlededFragment(), "Whatsapp");
+        adapter.addFragment(new TikTokDownloadedFragment(), "TikTok Downloads");
+//        adapter.addFragment(new FBDownloadedFragment(), "Facebook");
+//        adapter.addFragment(new TwitterDownloadedFragment(), "Twitter");
 
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(4);
+        viewPager.setOffscreenPageLimit(1);
 
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#021B2A</color>
-    <color name="colorPrimaryDark">#1E5DFF</color>
+    <color name="colorPrimaryDark">#212121</color>
     <color name="colorAccent">#407806</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000</color>
@@ -16,4 +16,5 @@
     <color name="black_transparent">#40000000</color>
     <color name="splash_text">#7ffb00</color>
     <color name="whatsapp_color">#3DE25C</color>
+    <color name="splash_bg">#212121</color>
 </resources>
