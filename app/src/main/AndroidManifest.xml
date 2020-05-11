@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.cd.statussaver">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+
+    <application
+        android:name="com.cd.statussaver.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="false"
+        android:largeHeap="true"
+        android:usesCleartextTraffic="true"
+        android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true"
+        tools:ignore="GoogleAppIndexingWarning">
+
+
+        <activity android:name="com.cd.statussaver.activity.AboutUsActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name="com.cd.statussaver.activity.FacebookActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="com.cd.statussaver.activity.TikTokActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="com.cd.statussaver.activity.WhatsappActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="com.cd.statussaver.activity.InstagramActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="com.cd.statussaver.activity.FullViewActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="com.cd.statussaver.activity.SplashScreen"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.cd.statussaver.activity.GalleryActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="com.cd.statussaver.activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.cd.statussaver.activity.WebviewAcitivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".activity.TwitterActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_app_id" />
+        <service
+            android:name="com.cd.statussaver.MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher_round" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimaryDark" />
+
+    </application>
+
+</manifest>
