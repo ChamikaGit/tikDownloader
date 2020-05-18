@@ -5,8 +5,8 @@
         android:topLeftRadius="20dp"
         android:bottomLeftRadius="0dp"
         android:bottomRightRadius="0dp"/>
-    <stroke
-        android:width="0dp"
-        android:color="@color/white" />
-    <solid android:color="@color/white" />
+<!--    <stroke-->
+<!--        android:width="0dp"-->
+<!--        android:color="@color/white" />-->
+    <solid android:color="#212121" />
 </shape>
