@@ -41,9 +41,10 @@
                         <TextView
                             android:id="@+id/IMIcon"
                             android:layout_width="175dp"
-                            android:layout_height="175dp"
+                            android:layout_height="170dp"
                             android:layout_centerHorizontal="true"
-                            android:background="@drawable/icon_tiktok"
+                            android:layout_marginBottom="-15dp"
+                            android:background="@drawable/homr_page_logo_shadow"
                             android:tint="@color/white" />
 
                         <TextView
@@ -705,6 +706,8 @@
                     android:layout_alignParentBottom="true"
                     android:gravity="top|center"
                     android:layout_below="@+id/adView"
+                    android:padding="5dp"
+                    android:background="@drawable/rectangle_white"
                     android:orientation="horizontal">
 
                     <RelativeLayout
@@ -718,7 +721,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_whatsapp"
+                            android:src="@drawable/ic_about"
                             android:tint="@color/black"
                             app:backgroundTint="@color/white"
                             app:fabSize="mini" />
@@ -729,8 +732,8 @@
                             android:layout_below="@+id/imWhatsappShare"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="5dp"
-                            android:text="Whatsapp"
-                            android:textColor="@color/white"
+                            android:text="About Us"
+                            android:textColor="@color/black"
                             android:visibility="visible" />
                     </RelativeLayout>
 
@@ -757,7 +760,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="5dp"
                             android:text="Share"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:visibility="visible" />
                     </RelativeLayout>
                     <RelativeLayout
@@ -770,7 +773,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_delete_black_24dp"
+                            android:src="@drawable/ic_rate"
                             app:backgroundTint="#fff"
                             android:tint="@color/black"
                             app:fabSize="mini" />
@@ -782,8 +785,8 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="5dp"
                             android:textAlignment="center"
-                            android:text="Delete"
-                            android:textColor="@color/white"
+                            android:text="Rate Us"
+                            android:textColor="@color/black"
                             android:visibility="visible" />
                     </RelativeLayout>
 
