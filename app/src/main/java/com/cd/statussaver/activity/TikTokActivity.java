@@ -14,7 +14,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.cd.statussaver.model.Edge;
 import com.cd.statussaver.model.EdgeSidecarToChildren;
 import com.cd.statussaver.model.ResponseModel;
@@ -33,9 +37,11 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -69,11 +75,15 @@ public class TikTokActivity extends AppCompatActivity {
     boolean IsWithWaternark = true;
 
     private InterstitialAd mInterstitialAd;
+    private ImageView img;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tik_tok);
+        img = findViewById(R.id.img);
+        progressBar = findViewById(R.id.progressBar);
         activity = this;
         commonClassForAPI = CommonClassForAPI.getInstance(activity);
         createFileFolder();
@@ -140,6 +150,24 @@ public class TikTokActivity extends AppCompatActivity {
         assert activity != null;
         clipBoard = (ClipboardManager) activity.getSystemService(CLIPBOARD_SERVICE);
         PasteText();
+
+        try {
+            URL url = new URL(binding.etText.getText().toString());
+            String host = url.getHost();
+            if (host.contains("tiktok.com")) {
+                //Utils.showProgressDialog(activity);
+                progressBar.setVisibility(View.VISIBLE);
+                img.setVisibility(View.VISIBLE);
+                new callGetTikTokDefaultData().execute(binding.etText.getText().toString());
+            } else {
+//                Utils.setToast(activity, "Enter Valid Url");
+                img.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void initViews() {
@@ -254,6 +282,53 @@ public class TikTokActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    class callGetTikTokDefaultData extends AsyncTask<String, Void, Document> {
+        Document tikDoc;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Document doInBackground(String... urls) {
+            try {
+                tikDoc = Jsoup.connect(urls[0]).get();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.d(TAG, "doInBackground: Error");
+            }
+            return tikDoc;
+        }
+
+        protected void onPostExecute(Document result) {
+            progressBar.setVisibility(View.GONE);
+            try {
+                String URL = result.select("script[id=\"videoObject\"]").last().html();
+                String URL1 = result.select("script[id=\"__NEXT_DATA__\"]").last().html();
+
+                if (!URL.equals("")) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(URL);
+                        new JSONObject(URL1);
+                        Log.e("JSON_OBJECT",jsonObject.toString());
+                        VideoUrl = jsonObject.getString("contentUrl");
+                        JSONArray array = jsonObject.getJSONArray("thumbnailUrl");
+                        String url = array.get(0).toString();
+                        //Utils.setToast(activity, jsonObject.toString());
+                        Glide.with(getApplicationContext()).load(url).into(img);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
         }
     }
 
