@@ -16,5 +16,5 @@
     <color name="black_transparent">#40000000</color>
     <color name="splash_text">#7ffb00</color>
     <color name="whatsapp_color">#3DE25C</color>
-    <color name="splash_bg">#212121</color>
+    <color name="splash_color">#212121</color>
 </resources>

@@ -56,4 +56,10 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="SCBSwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
+        <item name="colorSwitchThumbNormal">#ffffff</item>
+        <item name="colorAccent">#ffffff</item>
+
+    </style>
 </resources>

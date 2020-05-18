@@ -13,69 +13,71 @@
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical">
-
             <RelativeLayout
                 android:id="@+id/RLTopLayout"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:background="@color/colorPrimaryDark"
+                android:layout_height="280dp"
+                android:background="@drawable/rectangle_blue"
                 android:visibility="visible">
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
                     <ImageView
                         android:id="@+id/imBack"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_centerVertical="true"
                         android:layout_margin="10dp"
                         android:padding="5dp"
+                        android:layout_centerVertical="true"
                         android:src="@drawable/ic_back" />
-
                     <ImageView
                         android:id="@+id/imInfo"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
                         android:layout_margin="10dp"
                         android:padding="10dp"
+                        android:visibility="gone"
                         android:src="@drawable/ic_about"
                         android:tint="@color/white"
-                        android:visibility="gone" />
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"/>
                 </RelativeLayout>
-
                 <RelativeLayout
-                    android:id="@+id/LLOpenWhatsapp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true">
-
-                    <ImageView
-                        android:id="@+id/TVTitle"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/ic_whatsapp"
-                        android:tint="@color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="280dp">
+                    <RelativeLayout
+                        android:id="@+id/LLOpenWhatsapp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/TVTitle"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="casual"
-                        android:text="Whatsapp"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:visibility="visible" />
-                </RelativeLayout>
+                        android:background="@drawable/rectangle_white"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:padding="30dp"
+                        android:layout_marginTop="80dp">
 
+                        <ImageView
+                            android:id="@+id/TVTitle"
+                            android:layout_centerHorizontal="true"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/circle"
+                            android:padding="12dp"
+                            android:src="@drawable/whatsapp_logo" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/TVTitle"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/whatsapp_app_name"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:visibility="visible" />
+                    </RelativeLayout>
+                </RelativeLayout>
 
             </RelativeLayout>
 
@@ -88,7 +90,7 @@
                 android:layout_marginTop="-30dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/et_back"
+                android:background="@drawable/rectangle_white"
                 android:elevation="3dp"
                 android:paddingStart="2dp"
                 android:paddingEnd="2dp">

@@ -4,797 +4,863 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#F8F7FC">
-
-        <ScrollView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#F8F7FC">
 
-            <RelativeLayout
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:layout_above="@+id/lnr_footer">
 
                 <RelativeLayout
-                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp">
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/RLTopLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:layout_below="@+id/toolbar"
-                    android:visibility="visible">
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
                     <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true">
-
-                        <TextView
-                            android:id="@+id/IMIcon"
-                            android:layout_width="175dp"
-                            android:layout_height="170dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginBottom="-15dp"
-                            android:background="@drawable/homr_page_logo_shadow"
-                            android:tint="@color/white" />
-
-                        <TextView
-                            android:id="@+id/TVTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/IMIcon"
-                            android:layout_centerHorizontal="true"
-                            android:text="@string/app_name"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/TVTitle"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="5dp"
-                            android:text="@string/tag_line"
-                            android:textColor="@color/black"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                    </RelativeLayout>
-
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/lnr_main"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/RLTopLayout"
-                    android:orientation="vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingBottom="10dp">
-
-                    <RelativeLayout
-                        android:id="@+id/rvInsta"
+                        android:id="@+id/toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/rectangle_white"
-                        android:elevation="3dp"
-                        android:visibility="gone">
+                        android:layout_height="50dp">
 
-                        <ImageView
-                            android:id="@+id/insta_logo"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="10dp"
-                            android:background="@drawable/circle"
-                            android:padding="12dp"
-                            android:src="@drawable/insta_logo" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="10dp"
-                            android:layout_toLeftOf="@+id/imArrow1"
-                            android:layout_toRightOf="@+id/insta_logo"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="@string/insta_app_name"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="20sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="@string/insta_tag"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="13sp" />
-                        </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/imArrow1"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="10dp"
-                            android:src="@drawable/ic_arrow" />
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:id="@+id/rvWhatsApp"
+                        android:id="@+id/RLTopLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/rectangle_white"
-                        android:elevation="3dp"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:id="@+id/whatsapp_logo"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="10dp"
-                            android:background="@drawable/circle"
-                            android:padding="12dp"
-                            android:src="@drawable/whatsapp_logo" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="10dp"
-                            android:layout_toLeftOf="@+id/imArrow2"
-                            android:layout_toRightOf="@+id/whatsapp_logo"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="@string/whatsapp_app_name"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="20sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="@string/whatsapp_tag"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="13sp" />
-                        </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/imArrow2"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="10dp"
-                            android:src="@drawable/ic_arrow" />
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:layout_height="250dp"
+                        android:layout_below="@+id/toolbar"
+                        android:visibility="visible">
 
                         <RelativeLayout
-                            android:id="@+id/rvTikTok"
-                            android:layout_width="match_parent"
-                            android:layout_height="165dp"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="5dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/rectangle_white"
-                            android:padding="10dp"
-                            android:visibility="visible">
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true">
 
-                            <ImageView
-                                android:id="@+id/tiktok_logo"
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                            <TextView
+                                android:id="@+id/IMIcon"
+                                android:layout_width="175dp"
+                                android:layout_height="170dp"
                                 android:layout_centerHorizontal="true"
-                                android:layout_marginStart="10dp"
-                                android:background="@drawable/circle"
-                                android:padding="12dp"
-                                android:src="@drawable/tiktok_logo" />
+                                android:layout_marginBottom="-15dp"
+                                android:background="@drawable/homr_page_logo_shadow"
+                                android:tint="@color/white" />
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
+                            <TextView
+                                android:id="@+id/TVTitle"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/tiktok_logo"
-                                android:layout_centerVertical="true"
-                                android:layout_marginTop="10dp"
-                                android:orientation="vertical">
+                                android:layout_below="@+id/IMIcon"
+                                android:layout_centerHorizontal="true"
+                                android:text="@string/app_name"
+                                android:textColor="@color/black"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:elevation="3dp"
-                                    android:text="@string/tiktok_app_name"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textSize="20sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="5dp"
-                                    android:elevation="3dp"
-                                    android:gravity="center"
-                                    android:text="@string/tiktok_tag"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="13sp" />
-                            </LinearLayout>
-                            <!--                            <ImageView-->
-                            <!--                                android:layout_width="30dp"-->
-                            <!--                                android:layout_height="30dp"-->
-                            <!--                                android:src="@drawable/ic_arrow"-->
-                            <!--                                android:id="@+id/imArrow3"-->
-                            <!--                                android:layout_centerVertical="true"-->
-                            <!--                                android:layout_alignParentEnd="true"-->
-                            <!--                                android:layout_marginEnd="10dp"/>-->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/TVTitle"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/tag_line"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
                         </RelativeLayout>
 
-                        <RelativeLayout
-                            android:id="@+id/rvGallery"
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/lnr_main"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/RLTopLayout"
+                        android:orientation="vertical"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="10dp">
+
+
+
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="165dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <RelativeLayout
+                                android:id="@+id/rvTikTok"
+                                android:layout_width="match_parent"
+                                android:layout_height="165dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/rectangle_white"
+                                android:padding="10dp"
+                                android:elevation="3dp"
+                                android:visibility="visible">
+
+                                <ImageView
+                                    android:id="@+id/tiktok_logo"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginStart="10dp"
+                                    android:background="@drawable/circle"
+                                    android:padding="12dp"
+                                    android:src="@drawable/tiktok_logo" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/tiktok_logo"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:elevation="3dp"
+                                        android:text="@string/tiktok_app_name"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="20sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:layout_marginTop="5dp"
+                                        android:elevation="3dp"
+                                        android:gravity="center"
+                                        android:text="@string/tiktok_tag"
+                                        android:textColor="@color/colorPrimaryDark"
+                                        android:textSize="13sp" />
+                                </LinearLayout>
+                                <!--                            <ImageView-->
+                                <!--                                android:layout_width="30dp"-->
+                                <!--                                android:layout_height="30dp"-->
+                                <!--                                android:src="@drawable/ic_arrow"-->
+                                <!--                                android:id="@+id/imArrow3"-->
+                                <!--                                android:layout_centerVertical="true"-->
+                                <!--                                android:layout_alignParentEnd="true"-->
+                                <!--                                android:layout_marginEnd="10dp"/>-->
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rvGallery"
+                                android:layout_width="match_parent"
+                                android:layout_height="165dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="1"
+                                android:elevation="3dp"
+                                android:background="@drawable/rectangle_white"
+                                android:padding="10dp">
+
+                                <ImageView
+                                    android:id="@+id/gallery_logo"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginStart="10dp"
+                                    android:background="@drawable/circle"
+                                    android:padding="12dp"
+                                    android:src="@drawable/ic_gallery" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/gallery_logo"
+                                    android:layout_centerVertical="true"
+                                    android:layout_margin="10dp"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:elevation="3dp"
+                                        android:text="@string/gallery_name"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="20sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:layout_marginTop="5dp"
+                                        android:elevation="3dp"
+                                        android:gravity="center"
+                                        android:text="@string/gallery_tag"
+                                        android:textColor="@color/colorPrimaryDark"
+                                        android:textSize="13sp" />
+                                </LinearLayout>
+                                <!--                            <ImageView-->
+                                <!--                                android:layout_width="30dp"-->
+                                <!--                                android:layout_height="30dp"-->
+                                <!--                                android:src="@drawable/ic_arrow"-->
+                                <!--                                android:id="@+id/imArrow5"-->
+                                <!--                                android:layout_centerVertical="true"-->
+                                <!--                                android:layout_alignParentEnd="true"-->
+                                <!--                                android:layout_marginEnd="10dp"/>-->
+                            </RelativeLayout>
+
+
+                        </LinearLayout>
+
+
+
+
+
+
+                        <RelativeLayout
+                            android:id="@+id/rvMoreApp"
+                            android:layout_width="match_parent"
+                            android:layout_height="110dp"
                             android:layout_marginStart="5dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="5dp"
-                            android:layout_weight="1"
+                            android:layout_marginBottom="10dp"
                             android:background="@drawable/rectangle_white"
-                            android:padding="10dp">
+                            android:elevation="3dp"
+                            android:visibility="gone">
 
                             <ImageView
-                                android:id="@+id/gallery_logo"
+                                android:id="@+id/im_MoreApp"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
                                 android:layout_marginStart="10dp"
                                 android:background="@drawable/circle"
                                 android:padding="12dp"
-                                android:src="@drawable/ic_gallery" />
+                                android:src="@drawable/ic_more" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/gallery_logo"
                                 android:layout_centerVertical="true"
                                 android:layout_margin="10dp"
+                                android:layout_toLeftOf="@+id/imArrow9"
+                                android:layout_toRightOf="@+id/im_MoreApp"
                                 android:orientation="vertical">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
                                     android:elevation="3dp"
-                                    android:text="@string/gallery_name"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="@string/more_app_name"
                                     android:textColor="@color/colorPrimary"
                                     android:textSize="20sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="5dp"
                                     android:elevation="3dp"
-                                    android:gravity="center"
-                                    android:text="@string/gallery_tag"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="@string/more_app_tag"
                                     android:textColor="@color/colorPrimaryDark"
                                     android:textSize="13sp" />
                             </LinearLayout>
-                            <!--                            <ImageView-->
-                            <!--                                android:layout_width="30dp"-->
-                            <!--                                android:layout_height="30dp"-->
-                            <!--                                android:src="@drawable/ic_arrow"-->
-                            <!--                                android:id="@+id/imArrow5"-->
-                            <!--                                android:layout_centerVertical="true"-->
-                            <!--                                android:layout_alignParentEnd="true"-->
-                            <!--                                android:layout_marginEnd="10dp"/>-->
+
+                            <ImageView
+                                android:id="@+id/imArrow9"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="10dp"
+                                android:src="@drawable/ic_arrow" />
                         </RelativeLayout>
-
-
-                    </LinearLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/rvFB"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/rectangle_white"
-                        android:elevation="3dp"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:id="@+id/fb_logo"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="10dp"
-                            android:background="@drawable/circle"
-                            android:padding="12dp"
-                            android:src="@drawable/fb" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="10dp"
-                            android:layout_toLeftOf="@+id/imArrow4"
-                            android:layout_toRightOf="@+id/fb_logo"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="@string/facebook_app_name"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="20sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="@string/fcebook_tag"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="13sp" />
-                        </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/imArrow4"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="10dp"
-                            android:src="@drawable/ic_arrow" />
                     </RelativeLayout>
 
-                    <RelativeLayout
-                        android:id="@+id/rvTwitter"
+                    <com.google.android.gms.ads.AdView
+                        android:id="@+id/adView"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/rectangle_white"
-                        android:elevation="3dp"
-                        android:visibility="gone">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        ads:adSize="MEDIUM_RECTANGLE"
+                        android:layout_below="@+id/lnr_main"
+                        ads:adUnitId="@string/admob_banner_ad">
 
-                        <ImageView
-                            android:id="@+id/twitter_logo"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="10dp"
-                            android:background="@drawable/circle"
-                            android:padding="12dp"
-                            android:src="@drawable/ic_twitter" />
+                    </com.google.android.gms.ads.AdView>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="10dp"
-                            android:layout_toLeftOf="@+id/imArrowTwitter"
-                            android:layout_toRightOf="@+id/twitter_logo"
-                            android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="@string/twitter_app_name"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="20sp" />
+                </RelativeLayout>
+            </ScrollView>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="@string/twitter_tag"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="13sp" />
-                        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lnr_footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="top|center"
+                android:padding="5dp"
+                android:elevation="3dp"
+                android:background="@drawable/rectangle_white_bottom"
+                android:orientation="horizontal">
 
-                        <ImageView
-                            android:id="@+id/imArrowTwitter"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="10dp"
-                            android:src="@drawable/ic_arrow" />
-                    </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rvAbout"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="bottom">
 
-                    <RelativeLayout
-                        android:id="@+id/rvAbout"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/rectangle_white"
-                        android:elevation="3dp"
-                        android:visibility="gone">
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/imWhatsappShare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_about"
+                        android:tint="@color/black"
+                        app:backgroundTint="@color/white"
+                        app:fabSize="mini" />
 
-                        <ImageView
-                            android:id="@+id/about_logo"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="10dp"
-                            android:background="@drawable/circle"
-                            android:padding="12dp"
-                            android:src="@drawable/ic_about" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="10dp"
-                            android:layout_toLeftOf="@+id/imArrow6"
-                            android:layout_toRightOf="@+id/about_logo"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:gravity="center"
-                                android:text="@string/aboutus_name"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="20sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:gravity="center"
-                                android:text="@string/aboutus_tag"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="13sp" />
-                        </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/imArrow6"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="10dp"
-                            android:src="@drawable/ic_arrow" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/rvShareApp"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/rectangle_white"
-                        android:elevation="3dp"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:id="@+id/im_shareApp"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="10dp"
-                            android:background="@drawable/circle"
-                            android:padding="12dp"
-                            android:src="@drawable/ic_share" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="10dp"
-                            android:layout_toLeftOf="@+id/imArrow7"
-                            android:layout_toRightOf="@+id/im_shareApp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="@string/share_app_name"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="20sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="@string/share_app_tag"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="13sp" />
-                        </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/imArrow7"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="10dp"
-                            android:src="@drawable/ic_arrow" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/rvRateApp"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/rectangle_white"
-                        android:elevation="3dp"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:id="@+id/im_rateApp"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="10dp"
-                            android:background="@drawable/circle"
-                            android:padding="12dp"
-                            android:src="@drawable/ic_rate" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="10dp"
-                            android:layout_toLeftOf="@+id/imArrow8"
-                            android:layout_toRightOf="@+id/im_rateApp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="@string/rate_app_name"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="20sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="@string/rate_tag"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="13sp" />
-                        </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/imArrow8"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="10dp"
-                            android:src="@drawable/ic_arrow" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/rvMoreApp"
-                        android:layout_width="match_parent"
-                        android:layout_height="110dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/rectangle_white"
-                        android:elevation="3dp"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:id="@+id/im_MoreApp"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="10dp"
-                            android:background="@drawable/circle"
-                            android:padding="12dp"
-                            android:src="@drawable/ic_more" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="10dp"
-                            android:layout_toLeftOf="@+id/imArrow9"
-                            android:layout_toRightOf="@+id/im_MoreApp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="@string/more_app_name"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="20sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:elevation="3dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="@string/more_app_tag"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="13sp" />
-                        </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/imArrow9"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="10dp"
-                            android:src="@drawable/ic_arrow" />
-                    </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/imWhatsappShare"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="About Us"
+                        android:textColor="@color/black"
+                        android:visibility="visible" />
                 </RelativeLayout>
 
-                <com.google.android.gms.ads.AdView
-                    android:id="@+id/adView"
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    android:id="@+id/rvShareApp"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    ads:adSize="MEDIUM_RECTANGLE"
-                    android:layout_below="@+id/lnr_main"
-                    ads:adUnitId="@string/admob_banner_ad">
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/imShare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_share"
+                        android:tint="@color/black"
+                        app:backgroundTint="#fff" />
 
-                </com.google.android.gms.ads.AdView>
-
-
-                <LinearLayout
-                    android:id="@+id/lnr_footer"
-                    android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/imShare"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="Share"
+                        android:textColor="@color/black"
+                        android:visibility="visible" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rvRateApp"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:gravity="top|center"
-                    android:layout_below="@+id/adView"
-                    android:padding="5dp"
-                    android:background="@drawable/rectangle_white"
-                    android:orientation="horizontal">
-
-                    <RelativeLayout
-                        android:layout_width="80dp"
+                    android:layout_gravity="bottom"
+                    android:gravity="center">
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/imDelete"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_gravity="bottom">
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_rate"
+                        app:backgroundTint="#fff"
+                        android:tint="@color/black"
+                        app:fabSize="mini" />
 
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/imWhatsappShare"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_about"
-                            android:tint="@color/black"
-                            app:backgroundTint="@color/white"
-                            app:fabSize="mini" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/imWhatsappShare"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="5dp"
-                            android:text="About Us"
-                            android:textColor="@color/black"
-                            android:visibility="visible" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="80dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_gravity="center"
-                        android:gravity="center">
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/imShare"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_share"
-                            android:tint="@color/black"
-                            app:backgroundTint="#fff" />
+                        android:layout_below="@+id/imDelete"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:textAlignment="center"
+                        android:text="Rate Us"
+                        android:textColor="@color/black"
+                        android:visibility="visible" />
+                </RelativeLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/imShare"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="5dp"
-                            android:text="Share"
-                            android:textColor="@color/black"
-                            android:visibility="visible" />
-                    </RelativeLayout>
-                    <RelativeLayout
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:gravity="center">
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/imDelete"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_rate"
-                            app:backgroundTint="#fff"
-                            android:tint="@color/black"
-                            app:fabSize="mini" />
+            </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/imDelete"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="5dp"
-                            android:textAlignment="center"
-                            android:text="Rate Us"
-                            android:textColor="@color/black"
-                            android:visibility="visible" />
-                    </RelativeLayout>
-
-                </LinearLayout>
+        </RelativeLayout>
 
 
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@color/white"-->
+<!--        android:visibility="gone">-->
 
-            </RelativeLayout>
-        </ScrollView>
-    </RelativeLayout>
+<!--        <ScrollView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_above="@+id/adView">-->
+
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="center_horizontal"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <RelativeLayout-->
+<!--                    android:id="@+id/RLTopLayout"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="350dp"-->
+<!--                    android:background="@drawable/rectangle_blue"-->
+<!--                    android:visibility="visible">-->
+
+<!--                    <RelativeLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_marginBottom="120dp">-->
+<!--                    <RelativeLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_centerHorizontal="true"-->
+<!--                        android:layout_centerVertical="true"-->
+<!--                        android:layout_marginStart="15dp"-->
+<!--                        android:layout_marginEnd="15dp"-->
+<!--                        android:background="@drawable/rectangle_white"-->
+<!--                        android:paddingTop="40dp"-->
+<!--                        android:paddingBottom="40dp">-->
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/IMIcon"-->
+<!--                            android:layout_width="50dp"-->
+<!--                            android:layout_height="50dp"-->
+<!--                            android:layout_centerHorizontal="true"-->
+<!--                            android:src="@drawable/icon_tr" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/TVTitle"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_below="@+id/IMIcon"-->
+<!--                            android:layout_centerHorizontal="true"-->
+<!--                            android:text="@string/app_name"-->
+<!--                            android:textColor="@color/colorPrimaryDark"-->
+<!--                            android:textSize="16sp"-->
+<!--                            android:textStyle="bold" />-->
+
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_below="@+id/TVTitle"-->
+<!--                            android:layout_centerHorizontal="true"-->
+<!--                            android:layout_marginTop="5dp"-->
+<!--                            android:text="@string/tag_line"-->
+<!--                            android:textColor="@color/colorPrimaryDark"-->
+<!--                            android:textSize="13sp"-->
+<!--                            android:textStyle="bold" />-->
+<!--                    </RelativeLayout>-->
+<!--                    </RelativeLayout>-->
+
+<!--                </RelativeLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/lnr_main"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@+id/RLTopLayout"-->
+<!--                    android:layout_marginTop="-120dp"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:paddingStart="10dp"-->
+<!--                    android:paddingEnd="10dp"-->
+<!--                    android:paddingBottom="10dp">-->
+
+<!--                    <RelativeLayout-->
+<!--                        android:id="@+id/RLTopMain"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginStart="5dp"-->
+<!--                        android:layout_marginEnd="5dp"-->
+<!--                        android:background="@drawable/rectangle_white"-->
+<!--                        android:elevation="3dp">-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="vertical">-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:orientation="horizontal"-->
+<!--                                android:weightSum="3">-->
+
+<!--                                <RelativeLayout-->
+<!--                                    android:id="@+id/rvInsta"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="120dp"-->
+<!--                                    android:layout_weight="1">-->
+
+<!--                                    <LinearLayout-->
+<!--                                        android:layout_width="wrap_content"-->
+<!--                                        android:layout_height="wrap_content"-->
+<!--                                        android:layout_centerInParent="true"-->
+<!--                                        android:gravity="center"-->
+<!--                                        android:orientation="vertical">-->
+
+<!--                                        <ImageView-->
+<!--                                            android:layout_width="50dp"-->
+<!--                                            android:layout_height="50dp"-->
+<!--                                            android:background="@drawable/circle"-->
+<!--                                            android:padding="12dp"-->
+<!--                                            android:src="@drawable/insta_logo" />-->
+
+<!--                                        <TextView-->
+<!--                                            android:layout_width="wrap_content"-->
+<!--                                            android:layout_height="wrap_content"-->
+<!--                                            android:text="@string/insta_app_name"-->
+<!--                                            android:textColor="@color/colorPrimary"-->
+<!--                                            android:textSize="16sp" />-->
+<!--                                    </LinearLayout>-->
+<!--                                </RelativeLayout>-->
+
+<!--                                <RelativeLayout-->
+<!--                                    android:id="@+id/rvWhatsApp"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="120dp"-->
+<!--                                    android:layout_weight="1">-->
+
+<!--                                    <LinearLayout-->
+<!--                                        android:layout_width="wrap_content"-->
+<!--                                        android:layout_height="wrap_content"-->
+<!--                                        android:layout_centerInParent="true"-->
+<!--                                        android:gravity="center"-->
+<!--                                        android:orientation="vertical">-->
+
+<!--                                        <ImageView-->
+<!--                                            android:layout_width="50dp"-->
+<!--                                            android:layout_height="50dp"-->
+<!--                                            android:background="@drawable/circle"-->
+<!--                                            android:padding="12dp"-->
+<!--                                            android:src="@drawable/whatsapp_logo" />-->
+
+<!--                                        <TextView-->
+<!--                                            android:layout_width="wrap_content"-->
+<!--                                            android:layout_height="wrap_content"-->
+<!--                                            android:text="@string/whatsapp_app_name"-->
+<!--                                            android:textColor="@color/colorPrimary"-->
+<!--                                            android:textSize="16sp" />-->
+<!--                                    </LinearLayout>-->
+<!--                                </RelativeLayout>-->
+
+<!--                                <RelativeLayout-->
+<!--                                    android:id="@+id/rvTikTok"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="120dp"-->
+<!--                                    android:layout_weight="1">-->
+
+<!--                                    <LinearLayout-->
+<!--                                        android:layout_width="wrap_content"-->
+<!--                                        android:layout_height="wrap_content"-->
+<!--                                        android:layout_centerInParent="true"-->
+<!--                                        android:gravity="center"-->
+<!--                                        android:orientation="vertical">-->
+
+<!--                                        <ImageView-->
+<!--                                            android:layout_width="50dp"-->
+<!--                                            android:layout_height="50dp"-->
+<!--                                            android:background="@drawable/circle"-->
+<!--                                            android:padding="12dp"-->
+<!--                                            android:src="@drawable/tiktok_logo" />-->
+
+<!--                                        <TextView-->
+<!--                                            android:layout_width="wrap_content"-->
+<!--                                            android:layout_height="wrap_content"-->
+<!--                                            android:text="@string/tiktok_app_name"-->
+<!--                                            android:textColor="@color/colorPrimary"-->
+<!--                                            android:textSize="16sp" />-->
+<!--                                    </LinearLayout>-->
+<!--                                </RelativeLayout>-->
+<!--                            </LinearLayout>-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:orientation="horizontal"-->
+<!--                                android:paddingStart="40dp"-->
+<!--                                android:paddingEnd="40dp"-->
+<!--                                android:weightSum="2">-->
+
+<!--                                <RelativeLayout-->
+<!--                                    android:id="@+id/rvFB"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="120dp"-->
+<!--                                    android:layout_weight="1">-->
+
+<!--                                    <LinearLayout-->
+<!--                                        android:layout_width="wrap_content"-->
+<!--                                        android:layout_height="wrap_content"-->
+<!--                                        android:layout_centerInParent="true"-->
+<!--                                        android:gravity="center"-->
+<!--                                        android:orientation="vertical">-->
+
+<!--                                        <ImageView-->
+<!--                                            android:layout_width="50dp"-->
+<!--                                            android:layout_height="50dp"-->
+<!--                                            android:background="@drawable/circle"-->
+<!--                                            android:padding="12dp"-->
+<!--                                            android:src="@drawable/fb" />-->
+
+<!--                                        <TextView-->
+<!--                                            android:layout_width="wrap_content"-->
+<!--                                            android:layout_height="wrap_content"-->
+<!--                                            android:text="@string/facebook_app_name"-->
+<!--                                            android:textColor="@color/colorPrimary"-->
+<!--                                            android:textSize="16sp" />-->
+<!--                                    </LinearLayout>-->
+<!--                                </RelativeLayout>-->
+
+<!--                                <RelativeLayout-->
+<!--                                    android:id="@+id/rvTwitter"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="120dp"-->
+<!--                                    android:layout_weight="1">-->
+
+<!--                                    <LinearLayout-->
+<!--                                        android:layout_width="wrap_content"-->
+<!--                                        android:layout_height="wrap_content"-->
+<!--                                        android:layout_centerInParent="true"-->
+<!--                                        android:gravity="center"-->
+
+<!--                                        android:orientation="vertical">-->
+
+<!--                                        <ImageView-->
+<!--                                            android:layout_width="50dp"-->
+<!--                                            android:layout_height="50dp"-->
+<!--                                            android:background="@drawable/circle"-->
+<!--                                            android:padding="12dp"-->
+<!--                                            android:src="@drawable/ic_twitter" />-->
+
+<!--                                        <TextView-->
+<!--                                            android:layout_width="wrap_content"-->
+<!--                                            android:layout_height="wrap_content"-->
+<!--                                            android:text="@string/twitter_app_name"-->
+<!--                                            android:textColor="@color/colorPrimary"-->
+<!--                                            android:textSize="16sp" />-->
+<!--                                    </LinearLayout>-->
+<!--                                </RelativeLayout>-->
+
+<!--                            </LinearLayout>-->
+
+<!--                        </LinearLayout>-->
+<!--                    </RelativeLayout>-->
+
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="horizontal"-->
+<!--                        android:background="@drawable/rectangle_white"-->
+<!--                        android:elevation="3dp"-->
+<!--                        android:layout_marginStart="5dp"-->
+<!--                        android:layout_marginEnd="5dp"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:weightSum="4">-->
+
+<!--                        <RelativeLayout-->
+<!--                            android:id="@+id/rvGallery"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="120dp"-->
+<!--                            android:layout_weight="1">-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_centerInParent="true"-->
+<!--                                android:gravity="center"-->
+<!--                                android:orientation="vertical">-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_width="50dp"-->
+<!--                                    android:layout_height="50dp"-->
+<!--                                    android:background="@drawable/circle"-->
+<!--                                    android:padding="12dp"-->
+<!--                                    android:src="@drawable/ic_gallery" />-->
+
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:text="@string/gallery_name"-->
+<!--                                    android:textColor="@color/colorPrimary"-->
+<!--                                    android:textSize="16sp" />-->
+<!--                            </LinearLayout>-->
+<!--                        </RelativeLayout>-->
+
+<!--                        <RelativeLayout-->
+<!--                            android:id="@+id/rvAbout"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="120dp"-->
+<!--                            android:layout_weight="1">-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_centerInParent="true"-->
+<!--                                android:gravity="center"-->
+<!--                                android:orientation="vertical">-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_width="50dp"-->
+<!--                                    android:layout_height="50dp"-->
+<!--                                    android:background="@drawable/circle"-->
+<!--                                    android:padding="12dp"-->
+<!--                                    android:src="@drawable/ic_about" />-->
+
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:text="@string/aboutus_name"-->
+<!--                                    android:textColor="@color/colorPrimary"-->
+<!--                                    android:textSize="16sp" />-->
+<!--                            </LinearLayout>-->
+<!--                        </RelativeLayout>-->
+
+<!--                        <RelativeLayout-->
+<!--                            android:id="@+id/rvShareApp"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="120dp"-->
+<!--                            android:layout_weight="1">-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_centerInParent="true"-->
+<!--                                android:gravity="center"-->
+<!--                                android:orientation="vertical">-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_width="50dp"-->
+<!--                                    android:layout_height="50dp"-->
+<!--                                    android:background="@drawable/circle"-->
+<!--                                    android:padding="12dp"-->
+<!--                                    android:src="@drawable/ic_share" />-->
+
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:text="@string/share_app_name"-->
+<!--                                    android:textColor="@color/colorPrimary"-->
+<!--                                    android:textSize="16sp" />-->
+<!--                            </LinearLayout>-->
+
+<!--                        </RelativeLayout>-->
+<!--                        <RelativeLayout-->
+<!--                            android:id="@+id/rvRateApp"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="120dp"-->
+<!--                            android:layout_weight="1">-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_centerInParent="true"-->
+<!--                                android:gravity="center"-->
+<!--                                android:orientation="vertical">-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_width="50dp"-->
+<!--                                    android:layout_height="50dp"-->
+<!--                                    android:background="@drawable/circle"-->
+<!--                                    android:padding="12dp"-->
+<!--                                    android:src="@drawable/ic_rate" />-->
+
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:text="@string/rate_app_name"-->
+<!--                                    android:textColor="@color/colorPrimary"-->
+<!--                                    android:textSize="16sp" />-->
+<!--                            </LinearLayout>-->
+
+<!--                        </RelativeLayout>-->
+
+<!--                    </LinearLayout>-->
+
+<!--                    <RelativeLayout-->
+<!--                        android:id="@+id/rvMoreApp"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="90dp"-->
+<!--                        android:layout_marginStart="5dp"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:layout_marginEnd="5dp"-->
+<!--                        android:layout_marginBottom="10dp"-->
+<!--                        android:background="@drawable/rectangle_white"-->
+<!--                        android:elevation="3dp">-->
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/im_MoreApp"-->
+<!--                            android:layout_width="50dp"-->
+<!--                            android:layout_height="50dp"-->
+<!--                            android:layout_centerVertical="true"-->
+<!--                            android:layout_marginStart="10dp"-->
+<!--                            android:background="@drawable/circle"-->
+<!--                            android:padding="12dp"-->
+<!--                            android:src="@drawable/ic_more" />-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_centerVertical="true"-->
+<!--                            android:layout_margin="10dp"-->
+<!--                            android:layout_toLeftOf="@+id/imArrow9"-->
+<!--                            android:layout_toRightOf="@+id/im_MoreApp"-->
+<!--                            android:orientation="vertical">-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:elevation="3dp"-->
+<!--                                android:text="@string/more_app_name"-->
+<!--                                android:textColor="@color/colorPrimary"-->
+<!--                                android:textSize="16sp" />-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:elevation="3dp"-->
+<!--                                android:text="@string/more_app_tag"-->
+<!--                                android:textColor="@color/colorPrimaryDark"-->
+<!--                                android:textSize="13sp" />-->
+<!--                        </LinearLayout>-->
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/imArrow9"-->
+<!--                            android:layout_width="30dp"-->
+<!--                            android:layout_height="30dp"-->
+<!--                            android:layout_alignParentEnd="true"-->
+<!--                            android:layout_centerVertical="true"-->
+<!--                            android:layout_marginEnd="10dp"-->
+<!--                            android:src="@drawable/ic_arrow" />-->
+<!--                    </RelativeLayout>-->
+<!--                </LinearLayout>-->
+
+
+<!--            </RelativeLayout>-->
+<!--        </ScrollView>-->
+
+<!--        <com.google.android.gms.ads.AdView-->
+<!--            android:id="@+id/adView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+
+<!--            ads:adSize="BANNER"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            ads:adUnitId="@string/admob_banner_ad"/>-->
+
+<!--    </RelativeLayout>-->
 </layout>

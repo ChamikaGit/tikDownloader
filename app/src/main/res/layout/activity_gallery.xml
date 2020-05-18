@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:text="TikTok Gallery"
+                    android:text="TikTok Video Gallery"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -48,8 +48,7 @@
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="5dp"
             ads:adSize="BANNER"
             android:layout_below="@+id/RLTopLayout"
             ads:adUnitId="@string/admob_banner_ad">
@@ -87,6 +86,6 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/adView" />
+            android:layout_below="@+id/adView"/>
     </RelativeLayout>
 </layout>

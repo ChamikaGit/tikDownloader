@@ -33,7 +33,7 @@
             android:padding="8dp"
             android:layout_margin="5dp"
             android:gravity="center"
-            android:background="@drawable/et_back"
+            android:background="@drawable/selected_tab"
             android:backgroundTint="@color/colorPrimaryDark"
             android:id="@+id/tv_download"
             android:textColor="@color/white"

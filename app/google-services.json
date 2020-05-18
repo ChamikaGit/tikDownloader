@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "738446816980",
-    "firebase_url": "https://tiktokdownloader-aa634.firebaseio.com",
-    "project_id": "tiktokdownloader-aa634",
-    "storage_bucket": "tiktokdownloader-aa634.appspot.com"
+    "project_number": "163538753391",
+    "firebase_url": "https://codingdunia-4272f.firebaseio.com",
+    "project_id": "codingdunia-4272f",
+    "storage_bucket": "codingdunia-4272f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:738446816980:android:df776fa4a328def9516d41",
+        "mobilesdk_app_id": "1:163538753391:android:778804ac3dc2d0e422fa9a",
         "android_client_info": {
-          "package_name": "com.appska.tiktokvideodownloader"
+          "package_name": "com.cd.statussaver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "738446816980-52kd5mfk1cgo09kgtkfr6p9c3ptedgnj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.appska.tiktokvideodownloader",
-            "certificate_hash": "21d072706cbb10a32ffc476600f2005665db594b"
-          }
-        },
-        {
-          "client_id": "738446816980-co02g3iqnqpultc5984c501cjar5hfip.apps.googleusercontent.com",
+          "client_id": "163538753391-ik3kae3r0q7tqtqs0sbh7mho9lehip5m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC5Am76Oy1UlR3yThXKcsrEMRp_8CyRrFE"
+          "current_key": "AIzaSyBitp0aF9VS4WkeQyVWY3kPWeeVNj0dkfs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "738446816980-co02g3iqnqpultc5984c501cjar5hfip.apps.googleusercontent.com",
+              "client_id": "163538753391-n4b4i3g63r8dbgrku66g9o9mnb9kol36.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
