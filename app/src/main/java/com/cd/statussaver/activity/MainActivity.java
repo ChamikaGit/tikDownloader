@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             notificationBuilder = new NotificationCompat.Builder(activity, getResources().getString(R.string.app_name))
                     .setAutoCancel(true)
                     .setSmallIcon(R.mipmap.ic_launcher_round)
-                    .setColor(getResources().getColor(R.color.black))
+                    .setColor(getResources().getColor(R.color.white))
                     .setLargeIcon(BitmapFactory.decodeResource(activity.getResources(),
                             R.mipmap.ic_launcher_round))
                     .setDefaults(Notification.DEFAULT_ALL)

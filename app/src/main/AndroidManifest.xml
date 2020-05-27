@@ -72,9 +72,6 @@
         <activity
             android:name=".activity.WebviewAcitivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity.TwitterActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -75,14 +77,23 @@ public class TikTokActivity extends AppCompatActivity {
     boolean IsWithWaternark = true;
 
     private InterstitialAd mInterstitialAd;
-    private ImageView img;
+    private ImageView img,imgPicture;
+    private TextView tvName,tvDescription,tvKeywords,tvCommentCount,tvDownloadNow;
     private ProgressBar progressBar;
+    private RelativeLayout relDetailsContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tik_tok);
         img = findViewById(R.id.img);
+        imgPicture = findViewById(R.id.imgPicture);
+        tvName = findViewById(R.id.tvName);
+        tvDescription = findViewById(R.id.tvDescription);
+        tvKeywords = findViewById(R.id.tvKeywords);
+        tvCommentCount = findViewById(R.id.tvCommentCount);
+        tvDownloadNow = findViewById(R.id.tvDownloadNow);
+        relDetailsContainer = findViewById(R.id.relDetailsContainer);
         progressBar = findViewById(R.id.progressBar);
         activity = this;
         commonClassForAPI = CommonClassForAPI.getInstance(activity);
@@ -306,6 +317,8 @@ public class TikTokActivity extends AppCompatActivity {
 
         protected void onPostExecute(Document result) {
             progressBar.setVisibility(View.GONE);
+            relDetailsContainer.setVisibility(View.VISIBLE);
+            tvDownloadNow.setVisibility(View.VISIBLE);
             try {
                 String URL = result.select("script[id=\"videoObject\"]").last().html();
                 String URL1 = result.select("script[id=\"__NEXT_DATA__\"]").last().html();
@@ -318,8 +331,12 @@ public class TikTokActivity extends AppCompatActivity {
                         VideoUrl = jsonObject.getString("contentUrl");
                         JSONArray array = jsonObject.getJSONArray("thumbnailUrl");
                         String url = array.get(0).toString();
-                        //Utils.setToast(activity, jsonObject.toString());
                         Glide.with(getApplicationContext()).load(url).into(img);
+                        Glide.with(getApplicationContext()).load(url).into(imgPicture);
+                        tvName.setText(jsonObject.getString("name"));
+                        tvDescription.setText(jsonObject.getString("description"));
+                        tvKeywords.setText(jsonObject.getString("keywords"));
+                        tvCommentCount.setText(jsonObject.getString("commentCount"));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

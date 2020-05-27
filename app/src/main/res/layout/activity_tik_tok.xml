@@ -142,12 +142,27 @@
                             android:textColorHint="@color/grey"
                             android:textSize="15sp" />
 
+                        <TextView
+                            android:id="@+id/tvDownloadNow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="Download Now"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:visibility="gone"
+                            android:textColor="@color/black"
+                            android:layout_below="@+id/et_text"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"/>
+
+
 
                         <LinearLayout
                             android:id="@+id/RLDownloadLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/et_text"
+                            android:layout_below="@+id/tvDownloadNow"
                             android:layout_marginTop="10dp"
                             android:orientation="horizontal"
                             android:weightSum="2">
@@ -185,11 +200,106 @@
                         </LinearLayout>
                     </RelativeLayout>
 
+                    <RelativeLayout
+                        android:id="@+id/relDetailsContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rectangle_white"
+                        android:elevation="3dp"
+                        android:visibility="gone"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:id="@+id/tvHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="10dp"
+                            android:text="Video Details"
+                            android:textStyle="bold"
+                            android:layout_marginTop="10dp"/>
+
+                        <ImageView
+                            android:id="@+id/imgPicture"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="10dp"
+                            android:scaleType="fitXY"
+                            android:layout_below="@+id/tvHeader"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginStart="10dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_toRightOf="@+id/imgPicture"
+                            android:layout_marginStart="10dp"
+                            android:layout_below="@+id/tvHeader"
+                            android:layout_marginEnd="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:textStyle="bold"
+                                android:layout_marginTop="10dp"/>
+
+                            <TextView
+                                android:id="@+id/tvDescription"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"/>
+
+                            <TextView
+                                android:id="@+id/tvKeywords"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"/>
+
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp">
+
+                                <TextView
+                                    android:id="@+id/tvCommentCount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:text="0" />
+
+                                <TextView
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:layout_toStartOf="@+id/tvCommentCount"
+                                    android:background="@drawable/ic_action_comment"
+                                    android:layout_centerVertical="true"/>
+
+
+                            </RelativeLayout>
+
+
+
+
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@+id/RLDownloadLayout"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp">
 
                         <include
                             android:id="@+id/layoutHowTo"
