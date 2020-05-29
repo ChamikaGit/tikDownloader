@@ -24,6 +24,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.cd.statussaver.R;
 import com.cd.statussaver.databinding.ActivityMainBinding;
+import com.cd.statussaver.dialogFragment.HowToUseDialogFragment;
 import com.cd.statussaver.util.AdsUtils;
 import com.cd.statussaver.util.ClipboardListener;
 import com.cd.statussaver.util.Utils;
@@ -145,8 +146,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.rvAbout:
-                i = new Intent(activity, AboutUsActivity.class);
-                startActivity(i);
+//                i = new Intent(activity, AboutUsActivity.class);
+//                startActivity(i);
+                HowToUseDialogFragment howToUseDialogFragment = new HowToUseDialogFragment();
+                howToUseDialogFragment.show(getSupportFragmentManager(),"HowToUseDialogFragment");
+
                 break;
             case R.id.rvShareApp:
                 Utils.ShareApp(activity);
