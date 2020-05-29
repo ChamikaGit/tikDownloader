@@ -130,17 +130,38 @@
                         android:elevation="3dp"
                         android:padding="10dp">
 
-                        <EditText
-                            android:id="@+id/et_text"
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
-                            android:background="@drawable/et_back"
-                            android:hint="Paste Link"
-                            android:padding="15dp"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textColorHint="@color/grey"
-                            android:textSize="15sp" />
+                            android:id="@+id/etContainer">
+                            <EditText
+                                android:id="@+id/et_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:background="@drawable/et_back"
+                                android:hint="Paste Link"
+                                android:padding="15dp"
+                                android:singleLine="true"
+                                android:layout_toLeftOf="@+id/tvPast"
+                                android:textColor="@color/black"
+                                android:textColorHint="@color/grey"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/tvPast"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginStart="12dp"
+                                android:textStyle="bold"
+                                android:textSize="16sp"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentEnd="true"
+                                android:backgroundTint="@color/black"
+                                android:background="@drawable/ic_content_paste"
+                                />
+
+
+                        </RelativeLayout>
 
                         <TextView
                             android:id="@+id/tvDownloadNow"
@@ -152,7 +173,7 @@
                             android:textSize="16sp"
                             android:visibility="gone"
                             android:textColor="@color/black"
-                            android:layout_below="@+id/et_text"
+                            android:layout_below="@+id/etContainer"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"/>
 

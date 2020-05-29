@@ -335,7 +335,7 @@
                         android:layout_below="@+id/imWhatsappShare"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5dp"
-                        android:text="About Us"
+                        android:text="How to use"
                         android:textColor="@color/white"
                         android:visibility="visible" />
                 </RelativeLayout>

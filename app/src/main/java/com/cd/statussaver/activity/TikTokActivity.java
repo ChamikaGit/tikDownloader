@@ -78,7 +78,7 @@ public class TikTokActivity extends AppCompatActivity {
 
     private InterstitialAd mInterstitialAd;
     private ImageView img,imgPicture;
-    private TextView tvName,tvDescription,tvKeywords,tvCommentCount,tvDownloadNow;
+    private TextView tvName,tvDescription,tvKeywords,tvCommentCount,tvDownloadNow,tvPast;
     private ProgressBar progressBar;
     private RelativeLayout relDetailsContainer;
 
@@ -93,6 +93,7 @@ public class TikTokActivity extends AppCompatActivity {
         tvKeywords = findViewById(R.id.tvKeywords);
         tvCommentCount = findViewById(R.id.tvCommentCount);
         tvDownloadNow = findViewById(R.id.tvDownloadNow);
+        tvPast = findViewById(R.id.tvPast);
         relDetailsContainer = findViewById(R.id.relDetailsContainer);
         progressBar = findViewById(R.id.progressBar);
         activity = this;
@@ -246,6 +247,32 @@ public class TikTokActivity extends AppCompatActivity {
                 Utils.setToast(activity, "App Not Available.");
             }
 
+        });
+
+        binding.tvPast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clipBoard = (ClipboardManager) activity.getSystemService(CLIPBOARD_SERVICE);
+                PasteText();
+                if (!binding.etText.getText().toString().equals("")) {
+                    try {
+                        URL url = new URL(binding.etText.getText().toString());
+                        String host = url.getHost();
+                        if (host.contains("tiktok.com")) {
+                            //Utils.showProgressDialog(activity);
+                            progressBar.setVisibility(View.VISIBLE);
+                            img.setVisibility(View.VISIBLE);
+                            new callGetTikTokDefaultData().execute(binding.etText.getText().toString());
+                        } else {
+//                Utils.setToast(activity, "Enter Valid Url");
+                            img.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         });
     }
 
