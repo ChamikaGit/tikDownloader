@@ -1,14 +1,15 @@
-package tikdownloader.cd.statussaver.activity;
+package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import tikdownloader.cd.statussaver.util.AdsUtils;
-import com.cd.statussaver.R;
-import com.cd.statussaver.databinding.ActivityAboutUsBinding;
-import static tikdownloader.cd.statussaver.util.Utils.PrivacyPolicyUrl;
+
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityAboutUsBinding;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
+import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.PrivacyPolicyUrl;
 
 public class AboutUsActivity extends AppCompatActivity {
 

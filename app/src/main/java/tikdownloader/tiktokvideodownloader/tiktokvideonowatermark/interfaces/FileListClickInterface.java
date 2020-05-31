@@ -1,4 +1,4 @@
-package tikdownloader.cd.statussaver.interfaces;
+package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.interfaces;
 
 import java.io.File;
 

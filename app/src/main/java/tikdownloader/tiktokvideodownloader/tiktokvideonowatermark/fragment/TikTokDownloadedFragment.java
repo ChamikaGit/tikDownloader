@@ -1,4 +1,4 @@
-package tikdownloader.cd.statussaver.fragment;
+package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,17 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import com.cd.statussaver.R;
-import tikdownloader.cd.statussaver.activity.FullViewActivity;
-import tikdownloader.cd.statussaver.activity.GalleryActivity;
-import tikdownloader.cd.statussaver.adapter.FileListAdapter;
-import com.cd.statussaver.databinding.FragmentHistoryBinding;
-import tikdownloader.cd.statussaver.interfaces.FileListClickInterface;
+
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.FullViewActivity;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.GalleryActivity;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.adapter.FileListAdapter;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.FragmentHistoryBinding;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.interfaces.FileListClickInterface;
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.ArrayList;
 
-import tikdownloader.cd.statussaver.util.Utils;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
 
 import static androidx.databinding.DataBindingUtil.inflate;
 

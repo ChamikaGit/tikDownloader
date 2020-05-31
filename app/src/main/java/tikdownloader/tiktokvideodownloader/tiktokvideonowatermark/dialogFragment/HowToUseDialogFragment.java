@@ -1,4 +1,4 @@
-package tikdownloader.cd.statussaver.dialogFragment;
+package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment;
 
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.cd.statussaver.R;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 
 public class HowToUseDialogFragment extends DialogFragment implements View.OnClickListener {
 

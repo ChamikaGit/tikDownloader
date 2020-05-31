@@ -1,4 +1,4 @@
-package tikdownloader.cd.statussaver.model;
+package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model;
 
 
 import com.google.gson.annotations.SerializedName;

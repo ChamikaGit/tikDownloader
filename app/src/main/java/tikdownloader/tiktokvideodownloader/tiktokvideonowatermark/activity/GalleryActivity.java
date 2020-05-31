@@ -1,4 +1,4 @@
-package tikdownloader.cd.statussaver.activity;
+package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,16 +10,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import com.cd.statussaver.R;
-import com.cd.statussaver.databinding.ActivityGalleryBinding;
 
-import tikdownloader.cd.statussaver.fragment.TikTokDownloadedFragment;
-import tikdownloader.cd.statussaver.util.AdsUtils;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityGalleryBinding;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.fragment.TikTokDownloadedFragment;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
-import static tikdownloader.cd.statussaver.util.Utils.createFileFolder;
+import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.createFileFolder;
 
 public class GalleryActivity  extends AppCompatActivity {
     GalleryActivity activity;

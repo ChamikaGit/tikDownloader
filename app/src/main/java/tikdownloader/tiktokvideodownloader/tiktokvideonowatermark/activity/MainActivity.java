@@ -1,4 +1,4 @@
-package tikdownloader.cd.statussaver.activity;
+package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 
 import android.Manifest;
 import android.app.Activity;
@@ -22,20 +22,22 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
-import com.cd.statussaver.R;
-import com.cd.statussaver.databinding.ActivityMainBinding;
-import tikdownloader.cd.statussaver.dialogFragment.HowToUseDialogFragment;
-import tikdownloader.cd.statussaver.util.AdsUtils;
-import tikdownloader.cd.statussaver.util.ClipboardListener;
-import tikdownloader.cd.statussaver.util.Utils;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.MyApplication;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityMainBinding;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.HowToUseDialogFragment;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.ClipboardListener;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static tikdownloader.cd.statussaver.util.Utils.createFileFolder;
+import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.createFileFolder;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private MyApplication myApplication;
     MainActivity activity;
     ActivityMainBinding binding;
     boolean doubleBackToExitPressedOnce = false;
@@ -53,12 +55,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        myApplication = (MyApplication) getApplication();
         activity = this;
 
         AdsUtils.showGoogleBannerAd(MainActivity.this,binding.adView);
 
         initViews();
     }
+
+    protected synchronized MyApplication getMainApp() {
+        if (myApplication == null) {
+            myApplication = MyApplication.getInstance();
+        }
+        return myApplication;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -136,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     callTikTokActivity();
                 }
+                getMainApp().trackFireBaseEvent("TIKTOK_BUTTON","CLICK","TRUE");
                 break;
             case R.id.rvGallery:
                 if (Build.VERSION.SDK_INT >= 23) {
@@ -143,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     callGalleryActivity();
                 }
+                getMainApp().trackFireBaseEvent("GALLERY_BUTTON","CLICK","TRUE");
                 break;
 
             case R.id.rvAbout:
@@ -150,16 +163,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                startActivity(i);
                 HowToUseDialogFragment howToUseDialogFragment = new HowToUseDialogFragment();
                 howToUseDialogFragment.show(getSupportFragmentManager(),"HowToUseDialogFragment");
+                getMainApp().trackFireBaseEvent("ABOUT_BUTTON","CLICK","TRUE");
 
                 break;
             case R.id.rvShareApp:
                 Utils.ShareApp(activity);
+                getMainApp().trackFireBaseEvent("SHARE_BUTTON","CLICK","TRUE");
                 break;
             case R.id.rvRateApp:
                 Utils.RateApp(activity);
+                getMainApp().trackFireBaseEvent("RATE_BUTTON","CLICK","TRUE");
                 break;
             case R.id.rvMoreApp:
                 Utils.MoreApp(activity);
+                getMainApp().trackFireBaseEvent("MORE_BUTTON","CLICK","TRUE");
                 break;
 
         }

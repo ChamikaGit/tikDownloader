@@ -1,4 +1,4 @@
-package tikdownloader.cd.statussaver.activity;
+package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,15 +9,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import com.cd.statussaver.R;
-import tikdownloader.cd.statussaver.adapter.ShowImagesAdapter;
-import com.cd.statussaver.databinding.ActivityFullViewBinding;
-import tikdownloader.cd.statussaver.util.Utils;
+
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.adapter.ShowImagesAdapter;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityFullViewBinding;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
 import java.io.File;
 import java.util.ArrayList;
-import static tikdownloader.cd.statussaver.util.Utils.shareImage;
-import static tikdownloader.cd.statussaver.util.Utils.shareImageVideoOnWhatsapp;
-import static tikdownloader.cd.statussaver.util.Utils.shareVideo;
+import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.shareImage;
+import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.shareImageVideoOnWhatsapp;
+import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.shareVideo;
 
 public class FullViewActivity extends AppCompatActivity {
     private ActivityFullViewBinding binding;

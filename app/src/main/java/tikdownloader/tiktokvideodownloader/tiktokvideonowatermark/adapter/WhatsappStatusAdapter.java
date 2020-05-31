@@ -1,4 +1,4 @@
-package tikdownloader.cd.statussaver.adapter;
+package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.adapter;
 
 import android.content.Context;
 import android.media.MediaScannerConnection;
@@ -11,16 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
-import com.cd.statussaver.R;
-import com.cd.statussaver.databinding.ItemsWhatsappViewBinding;
-import tikdownloader.cd.statussaver.model.WhatsappStatusModel;
+
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ItemsWhatsappViewBinding;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.WhatsappStatusModel;
 import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static tikdownloader.cd.statussaver.util.Utils.RootDirectoryWhatsappShow;
-import static tikdownloader.cd.statussaver.util.Utils.createFileFolder;
+import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.RootDirectoryWhatsappShow;
+import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.createFileFolder;
 
 
 public class WhatsappStatusAdapter extends RecyclerView.Adapter<WhatsappStatusAdapter.ViewHolder> {

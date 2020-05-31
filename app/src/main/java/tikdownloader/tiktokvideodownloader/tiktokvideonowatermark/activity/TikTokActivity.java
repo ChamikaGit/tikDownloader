@@ -1,4 +1,4 @@
-package tikdownloader.cd.statussaver.activity;
+package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -18,12 +18,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import tikdownloader.cd.statussaver.util.AdsUtils;
-import com.cd.statussaver.R;
-import tikdownloader.cd.statussaver.api.CommonClassForAPI;
-import com.cd.statussaver.databinding.ActivityTikTokBinding;
-import tikdownloader.cd.statussaver.util.SharePrefs;
-import tikdownloader.cd.statussaver.util.Utils;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.MyApplication;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityTikTokBinding;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.CommonClassForAPI;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.SharePrefs;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -43,6 +44,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 import static android.content.ContentValues.TAG;
@@ -54,6 +56,7 @@ public class TikTokActivity extends AppCompatActivity {
     private String VideoUrl;
     private ClipboardManager clipBoard;
     boolean IsWithWaternark = true;
+    private MyApplication myApplication;
 
     private InterstitialAd mInterstitialAd;
     private ImageView img,imgPicture;
@@ -65,6 +68,7 @@ public class TikTokActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tik_tok);
+        myApplication = (MyApplication) getApplication();
         img = findViewById(R.id.img);
         imgPicture = findViewById(R.id.imgPicture);
         tvName = findViewById(R.id.tvName);
@@ -134,6 +138,13 @@ public class TikTokActivity extends AppCompatActivity {
 
     }
 
+    protected synchronized MyApplication getMainApp() {
+        if (myApplication == null) {
+            myApplication = MyApplication.getInstance();
+        }
+        return myApplication;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -201,6 +212,7 @@ public class TikTokActivity extends AppCompatActivity {
             } else {
                 showInterstitial();
             }
+            getMainApp().trackFireBaseEvent("WITH_WATERMARK","CLICK","TRUE");
         });
 
         binding.tvWithoutMark.setOnClickListener(v -> {
@@ -213,6 +225,8 @@ public class TikTokActivity extends AppCompatActivity {
             } else {
                 showInterstitial();
             }
+
+            getMainApp().trackFireBaseEvent("WITHOUT_WATERMARK","CLICK","TRUE");
         });
 
         binding.LLOpenTikTok.setOnClickListener(v -> {

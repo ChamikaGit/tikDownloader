@@ -1,4 +1,4 @@
-package tikdownloader.cd.statussaver.adapter;
+package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,14 +10,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import androidx.viewpager.widget.PagerAdapter;
 import com.bumptech.glide.Glide;
-import com.cd.statussaver.R;
-import tikdownloader.cd.statussaver.activity.FullViewActivity;
+
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.FullViewActivity;
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.ArrayList;
 
-import static tikdownloader.cd.statussaver.util.Utils.shareImage;
-import static tikdownloader.cd.statussaver.util.Utils.shareVideo;
+import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.shareImage;
+import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.shareVideo;
 
 
 public class ShowImagesAdapter extends PagerAdapter {

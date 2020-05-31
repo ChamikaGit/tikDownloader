@@ -1,10 +1,10 @@
-package tikdownloader.cd.statussaver.api;
+package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api;
 
 import android.app.Activity;
 
-import tikdownloader.cd.statussaver.model.TiktokModel;
-import tikdownloader.cd.statussaver.model.TwitterResponse;
-import tikdownloader.cd.statussaver.util.Utils;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TiktokModel;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TwitterResponse;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;

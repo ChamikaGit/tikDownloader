@@ -1,4 +1,4 @@
-package tikdownloader.cd.statussaver.activity;
+package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,14 +8,14 @@ import android.os.Handler;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.cd.statussaver.BuildConfig;
-import com.cd.statussaver.R;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
+
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.BuildConfig;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 
 import static com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE;
 
