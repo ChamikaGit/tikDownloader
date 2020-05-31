@@ -2,6 +2,7 @@ package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -25,6 +26,7 @@ import androidx.databinding.DataBindingUtil;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.MyApplication;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityMainBinding;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.ExitDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.HowToUseDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.ClipboardListener;
@@ -36,7 +38,7 @@ import java.util.Objects;
 
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.createFileFolder;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,ExitDialogFragment.OnItemClickListener {
     private MyApplication myApplication;
     MainActivity activity;
     ActivityMainBinding binding;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
     String CopyKey = "";
     String CopyValue = "";
+    private ExitDialogFragment exitDialogFragment;
 
 
 
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         myApplication = (MyApplication) getApplication();
         activity = this;
+        exitDialogFragment = new ExitDialogFragment(this);
 
         AdsUtils.showGoogleBannerAd(MainActivity.this,binding.adView);
 
@@ -276,14 +280,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
         this.doubleBackToExitPressedOnce = true;
-        Utils.setToast(activity, "Please click BACK again to exit");
+        if (doubleBackToExitPressedOnce) {
+          exitDialogFragment.show(getSupportFragmentManager(),"ExitDialogFragment");
+        }
+        //Utils.setToast(activity, "Please click BACK again to exit");
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -293,4 +294,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    public void onYesClick(Dialog dialog) {
+        dialog.dismiss();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 }
