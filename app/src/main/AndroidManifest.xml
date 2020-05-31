@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.cd.statussaver">
+    package="tikdownloader.tiktokvideodownloader.tiktokvideonowatermark">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -23,17 +23,17 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name=".activity.AboutUsActivity"
+            android:name="tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.AboutUsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.TikTokActivity"
+            android:name="tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.TikTokActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.FullViewActivity"
+            android:name="tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.FullViewActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.SplashScreen"
+            android:name="tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.SplashScreen"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,10 +42,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.GalleryActivity"
+            android:name="tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.GalleryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name="tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -70,7 +70,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.WebviewAcitivity"
+            android:name="tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.WebviewAcitivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
@@ -78,7 +78,7 @@
             android:value="@string/admob_app_id" />
 
         <service
-            android:name=".MyFirebaseMessagingService"
+            android:name="tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.MyFirebaseMessagingService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

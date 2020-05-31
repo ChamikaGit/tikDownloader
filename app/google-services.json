@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "163538753391",
-    "firebase_url": "https://codingdunia-4272f.firebaseio.com",
-    "project_id": "codingdunia-4272f",
-    "storage_bucket": "codingdunia-4272f.appspot.com"
+    "project_number": "869805958713",
+    "firebase_url": "https://tiktokdwonloader-no-watermark.firebaseio.com",
+    "project_id": "tiktokdwonloader-no-watermark",
+    "storage_bucket": "tiktokdwonloader-no-watermark.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:163538753391:android:778804ac3dc2d0e422fa9a",
+        "mobilesdk_app_id": "1:869805958713:android:b422cb84962c8f87630fe8",
         "android_client_info": {
-          "package_name": "com.cd.statussaver"
+          "package_name": "tikdownloader.tiktokvideodownloader.tiktokvideonowatermark"
         }
       },
       "oauth_client": [
         {
-          "client_id": "163538753391-ik3kae3r0q7tqtqs0sbh7mho9lehip5m.apps.googleusercontent.com",
+          "client_id": "869805958713-i8ch75a8b0p26pi8tv60rq9c674de3e0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tikdownloader.tiktokvideodownloader.tiktokvideonowatermark",
+            "certificate_hash": "21d072706cbb10a32ffc476600f2005665db594b"
+          }
+        },
+        {
+          "client_id": "869805958713-2foqsgcik0kqbk7kievghgccmf4du9q9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBitp0aF9VS4WkeQyVWY3kPWeeVNj0dkfs"
+          "current_key": "AIzaSyCkra_Pq6izk4qxug3JSluLZk1rVU5MWSo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "163538753391-n4b4i3g63r8dbgrku66g9o9mnb9kol36.apps.googleusercontent.com",
+              "client_id": "869805958713-2foqsgcik0kqbk7kievghgccmf4du9q9.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

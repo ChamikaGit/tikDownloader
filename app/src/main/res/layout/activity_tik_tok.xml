@@ -200,6 +200,7 @@
                                 android:padding="14dp"
                                 android:text="With Watermark"
                                 android:textAllCaps="false"
+                                android:textStyle="bold"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
 
@@ -215,6 +216,7 @@
                                 android:padding="14dp"
                                 android:text="Without Watermark"
                                 android:textAllCaps="false"
+                                android:textStyle="bold"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
 
