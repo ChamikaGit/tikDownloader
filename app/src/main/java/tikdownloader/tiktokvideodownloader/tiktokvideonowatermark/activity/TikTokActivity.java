@@ -16,23 +16,31 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.MyApplication;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.APIServices;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.RestClient;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityTikTokBinding;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.CommonClassForAPI;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.SharePrefs;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
+
+import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -44,10 +52,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Objects;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 import static android.content.ContentValues.TAG;
+import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.RootDirectoryTikTok;
+import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.startDownload;
 
 public class TikTokActivity extends AppCompatActivity {
     private ActivityTikTokBinding binding;
@@ -59,8 +68,8 @@ public class TikTokActivity extends AppCompatActivity {
     private MyApplication myApplication;
 
     private InterstitialAd mInterstitialAd;
-    private ImageView img,imgPicture;
-    private TextView tvName,tvDescription,tvKeywords,tvCommentCount,tvDownloadNow,tvPast;
+    private ImageView img, imgPicture;
+    private TextView tvName, tvDescription, tvKeywords, tvCommentCount, tvDownloadNow, tvPast;
     private ProgressBar progressBar;
     private RelativeLayout relDetailsContainer;
 
@@ -88,7 +97,8 @@ public class TikTokActivity extends AppCompatActivity {
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
         });
 
 
@@ -133,9 +143,6 @@ public class TikTokActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
 
     protected synchronized MyApplication getMainApp() {
@@ -153,22 +160,22 @@ public class TikTokActivity extends AppCompatActivity {
         clipBoard = (ClipboardManager) activity.getSystemService(CLIPBOARD_SERVICE);
         PasteText();
 
-        try {
-            URL url = new URL(binding.etText.getText().toString());
-            String host = url.getHost();
-            if (host.contains("tiktok.com")) {
-                //Utils.showProgressDialog(activity);
-                progressBar.setVisibility(View.VISIBLE);
-                img.setVisibility(View.VISIBLE);
-                new callGetTikTokDefaultData().execute(binding.etText.getText().toString());
-            } else {
-//                Utils.setToast(activity, "Enter Valid Url");
-                img.setVisibility(View.GONE);
-                progressBar.setVisibility(View.GONE);
-            }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            URL url = new URL(binding.etText.getText().toString());
+//            String host = url.getHost();
+//            if (host.contains("tiktok.com")) {
+//                //Utils.showProgressDialog(activity);
+//                progressBar.setVisibility(View.VISIBLE);
+//                img.setVisibility(View.VISIBLE);
+//                new callGetTikTokDefaultData().execute(binding.etText.getText().toString());
+//            } else {
+////                Utils.setToast(activity, "Enter Valid Url");
+//                img.setVisibility(View.GONE);
+//                progressBar.setVisibility(View.GONE);
+//            }
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
@@ -212,7 +219,7 @@ public class TikTokActivity extends AppCompatActivity {
             } else {
                 showInterstitial();
             }
-            getMainApp().trackFireBaseEvent("WITH_WATERMARK","CLICK","TRUE");
+            getMainApp().trackFireBaseEvent("WITH_WATERMARK", "CLICK", "TRUE");
         });
 
         binding.tvWithoutMark.setOnClickListener(v -> {
@@ -226,7 +233,7 @@ public class TikTokActivity extends AppCompatActivity {
                 showInterstitial();
             }
 
-            getMainApp().trackFireBaseEvent("WITHOUT_WATERMARK","CLICK","TRUE");
+            getMainApp().trackFireBaseEvent("WITHOUT_WATERMARK", "CLICK", "TRUE");
         });
 
         binding.LLOpenTikTok.setOnClickListener(v -> {
@@ -255,7 +262,7 @@ public class TikTokActivity extends AppCompatActivity {
                             //Utils.showProgressDialog(activity);
                             progressBar.setVisibility(View.VISIBLE);
                             img.setVisibility(View.VISIBLE);
-                            new callGetTikTokDefaultData().execute(binding.etText.getText().toString());
+                            //new callGetTikTokDefaultData().execute(binding.etText.getText().toString());
                         } else {
 //                Utils.setToast(activity, "Enter Valid Url");
                             img.setVisibility(View.GONE);
@@ -339,24 +346,81 @@ public class TikTokActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
             relDetailsContainer.setVisibility(View.VISIBLE);
             tvDownloadNow.setVisibility(View.VISIBLE);
+//            try {
+//                String URL = result.select("script[id=\"videoObject\"]").last().html();
+//                String URL1 = result.select("script[id=\"__NEXT_DATA__\"]").last().html();
+//
+//                if (!URL.equals("")) {
+//                    try {
+//                        JSONObject jsonObject = new JSONObject(URL);
+//                        new JSONObject(URL1);
+//                        Log.e("JSON_OBJECT",jsonObject.toString());
+//                        VideoUrl = jsonObject.getString("contentUrl");
+//                        JSONArray array = jsonObject.getJSONArray("thumbnailUrl");
+//                        String url = array.get(0).toString();
+//                        Glide.with(getApplicationContext()).load(url).into(img);
+//                        Glide.with(getApplicationContext()).load(url).into(imgPicture);
+//                        tvName.setText(jsonObject.getString("name"));
+//                        tvDescription.setText(jsonObject.getString("description"));
+//                        tvKeywords.setText(jsonObject.getString("keywords"));
+//                        tvCommentCount.setText(jsonObject.getString("commentCount"));
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                } else {
+//                }
+//            } catch (NullPointerException e) {
+//                e.printStackTrace();
+//            }
+
             try {
-                String URL = result.select("script[id=\"videoObject\"]").last().html();
-                String URL1 = result.select("script[id=\"__NEXT_DATA__\"]").last().html();
+                // String URL = result.select("script[id=\"videoObject\"]").last().html();
+                String URL = result.select("script[id=\"__NEXT_DATA__\"]").last().html();
 
                 if (!URL.equals("")) {
                     try {
                         JSONObject jsonObject = new JSONObject(URL);
-                        new JSONObject(URL1);
-                        Log.e("JSON_OBJECT",jsonObject.toString());
-                        VideoUrl = jsonObject.getString("contentUrl");
-                        JSONArray array = jsonObject.getJSONArray("thumbnailUrl");
-                        String url = array.get(0).toString();
-                        Glide.with(getApplicationContext()).load(url).into(img);
-                        Glide.with(getApplicationContext()).load(url).into(imgPicture);
-                        tvName.setText(jsonObject.getString("name"));
-                        tvDescription.setText(jsonObject.getString("description"));
-                        tvKeywords.setText(jsonObject.getString("keywords"));
-                        tvCommentCount.setText(jsonObject.getString("commentCount"));
+                        Log.e("DATA_Object", jsonObject.toString());
+                        String fullAPIUrl = jsonObject.getJSONObject("props").getJSONObject("pageProps").getJSONObject("pageState").getString("fullUrl");
+                        APIServices apiServices = RestClient.getInstance(TikTokActivity.this).getService();
+
+                        Call<ResponseBody> call = apiServices.getTikTokData(fullAPIUrl);
+                        call.enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                Log.e("DATA_Object2", response.body().toString());
+                                try {
+                                    JSONObject json = new JSONObject(response.body().string());
+                                    JSONObject bodyObject = json.getJSONObject("body");
+                                    JSONObject videoDataObject = bodyObject.getJSONObject("videoData");
+                                    JSONObject itemInfoObject = videoDataObject.getJSONObject("itemInfos");
+                                    JSONArray jsonArrayCoverOrigin =itemInfoObject.getJSONArray("coversOrigin");
+                                    String imgCover = jsonArrayCoverOrigin.get(0).toString().trim();
+                                    Log.e("imgCover",imgCover);
+                                    Glide.with(getApplicationContext()).load(imgCover).into(img);
+                                    Glide.with(getApplicationContext()).load(imgCover).into(imgPicture);
+//                                tvName.setText(jsonObject.getString("name"));
+//                                tvDescription.setText(jsonObject.getString("description"));
+//                                tvKeywords.setText(jsonObject.getString("keywords"));
+//                                tvCommentCount.setText(jsonObject.getString("commentCount"));
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                            }
+                        });
+
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -366,6 +430,7 @@ public class TikTokActivity extends AppCompatActivity {
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
+
         }
     }
 
@@ -389,21 +454,48 @@ public class TikTokActivity extends AppCompatActivity {
             return tikDoc;
         }
 
+//        protected void onPostExecute(Document result) {
+//            Utils.hideProgressDialog(activity);
+//            try {
+//                String URL = result.select("script[id=\"videoObject\"]").last().html();
+//                String URL1 = result.select("script[id=\"__NEXT_DATA__\"]").last().html();
+//
+//                if (!URL.equals("")) {
+//                    try {
+//                        JSONObject jsonObject = new JSONObject(URL);
+//                        new JSONObject(URL1);
+//                        Log.e("JSON_OBJECT",jsonObject.toString());
+//                        VideoUrl = jsonObject.getString("contentUrl");
+//                        if (IsWithWaternark){
+//                            Utils.startDownload(VideoUrl, Utils.RootDirectoryTikTok, activity, "tiktok_"+System.currentTimeMillis() + ".mp4");
+//                        }else {
+//                            new GetDownloadLinkWithoutWatermark().execute();
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                } else {
+//                }
+//            } catch (NullPointerException e) {
+//                e.printStackTrace();
+//            }
+//        }
+
         protected void onPostExecute(Document result) {
             Utils.hideProgressDialog(activity);
             try {
-                String URL = result.select("script[id=\"videoObject\"]").last().html();
-                String URL1 = result.select("script[id=\"__NEXT_DATA__\"]").last().html();
+                // String URL = result.select("script[id=\"videoObject\"]").last().html();
+                String URL = result.select("script[id=\"__NEXT_DATA__\"]").last().html();
 
                 if (!URL.equals("")) {
                     try {
                         JSONObject jsonObject = new JSONObject(URL);
-                        new JSONObject(URL1);
-                        Log.e("JSON_OBJECT",jsonObject.toString());
-                        VideoUrl = jsonObject.getString("contentUrl");
-                        if (IsWithWaternark){
-                            Utils.startDownload(VideoUrl, Utils.RootDirectoryTikTok, activity, "tiktok_"+System.currentTimeMillis() + ".mp4");
-                        }else {
+                        VideoUrl = String.valueOf(jsonObject.getJSONObject("props").getJSONObject("pageProps").getJSONObject("videoData").getJSONObject("itemInfos").
+                                getJSONObject("video").getJSONArray("urls").get(0));
+                        if (IsWithWaternark) {
+                            startDownload(VideoUrl, RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
+                        } else {
                             new GetDownloadLinkWithoutWatermark().execute();
                         }
                     } catch (Exception e) {
@@ -426,6 +518,7 @@ public class TikTokActivity extends AppCompatActivity {
             return System.currentTimeMillis() + ".mp4";
         }
     }
+
     private class GetDownloadLinkWithoutWatermark extends AsyncTask<String, String, String> {
         String resp;
 
@@ -444,15 +537,14 @@ public class TikTokActivity extends AppCompatActivity {
 
         protected void onPostExecute(String url) {
             try {
-                Utils.startDownload(url, Utils.RootDirectoryTikTok, activity, "tiktok_"+System.currentTimeMillis() + ".mp4");
-                VideoUrl="";
+                startDownload(url, RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
+                VideoUrl = "";
                 binding.etText.setText("");
             } catch (Exception e) {
                 Utils.setToast(activity, "Error Occurred");
             }
         }
     }
-
 
 
     public String withoutWatermark(String url) {
@@ -485,8 +577,8 @@ public class TikTokActivity extends AppCompatActivity {
                 }
             }
             String VideoId = result.substring(result.indexOf("vid:"));
-            String FinalVID = VideoId.substring(4, VideoId.indexOf("%")).replaceAll("[^A-Za-z0-9]","").trim();
-            String finalVideoUrl = "http://api2.musical.ly/aweme/v1/playwm/?video_id=" + FinalVID;
+            String FinalVID = VideoId.substring(4, VideoId.indexOf("%")).replaceAll("[^A-Za-z0-9]", "").trim();
+            String finalVideoUrl = "http://api2.musical.ly/aweme/v1/play/?video_id=" + FinalVID;
             return finalVideoUrl;
 
         } catch (Exception e) {
