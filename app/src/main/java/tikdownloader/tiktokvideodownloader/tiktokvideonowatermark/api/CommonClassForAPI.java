@@ -74,10 +74,36 @@ public class CommonClassForAPI {
                 });
     }
 
+//    public void callTiktokVideo(final DisposableObserver observer, String Url) {
+//        HashMap<String, String> hashMapFinal = new HashMap<>();
+//        hashMapFinal.put("invoice_id",Utils.INVOICENUMBER);
+//        hashMapFinal.put("package_name",mActivity.getPackageName()+"");
+//        hashMapFinal.put("link",Url);
+//        RestClient.getInstance(mActivity).getService().getTiktokData(Utils.TikTokUrl,hashMapFinal)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<TiktokModel>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//                    }
+//                    @Override
+//                    public void onNext(TiktokModel o) {
+//                        observer.onNext(o);
+//                    }
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        observer.onError(e);
+//                    }
+//                    @Override
+//                    public void onComplete() {
+//                        observer.onComplete();
+//                    }
+//                });
+//    }
+
+    //version_8
     public void callTiktokVideo(final DisposableObserver observer, String Url) {
         HashMap<String, String> hashMapFinal = new HashMap<>();
-        hashMapFinal.put("invoice_id",Utils.INVOICENUMBER);
-        hashMapFinal.put("package_name",mActivity.getPackageName()+"");
         hashMapFinal.put("link",Url);
         RestClient.getInstance(mActivity).getService().getTiktokData(Utils.TikTokUrl,hashMapFinal)
                 .subscribeOn(Schedulers.io())

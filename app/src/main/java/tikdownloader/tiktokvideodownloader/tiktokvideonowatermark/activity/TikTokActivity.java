@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import io.reactivex.observers.DisposableObserver;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +26,7 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.APIServices;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.RestClient;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityTikTokBinding;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TiktokModel;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.CommonClassForAPI;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.SharePrefs;
@@ -56,6 +58,7 @@ import java.net.URL;
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 import static android.content.ContentValues.TAG;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.RootDirectoryTikTok;
+import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.createFileFolder;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.startDownload;
 
 public class TikTokActivity extends AppCompatActivity {
@@ -90,7 +93,7 @@ public class TikTokActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         activity = this;
         commonClassForAPI = CommonClassForAPI.getInstance(activity);
-        Utils.createFileFolder();
+        createFileFolder();
         initViews();
         AdsUtils.showGoogleBannerAd(TikTokActivity.this, binding.adView);
 
@@ -277,13 +280,30 @@ public class TikTokActivity extends AppCompatActivity {
     }
 
     private void GetTikTokData() {
+//        try {
+//            Utils.createFileFolder();
+//            URL url = new URL(binding.etText.getText().toString());
+//            String host = url.getHost();
+//            if (host.contains("tiktok.com")) {
+//                Utils.showProgressDialog(activity);
+//                new callGetTikTokData().execute(binding.etText.getText().toString());
+//            } else {
+//                Utils.setToast(activity, "Enter Valid Url");
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        //version_8
         try {
-            Utils.createFileFolder();
-            URL url = new URL(binding.etText.getText().toString());
-            String host = url.getHost();
-            if (host.contains("tiktok.com")) {
+            createFileFolder();
+            String host = binding.etText.getText().toString();
+            if (host.contains("tiktok")) {
                 Utils.showProgressDialog(activity);
-                new callGetTikTokData().execute(binding.etText.getText().toString());
+                // new callGetTikTokData().execute(binding.etText.getText().toString());
+                callVideoDownload(binding.etText.getText().toString());
+
             } else {
                 Utils.setToast(activity, "Enter Valid Url");
             }
@@ -292,6 +312,64 @@ public class TikTokActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    private void callVideoDownload(String Url) {
+        try {
+            Utils utils = new Utils(activity);
+            if (utils.isNetworkAvailable()) {
+                if (commonClassForAPI != null) {
+                    commonClassForAPI.callTiktokVideo(tiktokObserver, Url);
+                }
+            } else {
+                Utils.setToast(activity, "No Internet Connection");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    private DisposableObserver<TiktokModel> tiktokObserver = new DisposableObserver<TiktokModel>() {
+        @Override
+        public void onNext(TiktokModel tiktokModel) {
+            Utils.hideProgressDialog(activity);
+            try {
+                if (tiktokModel.getResponsecode().equals("200")) {
+                    if (IsWithWaternark) {
+                        startDownload(tiktokModel.getData().getMainvideo(),
+                                RootDirectoryTikTok, activity, getFilenameFromURL(tiktokModel.getData().getMainvideo()));
+                        binding.etText.setText("");
+                    } else {
+                        if (!tiktokModel.getData().getVideowithoutWaterMark().equals("")) {
+                            startDownload(tiktokModel.getData().getVideowithoutWaterMark(),
+                                    RootDirectoryTikTok, activity, tiktokModel.getData().getUserdetail()+"_"+System.currentTimeMillis() + ".mp4");
+                            binding.etText.setText("");
+                        } else {
+                            startDownload(tiktokModel.getData().getMainvideo(),
+                                    RootDirectoryTikTok, activity, getFilenameFromURL(tiktokModel.getData().getMainvideo()));
+                            binding.etText.setText("");
+                        }
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Utils.hideProgressDialog(activity);
+            e.printStackTrace();
+            Utils.showProgressDialog(activity);
+            new callGetTikTokData().execute(binding.etText.getText().toString());
+        }
+
+        @Override
+        public void onComplete() {
+            Utils.hideProgressDialog(activity);
+        }
+    };
 
     private void PasteText() {
         try {
