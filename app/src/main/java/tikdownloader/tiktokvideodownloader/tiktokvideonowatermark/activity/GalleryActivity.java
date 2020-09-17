@@ -11,6 +11,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityGalleryBinding;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.fragment.TikTokDownloadedFragment;
@@ -24,6 +28,8 @@ import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Ut
 public class GalleryActivity  extends AppCompatActivity {
     GalleryActivity activity;
     ActivityGalleryBinding binding;
+    private InterstitialAd mInterstitialAdBackPress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,43 @@ public class GalleryActivity  extends AppCompatActivity {
         initViews();
 
         AdsUtils.showGoogleBannerAd(GalleryActivity.this, binding.adView);
+        mInterstitialAdBackPress = new InterstitialAd(this);
+        mInterstitialAdBackPress.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
+        mInterstitialAdBackPress.loadAd(new AdRequest.Builder().build());
+
+        mInterstitialAdBackPress.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+
+                onBackPressed();
+            }
+        });
     }
 
     public void initViews() {
@@ -108,5 +151,13 @@ public class GalleryActivity  extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mInterstitialAdBackPress != null && mInterstitialAdBackPress.isLoaded()) {
+            mInterstitialAdBackPress.show();
+        }else {
+            super.onBackPressed();
+        }
 
+    }
 }

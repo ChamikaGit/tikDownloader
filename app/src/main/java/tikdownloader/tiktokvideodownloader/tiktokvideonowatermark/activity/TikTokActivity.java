@@ -70,7 +70,7 @@ public class TikTokActivity extends AppCompatActivity {
     boolean IsWithWaternark = true;
     private MyApplication myApplication;
 
-    private InterstitialAd mInterstitialAd;
+    private InterstitialAd mInterstitialAd,mInterstitialAdBackPress;
     private ImageView img, imgPicture;
     private TextView tvName, tvDescription, tvKeywords, tvCommentCount, tvDownloadNow, tvPast;
     private ProgressBar progressBar;
@@ -109,6 +109,10 @@ public class TikTokActivity extends AppCompatActivity {
         mInterstitialAd.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
+        mInterstitialAdBackPress = new InterstitialAd(this);
+        mInterstitialAdBackPress.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
+        mInterstitialAdBackPress.loadAd(new AdRequest.Builder().build());
+
 
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
@@ -142,6 +146,40 @@ public class TikTokActivity extends AppCompatActivity {
 
                 GetTikTokData();
                 // Code to be executed when the interstitial ad is closed.
+            }
+        });
+
+        mInterstitialAdBackPress.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+
+               onBackPressed();
             }
         });
 
@@ -669,12 +707,16 @@ public class TikTokActivity extends AppCompatActivity {
         if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         } else {
-
-
             GetTikTokData();
-
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (mInterstitialAdBackPress != null && mInterstitialAdBackPress.isLoaded()) {
+            mInterstitialAdBackPress.show();
+        }else {
+            super.onBackPressed();
+        }
+    }
 }
