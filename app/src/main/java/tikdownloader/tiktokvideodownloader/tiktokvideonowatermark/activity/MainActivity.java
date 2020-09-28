@@ -16,12 +16,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.tasks.OnSuccessListener;
+import com.google.android.play.core.tasks.Task;
 
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.MyApplication;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
@@ -30,6 +37,7 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.HowToUseDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.ClipboardListener;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Settings;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
 
 import java.util.ArrayList;
@@ -51,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String CopyKey = "";
     String CopyValue = "";
     private ExitDialogFragment exitDialogFragment;
+    private Settings settings;
+    private int reviewCount =0;
 
 
 
@@ -67,6 +77,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initViews();
     }
 
+    private void showReview() {
+        ReviewManager manager = ReviewManagerFactory.create(MainActivity.this);
+        Task<ReviewInfo> request = manager.requestReviewFlow();
+        request.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // We can get the ReviewInfo object
+                ReviewInfo reviewInfo = task.getResult();
+                Task<Void> flow = manager.launchReviewFlow(activity, reviewInfo);
+                flow.addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
+
+                    }
+                });
+            } else {
+                // There was some problem, continue regardless of the result.
+            }
+        });
+    }
+
     protected synchronized MyApplication getMainApp() {
         if (myApplication == null) {
             myApplication = MyApplication.getInstance();
@@ -80,6 +110,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         activity = this;
         assert activity != null;
         clipBoard = (ClipboardManager) activity.getSystemService(CLIPBOARD_SERVICE);
+
+//        settings = new Settings(this);
+//        reviewCount = settings.getReviewCount();
+//        reviewCount++;
+//        settings.setReviewCount(reviewCount);
+//
+//        if (reviewCount>2) {
+//            showReview();
+//        }
     }
     public void initViews() {
         clipBoard = (ClipboardManager) activity.getSystemService(CLIPBOARD_SERVICE);

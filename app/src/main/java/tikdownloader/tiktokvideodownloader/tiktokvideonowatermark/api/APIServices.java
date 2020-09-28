@@ -2,7 +2,11 @@ package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Headers;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TiktokModel;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TiktokModelNew;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TwitterResponse;
 import com.google.gson.JsonObject;
 
@@ -25,10 +29,17 @@ public interface APIServices {
     @POST
     Observable<TwitterResponse> callTwitter(@Url String Url, @Field("id") String id);
 
+    @Headers("User-Agent: none")
     @POST
     Observable<TiktokModel> getTiktokData(@Url String Url, @Body HashMap<String, String> hashMap);
 
     @GET
     Call<ResponseBody> getTikTokData(@Url String Url);
+
+    @GET("fetch")
+    Call<TiktokModelNew> getTiktokVideo(@Query("url") String url);
+
+    @POST("fetch-videos/{id}")
+    Call<ResponseBody> getTiktokFetchVideo(@Path("id") String id);
 
 }

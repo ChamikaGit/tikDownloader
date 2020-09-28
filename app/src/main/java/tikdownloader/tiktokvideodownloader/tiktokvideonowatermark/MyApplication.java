@@ -12,7 +12,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 public class MyApplication extends Application {
     private FirebaseAnalytics mFirebaseAnalytics;
     private static MyApplication mainApplication;
-
+    private static Context appContext;
 
     public static synchronized MyApplication getInstance() {
         return mainApplication;
@@ -22,6 +22,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mainApplication = this;
+        appContext = this;
         AudienceNetworkAds.initialize(this);
         FirebaseMessaging.getInstance().subscribeToTopic("all");
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -31,5 +32,9 @@ public class MyApplication extends Application {
         Bundle bundle = new Bundle();
         bundle.putString(action, value);
         mFirebaseAnalytics.logEvent(eventName, bundle);
+    }
+
+    public static Context getContext() {
+        return appContext;
     }
 }

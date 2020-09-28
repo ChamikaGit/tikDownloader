@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- START xml_defaults -->
+<defaultsMap>
+    <entry>
+        <key>token_of_the_app</key>
+        <value>715f22af-c70b-4850-9598-d27aa625f835</value>
+    </entry>
+    <entry>
+        <key>base_url_of_app</key>
+        <value>https://tiktok.codespikex.com/api/v1/</value>
+    </entry>
+</defaultsMap>

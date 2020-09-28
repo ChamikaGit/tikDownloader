@@ -15,18 +15,22 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import io.reactivex.observers.DisposableObserver;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.BuildConfig;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.MyApplication;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.APIServices;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.RestClient;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.RetrofitClientInstance;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityTikTokBinding;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TiktokModel;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TiktokModelNew;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.CommonClassForAPI;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.SharePrefs;
@@ -39,7 +43,6 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -144,7 +147,8 @@ public class TikTokActivity extends AppCompatActivity {
             @Override
             public void onAdClosed() {
 
-                GetTikTokData();
+//                GetTikTokData();
+                getAllBanners(binding.etText.getText().toString());
                 // Code to be executed when the interstitial ad is closed.
             }
         });
@@ -258,7 +262,7 @@ public class TikTokActivity extends AppCompatActivity {
             } else if (!Patterns.WEB_URL.matcher(LL).matches()) {
                 Utils.setToast(activity, "Enter Valid Url");
             } else {
-                showInterstitial();
+                showInterstitial(LL);
             }
             getMainApp().trackFireBaseEvent("WITH_WATERMARK", "CLICK", "TRUE");
         });
@@ -271,7 +275,7 @@ public class TikTokActivity extends AppCompatActivity {
             } else if (!Patterns.WEB_URL.matcher(LL).matches()) {
                 Utils.setToast(activity, "Enter Valid Url");
             } else {
-                showInterstitial();
+                showInterstitial(LL);
             }
 
             getMainApp().trackFireBaseEvent("WITHOUT_WATERMARK", "CLICK", "TRUE");
@@ -703,11 +707,80 @@ public class TikTokActivity extends AppCompatActivity {
         }
     }
 
-    private void showInterstitial() {
+    private void showInterstitial(String LL) {
         if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         } else {
-            GetTikTokData();
+           getAllBanners(LL);
+        }
+    }
+
+    private void getAllBanners(String LL) {
+        try {
+            Utils.showProgressDialog(activity);
+            APIServices service = RetrofitClientInstance.getRetrofitInstance().create(APIServices.class);
+            Call<TiktokModelNew> call = service.getTiktokVideo(LL);
+            call.enqueue(new Callback<TiktokModelNew>() {
+                @Override
+                public void onResponse(Call<TiktokModelNew> call, Response<TiktokModelNew> response) {
+                    if (response.code() == 200) {
+                        TiktokModelNew bannerResponse = response.body();
+                        String videoId = bannerResponse.getVideoId();
+//                        https://tiktok.codespikex.com/download?id=6877028169791130885&type=video&nwm=true
+                        String videoUrl = BuildConfig.URL +videoId+"&type=video&nwm=true";
+//                        Log.e("videoUrl",videoUrl);
+                        if (bannerResponse.getUrlNwm().equals("")){
+//                            Toast.makeText(TikTokActivity.this, "Something went wrong in video url!", Toast.LENGTH_SHORT).show();
+                            fetchTheVideo(videoId);
+                        }else {
+                            Utils.hideProgressDialog(activity);
+                            startDownload(videoUrl, RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
+                        }
+                    } else {
+                        Utils.hideProgressDialog(activity);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TiktokModelNew> call, Throwable t) {
+                    Utils.hideProgressDialog(activity);
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.e("Error",e.getMessage());
+        }
+
+    }
+
+    private void fetchTheVideo(String videoId) {
+        try {
+            Utils.showProgressDialog(activity);
+            APIServices service = RetrofitClientInstance.getRetrofitInstance().create(APIServices.class);
+            Call<ResponseBody> call = service.getTiktokFetchVideo(videoId);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.code() == 200) {
+                        Utils.hideProgressDialog(activity);
+                        ResponseBody bannerResponse = response.body();
+                        String videoUrl =BuildConfig.URL+videoId+"&type=video&nwm=true";
+                        startDownload(videoUrl, RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
+                    }else {
+                        Utils.hideProgressDialog(activity);
+                        Utils.setToast(TikTokActivity.this,"Something went wrong!");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utils.hideProgressDialog(activity);
+                }
+            });
+        }catch (Exception e){
+            Utils.hideProgressDialog(activity);
+            e.printStackTrace();
+            Log.e("Error",e.getMessage());
         }
     }
 

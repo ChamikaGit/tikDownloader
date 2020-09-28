@@ -106,7 +106,7 @@ public class Utils {
 
     public static void startDownload(String downloadPath, String destinationPath, Context context, String FileName) {
         setToast(context, "Download Started");
-        Uri uri = Uri.parse(downloadPath); // Path where you want to download file.
+        Uri uri = Uri.parse(downloadPath.trim()); // Path where you want to download file.
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);  // Tell on which network you want to download file.
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);  // This will show notification on top when downloading the file.
