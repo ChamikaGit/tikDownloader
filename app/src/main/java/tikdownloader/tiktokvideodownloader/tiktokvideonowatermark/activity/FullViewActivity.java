@@ -13,6 +13,7 @@ import android.view.View;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.adapter.ShowImagesAdapter;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityFullViewBinding;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
 import java.io.File;
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ public class FullViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_full_view);
         activity = this;
+
+        AdsUtils.showGoogleBannerAd(FullViewActivity.this, binding.adView);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {

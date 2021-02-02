@@ -10,6 +10,7 @@ import android.app.PendingIntent;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -24,9 +25,15 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.tasks.OnFailureListener;
 import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
 
@@ -46,7 +53,7 @@ import java.util.Objects;
 
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.createFileFolder;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,ExitDialogFragment.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ExitDialogFragment.OnItemClickListener {
     private MyApplication myApplication;
     MainActivity activity;
     ActivityMainBinding binding;
@@ -60,8 +67,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String CopyValue = "";
     private ExitDialogFragment exitDialogFragment;
     private Settings settings;
-    private int reviewCount =0;
-
+    private int reviewCount = 0;
+    private AppUpdateManager appUpdateManager;
+    private int RequestUpdate = 1;
+    private ReviewInfo reviewInfo;
+    private ReviewManager manager;
+    private final int REQUEST_CODE_TIKTOK = 52;
 
 
     @Override
@@ -72,27 +83,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         activity = this;
         exitDialogFragment = new ExitDialogFragment(this);
 
-        AdsUtils.showGoogleBannerAd(MainActivity.this,binding.adView);
+        AdsUtils.showGoogleBannerAd(MainActivity.this, binding.adView);
+//        MediationTestSuite.launch(MainActivity.this);
 
         initViews();
+        checkUpdate();
+        settings = new Settings(this);
+        reviewCount = settings.getReviewCount();
+        reviewCount++;
+        settings.setReviewCount(reviewCount);
+        if (settings.getReviewCount() > 2) {
+            intiReview();
+        }
     }
 
-    private void showReview() {
-        ReviewManager manager = ReviewManagerFactory.create(MainActivity.this);
+    private void checkUpdate() {
+        appUpdateManager = AppUpdateManagerFactory.create(this);
+        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
+            @Override
+            public void onSuccess(AppUpdateInfo result) {
+                if ((result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE)
+                        && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                    try {
+                        appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.IMMEDIATE, MainActivity.this, RequestUpdate);
+                    } catch (IntentSender.SendIntentException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    private void intiReview() {
+        manager = ReviewManagerFactory.create(MainActivity.this);
         Task<ReviewInfo> request = manager.requestReviewFlow();
         request.addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                // We can get the ReviewInfo object
-                ReviewInfo reviewInfo = task.getResult();
-                Task<Void> flow = manager.launchReviewFlow(activity, reviewInfo);
-                flow.addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void result) {
-
-                    }
-                });
+                reviewInfo = task.getResult();
             } else {
                 // There was some problem, continue regardless of the result.
+                reviewInfo = null;
             }
         });
     }
@@ -110,16 +140,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         activity = this;
         assert activity != null;
         clipBoard = (ClipboardManager) activity.getSystemService(CLIPBOARD_SERVICE);
-
-//        settings = new Settings(this);
-//        reviewCount = settings.getReviewCount();
-//        reviewCount++;
-//        settings.setReviewCount(reviewCount);
-//
-//        if (reviewCount>2) {
-//            showReview();
-//        }
+        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
+            @Override
+            public void onSuccess(AppUpdateInfo result) {
+                if (result.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                    try {
+                        appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.IMMEDIATE, MainActivity.this, RequestUpdate);
+                    } catch (IntentSender.SendIntentException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
+
     public void initViews() {
         clipBoard = (ClipboardManager) activity.getSystemService(CLIPBOARD_SERVICE);
         if (activity.getIntent().getExtras() != null) {
@@ -130,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     CopyValue = activity.getIntent().getExtras().getString(CopyKey);
                     callText(value);
                 } else {
-                    CopyValue="";
+                    CopyValue = "";
                     callText(value);
                 }
             }
@@ -166,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void callText(String CopiedText) {
         try {
-          if (CopiedText.contains("tiktok.com")) {
+            if (CopiedText.contains("tiktok.com")) {
                 if (Build.VERSION.SDK_INT >= 23) {
                     checkPermissions(103);
                 } else {
@@ -190,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     callTikTokActivity();
                 }
-                getMainApp().trackFireBaseEvent("TIKTOK_BUTTON","CLICK","TRUE");
+                getMainApp().trackFireBaseEvent("TIKTOK_BUTTON", "CLICK", "TRUE");
                 break;
             case R.id.rvGallery:
                 if (Build.VERSION.SDK_INT >= 23) {
@@ -198,28 +232,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     callGalleryActivity();
                 }
-                getMainApp().trackFireBaseEvent("GALLERY_BUTTON","CLICK","TRUE");
+                getMainApp().trackFireBaseEvent("GALLERY_BUTTON", "CLICK", "TRUE");
                 break;
 
             case R.id.rvAbout:
 //                i = new Intent(activity, AboutUsActivity.class);
 //                startActivity(i);
                 HowToUseDialogFragment howToUseDialogFragment = new HowToUseDialogFragment();
-                howToUseDialogFragment.show(getSupportFragmentManager(),"HowToUseDialogFragment");
-                getMainApp().trackFireBaseEvent("ABOUT_BUTTON","CLICK","TRUE");
+                howToUseDialogFragment.show(getSupportFragmentManager(), "HowToUseDialogFragment");
+                getMainApp().trackFireBaseEvent("ABOUT_BUTTON", "CLICK", "TRUE");
 
                 break;
             case R.id.rvShareApp:
                 Utils.ShareApp(activity);
-                getMainApp().trackFireBaseEvent("SHARE_BUTTON","CLICK","TRUE");
+                getMainApp().trackFireBaseEvent("SHARE_BUTTON", "CLICK", "TRUE");
                 break;
             case R.id.rvRateApp:
                 Utils.RateApp(activity);
-                getMainApp().trackFireBaseEvent("RATE_BUTTON","CLICK","TRUE");
+                getMainApp().trackFireBaseEvent("RATE_BUTTON", "CLICK", "TRUE");
                 break;
             case R.id.rvMoreApp:
                 Utils.MoreApp(activity);
-                getMainApp().trackFireBaseEvent("MORE_BUTTON","CLICK","TRUE");
+                getMainApp().trackFireBaseEvent("MORE_BUTTON", "CLICK", "TRUE");
                 break;
 
         }
@@ -229,8 +263,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void callTikTokActivity() {
 
         Intent i = new Intent(activity, TikTokActivity.class);
-        i.putExtra("CopyIntent",CopyValue);
-        startActivity(i);
+        i.putExtra("CopyIntent", CopyValue);
+        startActivityForResult(i, REQUEST_CODE_TIKTOK);
 
 
     }
@@ -243,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showNotification(String Text) {
-        if (Text.contains("instagram.com")||Text.contains("facebook.com")||Text.contains("tiktok.com")||Text.contains("twitter.com")) {
+        if (Text.contains("instagram.com") || Text.contains("facebook.com") || Text.contains("tiktok.com") || Text.contains("twitter.com")) {
             Intent intent = new Intent(activity, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("Notification", Text);
@@ -288,7 +322,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             String[listPermissionsNeeded.size()]), type);
             return false;
         } else {
-             if (type == 103) {
+            if (type == 103) {
                 callTikTokActivity();
             } else if (type == 105) {
                 callGalleryActivity();
@@ -321,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onBackPressed() {
         this.doubleBackToExitPressedOnce = true;
         if (doubleBackToExitPressedOnce) {
-          exitDialogFragment.show(getSupportFragmentManager(),"ExitDialogFragment");
+            exitDialogFragment.show(getSupportFragmentManager(), "ExitDialogFragment");
         }
         //Utils.setToast(activity, "Please click BACK again to exit");
         new Handler().postDelayed(new Runnable() {
@@ -340,5 +374,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == REQUEST_CODE_TIKTOK) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (reviewInfo != null) {
+                    Utils.setToast(MainActivity.this,"Give a best rate to us!");
+                    Task<Void> flow = manager.launchReviewFlow(activity, reviewInfo);
+                    flow.addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void result) {
+
+                        }
+                    });
+                    flow.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(Exception e) {
+                        }
+                    });
+                }
+            }
+        }
     }
 }

@@ -44,7 +44,7 @@
                 android:text="Are you sure want to exit?"
                 android:textAllCaps="false"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
 
 

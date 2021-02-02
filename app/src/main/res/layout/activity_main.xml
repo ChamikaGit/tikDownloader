@@ -367,6 +367,7 @@
                         android:textColor="@color/white"
                         android:visibility="visible" />
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:id="@+id/rvRateApp"
                     android:layout_width="80dp"

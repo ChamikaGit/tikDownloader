@@ -79,8 +79,8 @@ public class SplashScreen extends AppCompatActivity {
 
         Log.e("firebaseRemoteConfig", "firebaseRemoteConfig :" + mFirebaseRemoteConfig.getString(TOKEN));
         Log.e("firebaseRemoteConfig", "firebaseRemoteConfig :" + mFirebaseRemoteConfig.getString(BASE_URL));
-        settings.setAccessToken(mFirebaseRemoteConfig.getString(TOKEN));
-        settings.setBaseUrl(mFirebaseRemoteConfig.getString(BASE_URL));
+        new Settings(this).setAccessToken(mFirebaseRemoteConfig.getString(TOKEN));
+        new Settings(this).setBaseUrl(mFirebaseRemoteConfig.getString(BASE_URL));
         mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
             @Override
             public void onComplete(@NonNull com.google.android.gms.tasks.Task<Boolean> task) {

@@ -41,7 +41,7 @@ public class TiktokModelNew implements Serializable
     private Stats stats;
     @SerializedName("uploaded_at")
     @Expose
-    private Object uploadedAt;
+    private String uploadedAt;
     @SerializedName("dl_count")
     @Expose
     private Integer dlCount;
@@ -139,11 +139,11 @@ public class TiktokModelNew implements Serializable
         this.stats = stats;
     }
 
-    public Object getUploadedAt() {
+    public String getUploadedAt() {
         return uploadedAt;
     }
 
-    public void setUploadedAt(Object uploadedAt) {
+    public void setUploadedAt(String uploadedAt) {
         this.uploadedAt = uploadedAt;
     }
 

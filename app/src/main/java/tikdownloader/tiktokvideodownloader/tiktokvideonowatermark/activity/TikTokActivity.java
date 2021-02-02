@@ -3,6 +3,7 @@ package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
@@ -183,7 +184,7 @@ public class TikTokActivity extends AppCompatActivity {
             @Override
             public void onAdClosed() {
 
-               onBackPressed();
+                onBackPressed();
             }
         });
 
@@ -241,7 +242,7 @@ public class TikTokActivity extends AppCompatActivity {
         });
 
         binding.layoutHowTo.imHowto1.setImageResource(R.drawable.tt1);
-        binding.layoutHowTo.imHowto2.setImageResource(R.drawable.tt2);
+        binding.layoutHowTo.imHowto2.setImageResource(R.drawable.tt_2);
         binding.layoutHowTo.imHowto3.setImageResource(R.drawable.tt3);
         binding.layoutHowTo.imHowto4.setImageResource(R.drawable.tt4);
         binding.layoutHowTo.tvHowTo1.setText("1. Open TikTok");
@@ -515,9 +516,9 @@ public class TikTokActivity extends AppCompatActivity {
                                     JSONObject bodyObject = json.getJSONObject("body");
                                     JSONObject videoDataObject = bodyObject.getJSONObject("videoData");
                                     JSONObject itemInfoObject = videoDataObject.getJSONObject("itemInfos");
-                                    JSONArray jsonArrayCoverOrigin =itemInfoObject.getJSONArray("coversOrigin");
+                                    JSONArray jsonArrayCoverOrigin = itemInfoObject.getJSONArray("coversOrigin");
                                     String imgCover = jsonArrayCoverOrigin.get(0).toString().trim();
-                                    Log.e("imgCover",imgCover);
+                                    Log.e("imgCover", imgCover);
                                     Glide.with(getApplicationContext()).load(imgCover).into(img);
                                     Glide.with(getApplicationContext()).load(imgCover).into(imgPicture);
 //                                tvName.setText(jsonObject.getString("name"));
@@ -711,14 +712,14 @@ public class TikTokActivity extends AppCompatActivity {
         if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         } else {
-           getAllBanners(LL);
+            getAllBanners(LL);
         }
     }
 
     private void getAllBanners(String LL) {
         try {
             Utils.showProgressDialog(activity);
-            APIServices service = RetrofitClientInstance.getRetrofitInstance().create(APIServices.class);
+            APIServices service = RetrofitClientInstance.getRetrofitInstance(TikTokActivity.this).create(APIServices.class);
             Call<TiktokModelNew> call = service.getTiktokVideo(LL);
             call.enqueue(new Callback<TiktokModelNew>() {
                 @Override
@@ -756,7 +757,7 @@ public class TikTokActivity extends AppCompatActivity {
     private void fetchTheVideo(String videoId) {
         try {
             Utils.showProgressDialog(activity);
-            APIServices service = RetrofitClientInstance.getRetrofitInstance().create(APIServices.class);
+            APIServices service = RetrofitClientInstance.getRetrofitInstance(TikTokActivity.this).create(APIServices.class);
             Call<ResponseBody> call = service.getTiktokFetchVideo(videoId);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -788,8 +789,9 @@ public class TikTokActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (mInterstitialAdBackPress != null && mInterstitialAdBackPress.isLoaded()) {
             mInterstitialAdBackPress.show();
-        }else {
-            super.onBackPressed();
+        } else {
+            setResult(Activity.RESULT_OK);
+            finish();
         }
     }
 }

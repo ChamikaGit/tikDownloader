@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide;
 
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.FullViewActivity;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.VideoPlayerActivity;
+
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.ArrayList;
@@ -67,9 +69,12 @@ public class ShowImagesAdapter extends PagerAdapter {
         }
 
         im_vpPlay.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.parse(imageList.get(position).getPath()), "video/*");
-            context.startActivity(intent);
+//            Intent intent = new Intent(Intent.ACTION_VIEW);
+//            intent.setDataAndType(Uri.parse(imageList.get(position).getPath()), "video/*");
+//            context.startActivity(intent);
+            Intent intent1 = new Intent(context, VideoPlayerActivity.class);
+            intent1.putExtra("file",imageList.get(position).getPath());
+            context.startActivity(intent1);
         });
 
         im_delete.setOnClickListener(new View.OnClickListener() {

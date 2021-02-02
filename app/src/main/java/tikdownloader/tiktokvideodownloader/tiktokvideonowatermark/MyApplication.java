@@ -37,4 +37,13 @@ public class MyApplication extends Application {
     public static Context getContext() {
         return appContext;
     }
+
+//    EAADjM5zIiSoBAFACsyzOW9EltVua9j9bjGZBnHzkvXTiZCYO6X6zzJoVTf6O5gZBsTxNvltsh1i9JUkxg3CFuUlkOXZB1zZAJYBunKGUorZC6ZATAQPwuvv73zbIhNes2LJ1VEVK4eq5K3PG66WVkfLkWCpIjNr9ldze7HZCIHjUvL4nRyspQWgk
+    //241681297401399 property id
+    //249810813225258_249825376557135 placement id
+    //249810813225258_249825376557135
+
+    //mediation sysytem user
+    //EAADjM5zIiSoBAMPKlLRnFqjnLuFR6fsxlhZB0TWsk6IQsVRRqF3NwZCZAJROqiGmuaH62TUHZA3pn8MNE0ZApaPy51inz2K7QFNf7fHAw3dofPFJIKSJeWDiICH44OREbgbn9ImLjozc6qbBA3k695n9MxuqekZCNuhuycHan1zAJzlsV45OG5
+
 }
