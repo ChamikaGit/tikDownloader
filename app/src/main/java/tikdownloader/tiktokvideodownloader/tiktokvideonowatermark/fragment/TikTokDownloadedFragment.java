@@ -2,6 +2,7 @@ package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,9 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.interfaces.Fil
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
 
@@ -69,11 +73,16 @@ public class TikTokDownloadedFragment extends Fragment implements FileListClickI
 
     private void getAllFiles(){
         fileArrayList = new ArrayList<>();
+        ArrayList<File> fileArrayListReverse;
         File[] files = Utils.RootDirectoryTikTokShow.listFiles();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Arrays.sort(files, Comparator.comparingLong(File::lastModified));
+        }
         if (files!=null) {
             for (File file : files) {
                 fileArrayList.add(file);
             }
+            Collections.reverse(fileArrayList);
 
             fileListAdapter = new FileListAdapter(activity, fileArrayList, TikTokDownloadedFragment.this);
             binding.rvFileList.setAdapter(fileListAdapter);

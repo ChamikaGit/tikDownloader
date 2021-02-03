@@ -29,7 +29,10 @@ public class Utils {
     private static Context context;
 
     public static String INVOICENUMBER = "ADD YOUR INVOICE NUMBER";
-    public static String TikTokUrl = "http://codingdunia.com/ccprojects/tiktok/api/getContent/";
+//    public static String TikTokUrl = "http://codingdunia.com/ccprojects/tiktok/api/getContent/";
+    public static String TikTokUrl = "http://androidqueue.com/tiktokapi/api.php";
+    //version_14
+
 
 
 

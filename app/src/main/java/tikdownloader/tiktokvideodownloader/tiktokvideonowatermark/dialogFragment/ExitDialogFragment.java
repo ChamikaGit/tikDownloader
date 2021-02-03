@@ -46,10 +46,10 @@ public class ExitDialogFragment extends DialogFragment implements View.OnClickLi
         View view = inflater.inflate(R.layout.dialogfragment_exit, container, false);
         tvYes = view.findViewById(R.id.tvYes);
         tvNo = view.findViewById(R.id.tvNo);
-        adView = view.findViewById(R.id.adView);
+//        adView = view.findViewById(R.id.adView);
         tvYes.setOnClickListener(this);
         tvNo.setOnClickListener(this);
-        AdsUtils.showGoogleBannerAd(getActivity(), adView);
+//        AdsUtils.showGoogleBannerAd(getActivity(), adView);
         return view;
     }
 

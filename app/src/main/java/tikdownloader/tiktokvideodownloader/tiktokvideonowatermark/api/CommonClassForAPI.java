@@ -102,10 +102,34 @@ public class CommonClassForAPI {
 //    }
 
     //version_8
+//    public void callTiktokVideo(final DisposableObserver observer, String Url) {
+//        HashMap<String, String> hashMapFinal = new HashMap<>();
+//        hashMapFinal.put("link",Url);
+//        RestClient.getInstance(mActivity).getService().getTiktokData(Utils.TikTokUrl,hashMapFinal)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<TiktokModel>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//                    }
+//                    @Override
+//                    public void onNext(TiktokModel o) {
+//                        observer.onNext(o);
+//                    }
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        observer.onError(e);
+//                    }
+//                    @Override
+//                    public void onComplete() {
+//                        observer.onComplete();
+//                    }
+//                });
+//    }
+
+//version_14
     public void callTiktokVideo(final DisposableObserver observer, String Url) {
-        HashMap<String, String> hashMapFinal = new HashMap<>();
-        hashMapFinal.put("link",Url);
-        RestClient.getInstance(mActivity).getService().getTiktokData(Utils.TikTokUrl,hashMapFinal)
+        RestClient.getInstance(mActivity).getService().getTiktokData(Utils.TikTokUrl,Url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<TiktokModel>() {

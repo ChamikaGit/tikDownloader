@@ -285,19 +285,6 @@
                         </RelativeLayout>
                     </RelativeLayout>
 
-                    <com.google.android.gms.ads.AdView
-                        android:id="@+id/adView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        ads:adSize="MEDIUM_RECTANGLE"
-                        android:layout_below="@+id/lnr_main"
-                        ads:adUnitId="@string/admob_banner_ad">
-
-                    </com.google.android.gms.ads.AdView>
-
-
                 </RelativeLayout>
             </ScrollView>
 
@@ -305,7 +292,7 @@
                 android:id="@+id/lnr_footer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_above="@+id/adView"
                 android:gravity="top|center"
                 android:padding="5dp"
                 android:elevation="3dp"
@@ -397,6 +384,19 @@
                 </RelativeLayout>
 
             </LinearLayout>
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="0dp"
+                ads:adSize="BANNER"
+                android:layout_alignParentBottom="true"
+                ads:adUnitId="@string/admob_banner_ad">
+
+            </com.google.android.gms.ads.AdView>
+
 
         </RelativeLayout>
 

@@ -29,9 +29,12 @@ public interface APIServices {
     @POST
     Observable<TwitterResponse> callTwitter(@Url String Url, @Field("id") String id);
 
-    @Headers("User-Agent: none")
-    @POST
-    Observable<TiktokModel> getTiktokData(@Url String Url, @Body HashMap<String, String> hashMap);
+//    @Headers("User-Agent: none")
+//    @POST
+//    Observable<TiktokModel> getTiktokData(@Url String Url, @Body HashMap<String, String> hashMap);
+//version_14
+    @GET
+    Observable<TiktokModel> getTiktokData(@Url String Url, @Query("url") String url);
 
     @GET
     Call<ResponseBody> getTikTokData(@Url String Url);

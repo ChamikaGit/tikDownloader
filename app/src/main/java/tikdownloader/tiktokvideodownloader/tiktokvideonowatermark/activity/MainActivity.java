@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void callTikTokActivity() {
 
-        Intent i = new Intent(activity, TikTokActivity.class);
+        Intent i = new Intent(activity, TikTokNewActivity.class);
         i.putExtra("CopyIntent", CopyValue);
         startActivityForResult(i, REQUEST_CODE_TIKTOK);
 

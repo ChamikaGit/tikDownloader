@@ -34,6 +34,9 @@
             android:name=".activity.TikTokActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activity.TikTokNewActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activity.FullViewActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
