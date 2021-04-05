@@ -8,8 +8,8 @@ android {
         applicationId "tikdownloader.tiktokvideodownloader.tiktokvideonowatermark"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 24
-        versionName "1.1.24"
+        versionCode 25
+        versionName "1.1.25"
         multiDexEnabled true
         project.ext.set("archivesBaseName", "TikSave-v" + defaultConfig.versionName + "_" + defaultConfig.versionCode + "-" + new Date().format('yyyyMMdd'))
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

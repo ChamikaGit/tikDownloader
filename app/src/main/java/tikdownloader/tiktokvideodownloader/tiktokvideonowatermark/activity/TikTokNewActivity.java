@@ -490,14 +490,23 @@ public class TikTokNewActivity extends AppCompatActivity {
         @Override
         public void onNext(TiktokModel tiktokModel) {
             Utils.hideProgressDialog(activity);
+//            try {
+//                if (tiktokModel.getResponsecode().equals("200")) {
+//                    startDownload(tiktokModel.getData().getMainvideo(),
+//                            RootDirectoryTikTok, activity, "tiktok_"+System.currentTimeMillis()+".mp4");
+//                    binding.etText.setText("");
+//                    showInterstitial();
+//                    loadIndustrisialAd();
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
             try {
-                if (tiktokModel.getResponsecode().equals("200")) {
-                    startDownload(tiktokModel.getData().getMainvideo(),
+                    startDownload(tiktokModel.getDownloadLink(),
                             RootDirectoryTikTok, activity, "tiktok_"+System.currentTimeMillis()+".mp4");
                     binding.etText.setText("");
                     showInterstitial();
                     loadIndustrisialAd();
-                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

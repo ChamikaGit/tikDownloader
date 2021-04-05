@@ -30,7 +30,8 @@ public class Utils {
 
     public static String INVOICENUMBER = "ADD YOUR INVOICE NUMBER";
 //    public static String TikTokUrl = "http://codingdunia.com/ccprojects/tiktok/api/getContent/";
-    public static String TikTokUrl = "http://androidqueue.com/tiktokapi/api.php";
+//    public static String TikTokUrl = "http://androidqueue.com/tiktokapi/api.php";
+    public static String TikTokUrl = "https://netanime.tv/tiktok/index.php";
     //version_14
 
 
