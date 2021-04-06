@@ -277,7 +277,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showNotification(String Text) {
-        if (Text.contains("instagram.com") || Text.contains("facebook.com") || Text.contains("tiktok.com") || Text.contains("twitter.com")) {
+//        if (Text.contains("instagram.com") || Text.contains("facebook.com") || Text.contains("tiktok.com") || Text.contains("twitter.com")) {
+        if (Text.contains("tiktok.com")) {
             Intent intent = new Intent(activity, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("Notification", Text);

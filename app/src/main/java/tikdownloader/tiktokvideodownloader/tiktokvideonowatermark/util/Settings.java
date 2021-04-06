@@ -62,5 +62,14 @@ public class Settings {
         return value;
     }
 
+    public void setAdShowCount(int count) {
+        getPref().edit().putInt("AdShowCount", count).commit();
+    }
+
+    public int getAdShowCount() {
+        int value = getPref().getInt("AdShowCount", 0);
+        return value;
+    }
+
 }
 
