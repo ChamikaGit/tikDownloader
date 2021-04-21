@@ -1,5 +1,6 @@
 package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
@@ -23,13 +24,14 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.createFileFolder;
 
-public class GalleryActivity  extends AppCompatActivity {
+public class GalleryActivity extends AppCompatActivity {
     GalleryActivity activity;
     ActivityGalleryBinding binding;
-    private InterstitialAd mInterstitialAdBackPress,mInterstitialAdOpen;
+    private InterstitialAd mInterstitialAdBackPress, mInterstitialAdOpen;
     private ProgressDialog progressDialog;
 
 
@@ -146,9 +148,11 @@ public class GalleryActivity  extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
+
             @Override
             public void onPageSelected(int position) {
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
             }
@@ -202,11 +206,12 @@ public class GalleryActivity  extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mInterstitialAdBackPress != null && mInterstitialAdBackPress.isLoaded()) {
-            mInterstitialAdBackPress.show();
-        }else {
-            super.onBackPressed();
-        }
+//        if (mInterstitialAdBackPress != null && mInterstitialAdBackPress.isLoaded()) {
+//            mInterstitialAdBackPress.show();
+//        }else {
+        setResult(Activity.RESULT_OK);
+        finish();
+//        }
 
     }
 }

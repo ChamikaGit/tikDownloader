@@ -917,11 +917,11 @@ public class TikTokNewActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mInterstitialAdBackPress != null && mInterstitialAdBackPress.isLoaded()) {
-            mInterstitialAdBackPress.show();
-        } else {
+//        if (mInterstitialAdBackPress != null && mInterstitialAdBackPress.isLoaded()) {
+//            mInterstitialAdBackPress.show();
+//        } else {
             setResult(Activity.RESULT_OK);
             finish();
-        }
+//        }
     }
 }
