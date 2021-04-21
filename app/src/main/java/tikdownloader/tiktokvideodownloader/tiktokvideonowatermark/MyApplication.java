@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 
 import com.facebook.ads.AudienceNetworkAds;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -26,6 +29,12 @@ public class MyApplication extends Application {
         AudienceNetworkAds.initialize(this);
         FirebaseMessaging.getInstance().subscribeToTopic("all");
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        //admob initilization
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
     }
 
     public void trackFireBaseEvent(String eventName, String action, String value) {

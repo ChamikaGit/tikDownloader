@@ -3,5 +3,6 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">tiktok.codespikex.com</domain>
         <domain includeSubdomains="true">androidqueue.com</domain>
+        <domain includeSubdomains="true">http://tiktok.electric.lk</domain>
     </domain-config>
 </network-security-config>

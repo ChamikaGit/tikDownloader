@@ -303,7 +303,7 @@ public class TikTokNewActivity extends AppCompatActivity {
 
 
         binding.tvWithMark.setOnClickListener(v -> {
-//            IsWithWaternark = true;
+            IsWithWaternark = true;
 //            String LL = binding.etText.getText().toString();
 //            if (LL.equals("")) {
 //                Utils.setToast(activity, "Enter Url");
@@ -328,7 +328,7 @@ public class TikTokNewActivity extends AppCompatActivity {
         });
 
         binding.tvWithoutMark.setOnClickListener(v -> {
-//            IsWithWaternark = false;
+            IsWithWaternark = false;
 //            String LL = binding.etText.getText().toString();
 //            if (LL.equals("")) {
 //                Utils.setToast(activity, "Enter Url");
@@ -502,11 +502,19 @@ public class TikTokNewActivity extends AppCompatActivity {
 //                e.printStackTrace();
 //            }
             try {
-                    startDownload(tiktokModel.getDownloadLink(),
-                            RootDirectoryTikTok, activity, "tiktok_"+System.currentTimeMillis()+".mp4");
+                if (IsWithWaternark) {
+                    startDownload(tiktokModel.getMarked().replace("http://","https://"),
+                            RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
                     binding.etText.setText("");
                     showInterstitial();
                     loadIndustrisialAd();
+                }else {
+                    startDownload(tiktokModel.getNotMarked().replace("http://","https://"),
+                            RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
+                    binding.etText.setText("");
+                    showInterstitial();
+                    loadIndustrisialAd();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
