@@ -8,8 +8,8 @@ android {
         applicationId "tikdownloader.tiktokvideodownloader.tiktokvideonowatermark"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 25
-        versionName "1.1.25"
+        versionCode 26
+        versionName "1.1.26"
         multiDexEnabled true
         project.ext.set("archivesBaseName", "TikSave-v" + defaultConfig.versionName + "_" + defaultConfig.versionCode + "-" + new Date().format('yyyyMMdd'))
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -90,6 +90,8 @@ dependencies {
     implementation 'com.google.ads.mediation:facebook:6.2.0.1'
 //    implementation 'com.google.android.ads:mediation-test-suite:1.5.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.3.1'
+    implementation 'com.airbnb.android:lottie:3.0.7'
+
 
 
 }
