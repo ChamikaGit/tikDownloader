@@ -58,6 +58,7 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TiktokModel;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TiktokModelNew;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Settings;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.SharePrefs;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
 
@@ -83,17 +84,23 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
     private RelativeLayout relDetailsContainer;
     private ProgressDialog progressDialog;
     private int tryCount = 0;
+    private int newCount = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tik_tok);
         myApplication = (MyApplication) getApplication();
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-        progressDialog.setTitle("Ad Loading");
-        progressDialog.setMessage("Please wait..!");
-        progressDialog.show();
+        int getCount = new Settings(this).getAdShowCount();
+        newCount = getCount + 1;
+        new Settings(this).setAdShowCount(newCount);
+        if (newCount % 3 == 0) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setCancelable(false);
+            progressDialog.setTitle("Ad Loading");
+            progressDialog.setMessage("Please wait..!");
+            progressDialog.show();
+        }
         img = findViewById(R.id.img);
         imgPicture = findViewById(R.id.imgPicture);
         tvName = findViewById(R.id.tvName);
@@ -205,14 +212,20 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             @Override
             public void onAdLoaded() {
                 // Code to be executed when an ad finishes loading.
-                progressDialog.dismiss();
-                mInterstitialAdOpen.show();
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+                if (newCount % 3 == 0) {
+                    mInterstitialAdOpen.show();
+                }
             }
 
             @Override
             public void onAdFailedToLoad(int errorCode) {
                 // Code to be executed when an ad request fails.
-                progressDialog.dismiss();
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
             }
 
             @Override
@@ -229,7 +242,9 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             @Override
             public void onAdLeftApplication() {
                 // Code to be executed when the user has left the app.
-                progressDialog.dismiss();
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
             }
 
             @Override
@@ -493,28 +508,30 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         public void onNext(TiktokModel tiktokModel) {
             Utils.hideProgressDialog(activity);
 
-            if (!tiktokModel.getNotMarked().equals("")) {
-                String urlWithOutWM = tiktokModel.getNotMarked();
-                String[] urlWithWMArray = urlWithOutWM.split("/");
-                for (int i = 0; i < urlWithWMArray.length; i++) {
-                    Log.e("urlWithWMArray :" + i, "urlWithWMArray :" + urlWithWMArray[i]);
-                }
-                Log.e("urlWithWMArray", "urlWithWMArray :" + urlWithWMArray[urlWithWMArray.length - 1]);
-                String[] lastFileName = urlWithWMArray[urlWithWMArray.length - 1].split("\\.");
-                Log.e("lastFileName", "lastFileName :" + lastFileName.length);
-//            if (tryCount < 3) {
-                try {
-                    if (lastFileName[0].matches("[a-zA-Z]+")) {
-                        tryCount = tryCount + 1;
-//                    callVideoDownload(binding.etText.getText().toString());
-                        TryAgainDialogFragment tryAgainDialogFragment = new TryAgainDialogFragment(TikTokNewActivity.this);
-                        tryAgainDialogFragment.show(getSupportFragmentManager(), "TryAgainDialogFragment");
-                        return;
+            if (!IsWithWaternark) {
+                if (!tiktokModel.getNotMarked().equals("")) {
+                    String urlWithOutWM = tiktokModel.getNotMarked();
+                    String[] urlWithWMArray = urlWithOutWM.split("/");
+                    for (int i = 0; i < urlWithWMArray.length; i++) {
+                        Log.e("urlWithWMArray :" + i, "urlWithWMArray :" + urlWithWMArray[i]);
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                    Log.e("urlWithWMArray", "urlWithWMArray :" + urlWithWMArray[urlWithWMArray.length - 1]);
+                    String[] lastFileName = urlWithWMArray[urlWithWMArray.length - 1].split("\\.");
+                    Log.e("lastFileName", "lastFileName :" + lastFileName.length);
+//            if (tryCount < 3) {
+                    try {
+                        if (lastFileName[0].matches("[a-zA-Z]+")) {
+                            tryCount = tryCount + 1;
+//                    callVideoDownload(binding.etText.getText().toString());
+                            TryAgainDialogFragment tryAgainDialogFragment = new TryAgainDialogFragment(TikTokNewActivity.this);
+                            tryAgainDialogFragment.show(getSupportFragmentManager(), "TryAgainDialogFragment");
+                            return;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
+                }
             }
 //            }
 //            try {

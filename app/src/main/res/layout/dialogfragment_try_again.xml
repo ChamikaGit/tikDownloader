@@ -54,8 +54,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvTitle"
                 android:layout_centerHorizontal="true"
-                android:text="If not work try again 2 times"
+                android:text="Currently no watermark video has an issue.\nPlease stay with us we are working on it to fix."
                 android:textSize="12sp"
+                android:gravity="center"
                 android:textColor="@color/white"/>
 
 

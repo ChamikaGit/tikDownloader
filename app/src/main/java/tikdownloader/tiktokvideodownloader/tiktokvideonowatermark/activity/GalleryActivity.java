@@ -21,6 +21,7 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityGalleryBinding;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.fragment.TikTokDownloadedFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class GalleryActivity extends AppCompatActivity {
     ActivityGalleryBinding binding;
     private InterstitialAd mInterstitialAdBackPress, mInterstitialAdOpen;
     private ProgressDialog progressDialog;
+    private int newCount = 1;
 
 
     @Override
@@ -42,20 +44,26 @@ public class GalleryActivity extends AppCompatActivity {
         activity = this;
         initViews();
 
+        int getCount = new Settings(this).getAdShowCountGallery();
+        newCount = getCount + 1;
+        new Settings(this).setAdShowCountGallery(newCount);
+
+        if (newCount % 3 == 0) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setCancelable(false);
+            progressDialog.setTitle("Ad Loading");
+            progressDialog.setMessage("Please wait..!");
+            progressDialog.show();
+        }
+
         AdsUtils.showGoogleBannerAd(GalleryActivity.this, binding.adView);
         mInterstitialAdBackPress = new InterstitialAd(this);
         mInterstitialAdBackPress.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
         mInterstitialAdBackPress.loadAd(new AdRequest.Builder().build());
 
-//        progressDialog = new ProgressDialog(this);
-//        progressDialog.setCancelable(false);
-//        progressDialog.setTitle("Ad Loading");
-//        progressDialog.setMessage("Please wait..!");
-//        progressDialog.show();
-//
-//        mInterstitialAdOpen = new InterstitialAd(this);
-//        mInterstitialAdOpen.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
-//        mInterstitialAdOpen.loadAd(new AdRequest.Builder().build());
+        mInterstitialAdOpen = new InterstitialAd(this);
+        mInterstitialAdOpen.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
+        mInterstitialAdOpen.loadAd(new AdRequest.Builder().build());
 
         mInterstitialAdBackPress.setAdListener(new AdListener() {
             @Override
@@ -91,41 +99,49 @@ public class GalleryActivity extends AppCompatActivity {
             }
         });
 
-//        mInterstitialAdOpen.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdLoaded() {
-//                // Code to be executed when an ad finishes loading.
-//                progressDialog.dismiss();
-//                mInterstitialAdOpen.show();
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(int errorCode) {
-//                // Code to be executed when an ad request fails.
-//                progressDialog.dismiss();
-//            }
-//
-//            @Override
-//            public void onAdOpened() {
-//                // Code to be executed when the ad is displayed.
-//            }
-//
-//            @Override
-//            public void onAdClicked() {
-//
-//                // Code to be executed when the user clicks on an ad.
-//            }
-//
-//            @Override
-//            public void onAdLeftApplication() {
-//                // Code to be executed when the user has left the app.
-//                progressDialog.dismiss();
-//            }
-//
-//            @Override
-//            public void onAdClosed() {
-//            }
-//        });
+        mInterstitialAdOpen.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+                if (newCount % 3 == 0) {
+                    mInterstitialAdOpen.show();
+                }
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onAdClosed() {
+            }
+        });
 
     }
 

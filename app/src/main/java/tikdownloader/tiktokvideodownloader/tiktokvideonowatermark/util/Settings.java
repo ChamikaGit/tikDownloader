@@ -71,5 +71,14 @@ public class Settings {
         return value;
     }
 
+    public void setAdShowCountGallery(int count) {
+        getPref().edit().putInt("AdShowCountGallery", count).commit();
+    }
+
+    public int getAdShowCountGallery() {
+        int value = getPref().getInt("AdShowCountGallery", 0);
+        return value;
+    }
+
 }
 
