@@ -1,111 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/rectangle_white_bottom_new"
-        android:elevation="3dp">
+        android:orientation="vertical">
 
-<!--        <RelativeLayout-->
-<!--            android:id="@+id/headerContainer"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:layout_alignParentTop="true">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/tvClose"-->
-<!--                android:layout_width="30dp"-->
-<!--                android:layout_height="30dp"-->
-<!--                android:layout_alignParentEnd="true"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:layout_marginEnd="10dp"-->
-<!--                android:background="@drawable/ic_close_black"-->
-<!--                android:onClick="onClick" />-->
-
-
-<!--        </RelativeLayout>-->
+        <!--  This is your template view -->
+        <com.google.android.ads.nativetemplates.TemplateView
+            android:id="@+id/my_template"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:gnt_template_type="@layout/gnt_medium_template_view" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:elevation="3dp">
 
-            <TextView
-                android:id="@+id/tvTitle"
+            <!--        <RelativeLayout-->
+            <!--            android:id="@+id/headerContainer"-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="50dp"-->
+            <!--            android:layout_alignParentTop="true">-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/tvClose"-->
+            <!--                android:layout_width="30dp"-->
+            <!--                android:layout_height="30dp"-->
+            <!--                android:layout_alignParentEnd="true"-->
+            <!--                android:layout_centerVertical="true"-->
+            <!--                android:layout_marginEnd="10dp"-->
+            <!--                android:background="@drawable/ic_close_black"-->
+            <!--                android:onClick="onClick" />-->
+
+
+            <!--        </RelativeLayout>-->
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="14dp"
-                android:text="Are you sure want to exit?"
-                android:textAllCaps="false"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-
-
-<!--            <com.google.android.gms.ads.AdView-->
-<!--                android:id="@+id/adView"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@+id/tvTitle"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:layout_marginBottom="20dp"-->
-<!--                ads:adSize="BANNER"-->
-<!--                ads:adUnitId="@string/admob_banner_ad">-->
-
-<!--            </com.google.android.gms.ads.AdView>-->
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_below="@+id/tvTitle"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/tvYes"
+                    android:id="@+id/tvTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
                     android:layout_weight="1"
-                    android:background="@drawable/et_back"
-                    android:backgroundTint="@color/colorPrimaryDark"
                     android:gravity="center"
                     android:padding="14dp"
-                    android:text="Yes"
+                    android:text="Are you sure want to exit?"
                     android:textAllCaps="false"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/tvNo"
+
+                <!--            <com.google.android.gms.ads.AdView-->
+                <!--                android:id="@+id/adView"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:layout_below="@+id/tvTitle"-->
+                <!--                android:layout_marginTop="20dp"-->
+                <!--                android:layout_marginBottom="20dp"-->
+                <!--                ads:adSize="BANNER"-->
+                <!--                ads:adUnitId="@string/admob_banner_ad">-->
+
+                <!--            </com.google.android.gms.ads.AdView>-->
+
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/et_back"
-                    android:backgroundTint="@color/colorPrimaryDark"
-                    android:gravity="center"
-                    android:padding="14dp"
-                    android:text="No"
-                    android:textAllCaps="false"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:layout_height="60dp"
+                    android:layout_below="@+id/tvTitle"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/tvYes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/et_back"
+                        android:backgroundTint="@color/colorPrimaryDark"
+                        android:gravity="center"
+                        android:padding="14dp"
+                        android:text="Yes"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/et_back"
+                        android:backgroundTint="@color/colorPrimaryDark"
+                        android:gravity="center"
+                        android:padding="14dp"
+                        android:text="No"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
 
 
-            </LinearLayout>
+                </LinearLayout>
+
+
+            </RelativeLayout>
 
 
         </RelativeLayout>
 
 
-    </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+
 </RelativeLayout>

@@ -25,6 +25,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.bumptech.glide.Glide;
+import com.google.ads.mediation.facebook.FacebookAdapter;
+import com.google.ads.mediation.facebook.FacebookExtras;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
@@ -273,24 +275,10 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 
     private void loadNativeAd() {
 
-//        AdLoader adLoader = new AdLoader.Builder(this, "ca-app-pub-3940256099942544/2247696110")
-//                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
-//                    @Override
-//                    public void onNativeAdLoaded(NativeAd NativeAd) {
-//                        NativeTemplateStyle styles = new
-//                                NativeTemplateStyle.Builder().withMainBackgroundColor(background).build();
-//
-//                        TemplateView template = findViewById(R.id.my_template);
-//                        template.setStyles(styles);
-//                        template.setNativeAd(NativeAd);
-//
-//                    }
-//                })
-//                .build();
-
-//        adLoader.loadAd(new AdRequest.Builder().build());
-
         AdLoader.Builder builder =  new AdLoader.Builder(TikTokNewActivity.this,getString(R.string.admob_native_ad));
+        //for facebook
+        Bundle extras = new FacebookExtras().setNativeBanner(true).build();
+
         builder.withAdListener(new AdListener(){
 
             @Override
@@ -308,7 +296,9 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         });
 
         AdLoader adLoader = builder.build();
-        adLoader.loadAd(new AdRequest.Builder().build());
+        adLoader.loadAd(new AdRequest.Builder()
+                .addNetworkExtrasBundle(FacebookAdapter.class, extras)
+                .build());
     }
 
     protected synchronized MyApplication getMainApp() {
@@ -754,12 +744,14 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             binding.etText.setText("");
             showInterstitial();
             loadIndustrisialAd();
+            loadNativeAd();
         }else {
             Log.e("startDownload ","marked "+notMarked);
             startDownload(notMarked,RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4");
             binding.etText.setText("");
             showInterstitial();
             loadIndustrisialAd();
+            loadNativeAd();
         }
 
     }

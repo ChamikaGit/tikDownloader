@@ -12,8 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.ads.nativetemplates.TemplateView;
 import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.formats.UnifiedNativeAd;
 
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.MainActivity;
@@ -24,13 +26,16 @@ public class ExitDialogFragment extends DialogFragment implements View.OnClickLi
     private TextView tvYes, tvNo;
     private AdView adView;
     private OnItemClickListener onItemClickListener;
+    private UnifiedNativeAd unifiedNativeAd;
+    private TemplateView templateView;
 
 
     public ExitDialogFragment() {
     }
 
-    public ExitDialogFragment(OnItemClickListener onItemClickListener) {
+    public ExitDialogFragment(OnItemClickListener onItemClickListener,UnifiedNativeAd unifiedNativeAd) {
         this.onItemClickListener = onItemClickListener;
+        this.unifiedNativeAd = unifiedNativeAd;
     }
 
     public interface OnItemClickListener {
@@ -46,11 +51,22 @@ public class ExitDialogFragment extends DialogFragment implements View.OnClickLi
         View view = inflater.inflate(R.layout.dialogfragment_exit, container, false);
         tvYes = view.findViewById(R.id.tvYes);
         tvNo = view.findViewById(R.id.tvNo);
+        templateView = view.findViewById(R.id.my_template);
 //        adView = view.findViewById(R.id.adView);
         tvYes.setOnClickListener(this);
         tvNo.setOnClickListener(this);
 //        AdsUtils.showGoogleBannerAd(getActivity(), adView);
+        showNativeAd();
         return view;
+    }
+
+    private void showNativeAd() {
+        if (unifiedNativeAd == null){
+            templateView.setVisibility(View.GONE);
+        }else {
+            templateView.setVisibility(View.VISIBLE);
+            templateView.setNativeAd(this.unifiedNativeAd);
+        }
     }
 
     @Override

@@ -25,6 +25,13 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.ads.mediation.facebook.FacebookAdapter;
+import com.google.ads.mediation.facebook.FacebookExtras;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
@@ -73,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ReviewInfo reviewInfo;
     private ReviewManager manager;
     private final int REQUEST_CODE_TIKTOK = 52;
+    private UnifiedNativeAd unifiedNativeAdObj;
 
 
     @Override
@@ -81,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         myApplication = (MyApplication) getApplication();
         activity = this;
-        exitDialogFragment = new ExitDialogFragment(this);
 
         AdsUtils.showGoogleBannerAd(MainActivity.this, binding.adView);
 //        MediationTestSuite.launch(MainActivity.this);
@@ -95,6 +102,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (settings.getReviewCount() > 2) {
             intiReview();
         }
+    }
+
+    private void loadNativeAd() {
+
+        AdLoader.Builder builder =  new AdLoader.Builder(MainActivity.this,getString(R.string.admob_native_ad));
+
+        //for facebook
+        Bundle extras = new FacebookExtras().setNativeBanner(true).build();
+
+        builder.withAdListener(new AdListener(){
+
+            @Override
+            public void onAdFailedToLoad(LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+            }
+        });
+
+        builder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
+            @Override
+            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
+
+                unifiedNativeAdObj = unifiedNativeAd;
+            }
+        });
+
+        AdLoader adLoader = builder.build();
+        adLoader.loadAd(new AdRequest.Builder()
+                .addNetworkExtrasBundle(FacebookAdapter.class, extras)
+                .build());
     }
 
     private void checkUpdate() {
@@ -152,6 +188,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+        loadNativeAd();
+        exitDialogFragment = new ExitDialogFragment(this,unifiedNativeAdObj);
     }
 
     public void initViews() {
