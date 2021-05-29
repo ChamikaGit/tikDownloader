@@ -2,11 +2,16 @@ package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -21,11 +26,16 @@ import androidx.databinding.DataBindingUtil;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,6 +65,7 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.RestClient
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.RetrofitClientInstance;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityTikTokBinding;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.TryAgainDialogFragment;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.VideoReadyDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TiktokModel;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TiktokModelNew;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
@@ -64,11 +75,12 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 import static android.content.ContentValues.TAG;
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.RootDirectoryTikTok;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.createFileFolder;
-import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.startDownload;
+import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.setToast;
 
-public class TikTokNewActivity extends AppCompatActivity implements TryAgainDialogFragment.OnItemClickListener {
+public class TikTokNewActivity extends AppCompatActivity implements TryAgainDialogFragment.OnItemClickListener, VideoReadyDialogFragment.OnItemClickListener {
     private ActivityTikTokBinding binding;
     TikTokNewActivity activity;
     CommonClassForAPI commonClassForAPI;
@@ -85,6 +97,8 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
     private ProgressDialog progressDialog;
     private int tryCount = 0;
     private int newCount = 1;
+    private String notMarked = "", marked = "";
+    private UnifiedNativeAd unifiedNativeAdObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -252,7 +266,49 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             }
         });
 
+        loadNativeAd();
 
+
+    }
+
+    private void loadNativeAd() {
+
+//        AdLoader adLoader = new AdLoader.Builder(this, "ca-app-pub-3940256099942544/2247696110")
+//                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+//                    @Override
+//                    public void onNativeAdLoaded(NativeAd NativeAd) {
+//                        NativeTemplateStyle styles = new
+//                                NativeTemplateStyle.Builder().withMainBackgroundColor(background).build();
+//
+//                        TemplateView template = findViewById(R.id.my_template);
+//                        template.setStyles(styles);
+//                        template.setNativeAd(NativeAd);
+//
+//                    }
+//                })
+//                .build();
+
+//        adLoader.loadAd(new AdRequest.Builder().build());
+
+        AdLoader.Builder builder =  new AdLoader.Builder(TikTokNewActivity.this,getString(R.string.admob_native_ad));
+        builder.withAdListener(new AdListener(){
+
+            @Override
+            public void onAdFailedToLoad(LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+            }
+        });
+
+        builder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
+            @Override
+            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
+
+                unifiedNativeAdObj = unifiedNativeAd;
+            }
+        });
+
+        AdLoader adLoader = builder.build();
+        adLoader.loadAd(new AdRequest.Builder().build());
     }
 
     protected synchronized MyApplication getMainApp() {
@@ -291,7 +347,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 
     private void initViews() {
         clipBoard = (ClipboardManager) activity.getSystemService(CLIPBOARD_SERVICE);
-
+        binding.layoutHowTo.LLHowToLayout.setVisibility(View.VISIBLE);
         binding.imBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -301,7 +357,12 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         binding.imInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.layoutHowTo.LLHowToLayout.setVisibility(View.VISIBLE);
+                if (!SharePrefs.getInstance(activity).getBoolean(SharePrefs.ISSHOWHOWTOTT)) {
+                    SharePrefs.getInstance(activity).putBoolean(SharePrefs.ISSHOWHOWTOTT, true);
+                    binding.layoutHowTo.LLHowToLayout.setVisibility(View.VISIBLE);
+                } else {
+                    binding.layoutHowTo.LLHowToLayout.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -311,12 +372,6 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         binding.layoutHowTo.imHowto4.setImageResource(R.drawable.tt4);
         binding.layoutHowTo.tvHowTo1.setText("1. Open TikTok");
         binding.layoutHowTo.tvHowTo3.setText("1. Open TikTok");
-        if (!SharePrefs.getInstance(activity).getBoolean(SharePrefs.ISSHOWHOWTOTT)) {
-            SharePrefs.getInstance(activity).putBoolean(SharePrefs.ISSHOWHOWTOTT, true);
-            binding.layoutHowTo.LLHowToLayout.setVisibility(View.VISIBLE);
-        } else {
-            binding.layoutHowTo.LLHowToLayout.setVisibility(View.GONE);
-        }
 
 
         binding.tvWithMark.setOnClickListener(v -> {
@@ -394,13 +449,13 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                         String host = url.getHost();
                         if (host.contains("tiktok.com")) {
                             //Utils.showProgressDialog(activity);
-                            progressBar.setVisibility(View.VISIBLE);
+//                            progressBar.setVisibility(View.VISIBLE);
                             img.setVisibility(View.VISIBLE);
                             //new callGetTikTokDefaultData().execute(binding.etText.getText().toString());
                         } else {
 //                Utils.setToast(activity, "Enter Valid Url");
                             img.setVisibility(View.GONE);
-                            progressBar.setVisibility(View.GONE);
+//                            progressBar.setVisibility(View.GONE);
                         }
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
@@ -449,9 +504,10 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         try {
             Utils utils = new Utils(activity);
             if (utils.isNetworkAvailable()) {
-                if (commonClassForAPI != null) {
-                    commonClassForAPI.callTiktokVideo(tiktokObserver, Url);
-                }
+//                if (commonClassForAPI != null) {
+//                    commonClassForAPI.callTiktokVideo(tiktokObserver, Url);
+//                }
+                getTikTokAPIData(Url);
             } else {
                 Utils.setToast(activity, "No Internet Connection");
             }
@@ -459,6 +515,67 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             e.printStackTrace();
 
         }
+    }
+
+
+    private void getTikTokAPIData(String LL) {
+        try {
+            Utils.showProgressDialog(activity);
+//            RestClient.getInstance(mActivity).getService().getTiktokData
+            APIServices service = RestClient.getInstance(TikTokNewActivity.this).getService();
+            Call<JsonObject> call = service.getTiktokDataNew(Utils.TikTokUrl,LL);
+            call.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Utils.hideProgressDialog(activity);
+                    if (response.code() == 200) {
+//                        TiktokModel model = response.body();
+                        JsonObject responseBody = response.body();
+                        JsonElement isSuccess = responseBody.get("success");
+                        try {
+                            if (IsWithWaternark) {
+//                    marked = tiktokModel.getNotMarked().replace("http://", "https://");
+                                marked = responseBody.get("marked").getAsString();
+//                                marked = model.getNotMarked();
+                                Log.e("marked1 ","marked "+marked);
+                                VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, responseBody.get("thumb").getAsString(),unifiedNativeAdObj);
+                                videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
+//                    startDownload(tiktokModel.getMarked().replace("http://", "https://"),
+//                            RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
+//                    binding.etText.setText("");
+//                    showInterstitial();
+//                    loadIndustrisialAd();
+                            } else {
+//                    notMarked = tiktokModel.getNotMarked().replace("http://", "https://");
+                                notMarked = responseBody.get("not_marked").getAsString();
+//                                notMarked = model.getNotMarked();
+                                Log.e("notMarked ","notMarked "+notMarked);
+                                VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, responseBody.get("thumb").getAsString(),unifiedNativeAdObj);
+                                videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
+//                    startDownload(tiktokModel.getNotMarked().replace("http://", "https://"),
+//                            RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
+//                    binding.etText.setText("");
+//                    showInterstitial();
+//                    loadIndustrisialAd();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Utils.hideProgressDialog(activity);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Utils.hideProgressDialog(activity);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("Error", e.getMessage());
+        }
+
     }
 
 //    private DisposableObserver<TiktokModel> tiktokObserver = new DisposableObserver<TiktokModel>() {
@@ -508,31 +625,31 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         public void onNext(TiktokModel tiktokModel) {
             Utils.hideProgressDialog(activity);
 
-            if (!IsWithWaternark) {
-                if (!tiktokModel.getNotMarked().equals("")) {
-                    String urlWithOutWM = tiktokModel.getNotMarked();
-                    String[] urlWithWMArray = urlWithOutWM.split("/");
-                    for (int i = 0; i < urlWithWMArray.length; i++) {
-                        Log.e("urlWithWMArray :" + i, "urlWithWMArray :" + urlWithWMArray[i]);
-                    }
-                    Log.e("urlWithWMArray", "urlWithWMArray :" + urlWithWMArray[urlWithWMArray.length - 1]);
-                    String[] lastFileName = urlWithWMArray[urlWithWMArray.length - 1].split("\\.");
-                    Log.e("lastFileName", "lastFileName :" + lastFileName.length);
-//            if (tryCount < 3) {
-                    try {
-                        if (lastFileName[0].matches("[a-zA-Z]+")) {
-                            tryCount = tryCount + 1;
-//                    callVideoDownload(binding.etText.getText().toString());
-                            TryAgainDialogFragment tryAgainDialogFragment = new TryAgainDialogFragment(TikTokNewActivity.this);
-                            tryAgainDialogFragment.show(getSupportFragmentManager(), "TryAgainDialogFragment");
-                            return;
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
+//            if (!IsWithWaternark) {
+//                if (!tiktokModel.getNotMarked().equals("")) {
+//                    String urlWithOutWM = tiktokModel.getNotMarked();
+//                    String[] urlWithWMArray = urlWithOutWM.split("/");
+//                    for (int i = 0; i < urlWithWMArray.length; i++) {
+//                        Log.e("urlWithWMArray :" + i, "urlWithWMArray :" + urlWithWMArray[i]);
+//                    }
+//                    Log.e("urlWithWMArray", "urlWithWMArray :" + urlWithWMArray[urlWithWMArray.length - 1]);
+//                    String[] lastFileName = urlWithWMArray[urlWithWMArray.length - 1].split("\\.");
+//                    Log.e("lastFileName", "lastFileName :" + lastFileName.length);
+////            if (tryCount < 3) {
+//                    try {
+//                        if (lastFileName[0].matches("[a-zA-Z]+")) {
+//                            tryCount = tryCount + 1;
+////                    callVideoDownload(binding.etText.getText().toString());
+//                            TryAgainDialogFragment tryAgainDialogFragment = new TryAgainDialogFragment(TikTokNewActivity.this);
+//                            tryAgainDialogFragment.show(getSupportFragmentManager(), "TryAgainDialogFragment");
+//                            return;
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//            }
 //            }
 //            try {
 //                if (tiktokModel.getResponsecode().equals("200")) {
@@ -547,27 +664,32 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 //            }
             try {
                 if (IsWithWaternark) {
-                    startDownload(tiktokModel.getMarked().replace("http://", "https://"),
-                            RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
-                    binding.etText.setText("");
-                    showInterstitial();
-                    loadIndustrisialAd();
+
+//                    marked = tiktokModel.getNotMarked().replace("http://", "https://");
+                    marked = tiktokModel.getNotMarked();
+                    Log.e("marked1 ","marked "+marked);
+                    VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, tiktokModel.getThumb(),unifiedNativeAdObj);
+                    videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
+//                    startDownload(tiktokModel.getMarked().replace("http://", "https://"),
+//                            RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
+//                    binding.etText.setText("");
+//                    showInterstitial();
+//                    loadIndustrisialAd();
                 } else {
-                    startDownload(tiktokModel.getNotMarked().replace("http://", "https://"),
-                            RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
-                    binding.etText.setText("");
-                    showInterstitial();
-                    loadIndustrisialAd();
+//                    notMarked = tiktokModel.getNotMarked().replace("http://", "https://");
+                    notMarked = tiktokModel.getNotMarked();
+                    Log.e("notMarked ","notMarked "+notMarked);
+                    VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, tiktokModel.getThumb(),unifiedNativeAdObj);
+                    videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
+//                    startDownload(tiktokModel.getNotMarked().replace("http://", "https://"),
+//                            RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
+//                    binding.etText.setText("");
+//                    showInterstitial();
+//                    loadIndustrisialAd();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-
-        private void loadIndustrisialAd() {
-            mInterstitialAd = new InterstitialAd(TikTokNewActivity.this);
-            mInterstitialAd.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
-            mInterstitialAd.loadAd(new AdRequest.Builder().build());
         }
 
         @Override
@@ -619,6 +741,134 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         Utils.showProgressDialog(activity);
         callVideoDownload(binding.etText.getText().toString());
     }
+
+    @Override
+    public void onDownloadClick(Dialog dialog) {
+
+        if (dialog.isShowing()){
+            dialog.dismiss();
+        }
+        if (IsWithWaternark){
+            Log.e("startDownload ","marked "+marked);
+            startDownload(marked,RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4");
+            binding.etText.setText("");
+            showInterstitial();
+            loadIndustrisialAd();
+        }else {
+            Log.e("startDownload ","marked "+notMarked);
+            startDownload(notMarked,RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4");
+            binding.etText.setText("");
+            showInterstitial();
+            loadIndustrisialAd();
+        }
+
+    }
+
+    @Override
+    public void onDownloadCancelClick(Dialog dialog) {
+
+    }
+
+    private void loadIndustrisialAd() {
+        mInterstitialAd = new InterstitialAd(TikTokNewActivity.this);
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+    }
+
+
+    public void startDownload(String downloadPath, String destinationPath, Context context, String FileName) {
+        Log.e("marked2 ","marked "+downloadPath);
+        setToast(context, "Download Started");
+        Uri uri = Uri.parse(downloadPath.trim()); // Path where you want to download file.
+        Log.e("marked3 ","uri "+uri.toString());
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.allowScanningByMediaScanner();
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);  // Tell on which network you want to download file.
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);  // This will show notification on top when downloading the file.
+        request.setTitle(FileName+""); // Title for notification.
+        request.setVisibleInDownloadsUi(true);
+        request.setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS,destinationPath+FileName);  // Storage directory path
+        ((DownloadManager) context.getSystemService(DOWNLOAD_SERVICE)).enqueue(request); // This will start downloading
+
+        try {
+            if (Build.VERSION.SDK_INT >= 19) {
+                MediaScannerConnection.scanFile(context, new String[]{new File(DIRECTORY_DOWNLOADS + "/" + destinationPath + FileName).getAbsolutePath()},
+                        null, new MediaScannerConnection.OnScanCompletedListener() {
+                            public void onScanCompleted(String path, Uri uri) {
+                            }
+                        });
+            } else {
+                context.sendBroadcast(new Intent("android.intent.action.MEDIA_MOUNTED", Uri.fromFile(new File(DIRECTORY_DOWNLOADS + "/" + destinationPath + FileName))));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.e("printStackTrace ","printStackTrace "+e.getMessage().toString());
+        }
+    }
+
+//    public void downloadvideo(String videoURL)
+//    {
+//        if(videoURL.contains(".mp4"))
+//        {
+//            File directory = new File(Environment.getExternalStorageDirectory()+File.separator+"My Videos");
+//            directory.mkdirs();
+//            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(videoURL));
+//            int Number=pref.getFileName();
+//            request.allowScanningByMediaScanner();
+//            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+//            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+//            File root = new File(Environment.getExternalStorageDirectory() + File.separator+"Facebook Videos");
+//            Uri path = Uri.withAppendedPath(Uri.fromFile(root), "Video-"+Number+".mp4");
+//            request.setDestinationUri(path);
+//            DownloadManager dm = (DownloadManager)getActivity().getSystemService(getActivity().DOWNLOAD_SERVICE);
+//            if(downloadlist.contains(videoURL))
+//            {
+//                Toast.makeText(getActivity().getApplicationContext(),"The Video is Already Downloading",Toast.LENGTH_LONG).show();
+//            }
+//            else
+//            {
+//                downloadlist.add(videoURL);
+//                dm.enqueue(request);
+//                Toast.makeText(getActivity().getApplicationContext(),"Downloading Video-"+Number+".mp4",Toast.LENGTH_LONG).show();
+//                Number++;
+//                pref.setFileName(Number);
+//            }
+//
+//        }
+//    }
+//
+//
+//    private long downloadFile(Uri uri, String fileStorageDestinationUri, String fileName) {
+//
+//        long downloadReference = 0;
+//
+//        DownloadManager downloadManager = (DownloadManager)getSystemService(DOWNLOAD_SERVICE);
+//        try {
+//            DownloadManager.Request request = new DownloadManager.Request(uri);
+//
+//            //Setting title of request
+//            request.setTitle(fileName);
+//
+//            //Setting description of request
+//            request.setDescription(getString(R.string.downloadingnow));
+//
+//            //set notification when download completed
+//            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+//
+//            //Set the local destination for the downloaded file to a path within the application's external files directory
+//            request.setDestinationInExternalPublicDir(fileStorageDestinationUri, fileName);
+//
+//            request.allowScanningByMediaScanner();
+//
+//            //Enqueue download and save the referenceId
+//            downloadReference = downloadManager.enqueue(request);
+//        } catch (IllegalArgumentException e) {
+//            this.showToast(getString(R.string.downloadnotavilablenow));
+//
+//
+//        }
+//        return downloadReference;
+//    }
 
     class callGetTikTokDefaultData extends AsyncTask<String, Void, Document> {
         Document tikDoc;

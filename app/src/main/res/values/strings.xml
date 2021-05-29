@@ -11,14 +11,15 @@
 
 
 <!--    AdMob Id-->
-        <string name="admob_app_id">ca-app-pub-8434077743160830~9891994515</string>
-        <string name="admob_banner_ad">ca-app-pub-8434077743160830/8496040410</string>
-        <string name="admob_interstitial_ad">ca-app-pub-8434077743160830/1382949108</string>
+<!--        <string name="admob_app_id">ca-app-pub-8434077743160830~9891994515</string>-->
+<!--        <string name="admob_banner_ad">ca-app-pub-8434077743160830/8496040410</string>-->
+<!--        <string name="admob_interstitial_ad">ca-app-pub-8434077743160830/1382949108</string>-->
 
     <!--test_ad_mob-->
-<!--    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>-->
-<!--    <string name="admob_banner_ad">ca-app-pub-3940256099942544/6300978111</string>-->
-<!--    <string name="admob_interstitial_ad">ca-app-pub-3940256099942544/8691691433</string>-->
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_banner_ad">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="admob_interstitial_ad">ca-app-pub-3940256099942544/8691691433</string>
+    <string name="admob_native_ad">ca-app-pub-3940256099942544/2247696110</string>
 
     <string name="about_content">Version: 1.0\nDeveloped by:-\chamiappsdev@gmail.com</string>
     <string name="aboutInfo">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>

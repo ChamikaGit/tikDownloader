@@ -45,4 +45,7 @@ public interface APIServices {
     @POST("fetch-videos/{id}")
     Call<ResponseBody> getTiktokFetchVideo(@Path("id") String id);
 
+    @GET
+    Call<JsonObject> getTiktokDataNew(@Url String Url, @Query("url") String url);
+
 }

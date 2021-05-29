@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import java.io.File;
 
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 
+import static android.content.Context.DOWNLOAD_SERVICE;
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class Utils {
@@ -110,15 +112,18 @@ public static String TikTokUrl = "https://appskastudio.xyz/tiktok/index.php";
     }
 
     public static void startDownload(String downloadPath, String destinationPath, Context context, String FileName) {
+        Log.e("marked2 ","marked "+downloadPath);
         setToast(context, "Download Started");
         Uri uri = Uri.parse(downloadPath.trim()); // Path where you want to download file.
+        Log.e("marked3 ","uri "+uri.toString());
         DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.allowScanningByMediaScanner();
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);  // Tell on which network you want to download file.
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);  // This will show notification on top when downloading the file.
         request.setTitle(FileName+""); // Title for notification.
         request.setVisibleInDownloadsUi(true);
         request.setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS,destinationPath+FileName);  // Storage directory path
-        ((DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE)).enqueue(request); // This will start downloading
+        ((DownloadManager) context.getSystemService(DOWNLOAD_SERVICE)).enqueue(request); // This will start downloading
 
         try {
             if (Build.VERSION.SDK_INT >= 19) {
@@ -132,6 +137,7 @@ public static String TikTokUrl = "https://appskastudio.xyz/tiktok/index.php";
             }
         }catch (Exception e){
             e.printStackTrace();
+            Log.e("printStackTrace ","printStackTrace "+e.getMessage().toString());
         }
     }
 
