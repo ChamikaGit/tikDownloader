@@ -553,6 +553,8 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                         }
                     } else {
                         Utils.hideProgressDialog(activity);
+                        TryAgainDialogFragment tryAgainDialogFragment = new TryAgainDialogFragment(TikTokNewActivity.this);
+                        tryAgainDialogFragment.show(getSupportFragmentManager(),"TryAgainDialogFragment");
                     }
                 }
 
