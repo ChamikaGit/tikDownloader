@@ -21,12 +21,13 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.google.android.ads.nativetemplates.TemplateView;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
+import com.google.android.gms.ads.nativead.NativeAd;
 
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.TikTokNewActivity;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.TemplateView;
 
 public class VideoReadyDialogFragment extends DialogFragment implements View.OnClickListener {
 
@@ -37,10 +38,10 @@ public class VideoReadyDialogFragment extends DialogFragment implements View.OnC
     private Context context;
     private ImageView imgThumb;
     private ProgressBar progressBar;
-    private UnifiedNativeAd unifiedNativeAd;
+    private NativeAd unifiedNativeAd;
     private TemplateView templateView;
 
-    public VideoReadyDialogFragment(Context context,OnItemClickListener onItemClickListener,String thumb,UnifiedNativeAd unifiedNativeAd) {
+    public VideoReadyDialogFragment(Context context,OnItemClickListener onItemClickListener,String thumb,NativeAd unifiedNativeAd) {
         this.onItemClickListener = onItemClickListener;
         this.thumb = thumb;
         this.context =context;

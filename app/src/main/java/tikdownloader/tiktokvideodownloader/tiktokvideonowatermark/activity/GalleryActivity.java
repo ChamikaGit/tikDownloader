@@ -3,6 +3,7 @@ package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -13,9 +14,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityGalleryBinding;
@@ -57,89 +62,205 @@ public class GalleryActivity extends AppCompatActivity {
         }
 
         AdsUtils.showGoogleBannerAd(GalleryActivity.this, binding.adView);
-        mInterstitialAdBackPress = new InterstitialAd(this);
-        mInterstitialAdBackPress.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
-        mInterstitialAdBackPress.loadAd(new AdRequest.Builder().build());
+        loadAdOpen();
+        loadAdBack();
 
-        mInterstitialAdOpen = new InterstitialAd(this);
-        mInterstitialAdOpen.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
-        mInterstitialAdOpen.loadAd(new AdRequest.Builder().build());
+//        mInterstitialAdBackPress = new InterstitialAd(this);
+//        mInterstitialAdBackPress.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
+//        mInterstitialAdBackPress.loadAd(new AdRequest.Builder().build());
+//
+//        mInterstitialAdOpen = new InterstitialAd(this);
+//        mInterstitialAdOpen.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
+//        mInterstitialAdOpen.loadAd(new AdRequest.Builder().build());
+//
+//        mInterstitialAdBackPress.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//                // Code to be executed when an ad finishes loading.
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                // Code to be executed when an ad request fails.
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//                // Code to be executed when the ad is displayed.
+//            }
+//
+//            @Override
+//            public void onAdClicked() {
+//
+//                // Code to be executed when the user clicks on an ad.
+//            }
+//
+//            @Override
+//            public void onAdLeftApplication() {
+//                // Code to be executed when the user has left the app.
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//
+//                onBackPressed();
+//            }
+//        });
+//
+//        mInterstitialAdOpen.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//                // Code to be executed when an ad finishes loading.
+//                if (progressDialog.isShowing()) {
+//                    progressDialog.dismiss();
+//                }
+//                if (newCount % 3 == 0) {
+//                    mInterstitialAdOpen.show();
+//                }
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                // Code to be executed when an ad request fails.
+//                if (progressDialog.isShowing()) {
+//                    progressDialog.dismiss();
+//                }
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//                // Code to be executed when the ad is displayed.
+//            }
+//
+//            @Override
+//            public void onAdClicked() {
+//
+//                // Code to be executed when the user clicks on an ad.
+//            }
+//
+//            @Override
+//            public void onAdLeftApplication() {
+//                // Code to be executed when the user has left the app.
+//                if (progressDialog.isShowing()) {
+//                    progressDialog.dismiss();
+//                }
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//            }
+//        });
 
-        mInterstitialAdBackPress.setAdListener(new AdListener() {
+    }
+
+    private void loadAdBack() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        InterstitialAd.load(this, getResources().getString(R.string.admob_interstitial_ad), adRequest, new InterstitialAdLoadCallback() {
             @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                // The mInterstitialAd reference will be null until
+                // an ad is loaded.
+                GalleryActivity.this.mInterstitialAdBackPress = interstitialAd;
+//                        Log.i(TAG, "onAdLoaded");
+//                        Toast.makeText(MyActivity.this, "onAdLoaded()", Toast.LENGTH_SHORT).show();
+                interstitialAd.setFullScreenContentCallback(
+                        new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when fullscreen content is dismissed.
+                                // Make sure to set your reference to null so you don't
+                                // show it a second time.
+                                GalleryActivity.this.mInterstitialAdBackPress = null;
+                                Log.d("TAG", "The ad was dismissed.");
+                                onBackPressed();
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when fullscreen content failed to show.
+                                // Make sure to set your reference to null so you don't
+                                // show it a second time.
+                                GalleryActivity.this.mInterstitialAdBackPress = null;
+                                Log.d("TAG", "The ad failed to show.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when fullscreen content is shown.
+                                Log.d("TAG", "The ad was shown.");
+                            }
+                        });
             }
 
             @Override
-            public void onAdFailedToLoad(int errorCode) {
-                // Code to be executed when an ad request fails.
-            }
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                // Handle the error
+//                        Log.i(TAG, loadAdError.getMessage());
+                mInterstitialAdBackPress = null;
 
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when the ad is displayed.
-            }
-
-            @Override
-            public void onAdClicked() {
-
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-            }
-
-            @Override
-            public void onAdClosed() {
-
-                onBackPressed();
+//                        String error =
+//                                String.format(
+//                                        "domain: %s, code: %d, message: %s",
+//                                        loadAdError.getDomain(), loadAdError.getCode(), loadAdError.getMessage());
+//                        Toast.makeText(
+//                                MyActivity.this, "onAdFailedToLoad() with error: " + error, Toast.LENGTH_SHORT)
+//                                .show();
             }
         });
 
-        mInterstitialAdOpen.setAdListener(new AdListener() {
+    }
+
+    private void loadAdOpen() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        InterstitialAd.load(this, getResources().getString(R.string.admob_interstitial_ad), adRequest, new InterstitialAdLoadCallback() {
             @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                // The mInterstitialAd reference will be null until
+                // an ad is loaded.
+                GalleryActivity.this.mInterstitialAdOpen = interstitialAd;
+//                        Log.i(TAG, "onAdLoaded");
+//                        Toast.makeText(MyActivity.this, "onAdLoaded()", Toast.LENGTH_SHORT).show();
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
                 if (newCount % 3 == 0) {
-                    mInterstitialAdOpen.show();
+                    mInterstitialAdOpen.show(GalleryActivity.this);
                 }
+                interstitialAd.setFullScreenContentCallback(
+                        new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when fullscreen content is dismissed.
+                                // Make sure to set your reference to null so you don't
+                                // show it a second time.
+                                GalleryActivity.this.mInterstitialAdOpen = null;
+                                Log.d("TAG", "The ad was dismissed.");
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when fullscreen content failed to show.
+                                // Make sure to set your reference to null so you don't
+                                // show it a second time.
+                                GalleryActivity.this.mInterstitialAdOpen = null;
+                                Log.d("TAG", "The ad failed to show.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when fullscreen content is shown.
+                                Log.d("TAG", "The ad was shown.");
+                            }
+                        });
             }
 
             @Override
-            public void onAdFailedToLoad(int errorCode) {
-                // Code to be executed when an ad request fails.
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+
+                mInterstitialAdOpen = null;
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when the ad is displayed.
-            }
-
-            @Override
-            public void onAdClicked() {
-
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onAdClosed() {
             }
         });
 
@@ -222,8 +343,8 @@ public class GalleryActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mInterstitialAdBackPress != null && mInterstitialAdBackPress.isLoaded()) {
-            mInterstitialAdBackPress.show();
+        if (mInterstitialAdBackPress != null) {
+            mInterstitialAdBackPress.show(GalleryActivity.this);
         } else {
             setResult(Activity.RESULT_OK);
             finish();

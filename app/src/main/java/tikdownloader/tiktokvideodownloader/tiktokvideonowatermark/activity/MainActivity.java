@@ -15,10 +15,13 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -31,7 +34,11 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.VideoController;
+import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
@@ -80,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ReviewInfo reviewInfo;
     private ReviewManager manager;
     private final int REQUEST_CODE_TIKTOK = 52;
-    private UnifiedNativeAd unifiedNativeAdObj;
+    private NativeAd unifiedNativeAdObj;
 
 
     @Override
@@ -106,28 +113,123 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void loadNativeAd() {
 
-        AdLoader.Builder builder =  new AdLoader.Builder(MainActivity.this,getString(R.string.admob_native_ad));
+//        AdLoader.Builder builder =  new AdLoader.Builder(MainActivity.this,getString(R.string.admob_native_ad));
+//
+//        //for facebook
+//        Bundle extras = new FacebookExtras().setNativeBanner(true).build();
+//
+//        builder.withAdListener(new AdListener(){
+//
+//            @Override
+//            public void onAdFailedToLoad(LoadAdError loadAdError) {
+//                super.onAdFailedToLoad(loadAdError);
+//            }
+//        });
+//
+//        builder.forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+//            @Override
+//            public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
+//                if (isDestroyed()) {
+//                    nativeAd.destroy();
+//                    Log.d("TAG", "Native Ad Destroyed");
+//                    return;
+//                }
+//                unifiedNativeAdObj = nativeAd;
+//            }
+//        });
+//
+////        builder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
+////            @Override
+////            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
+////
+////                unifiedNativeAdObj = unifiedNativeAd;
+////            }
+////        });
+//        builder.withNativeAdOptions(new NativeAdOptions.Builder().build());
+//
+//        AdLoader adLoader = builder.build();
+//        adLoader.loadAd(new AdRequest.Builder()
+//                .addNetworkExtrasBundle(FacebookAdapter.class, extras)
+//                .build());
 
-        //for facebook
         Bundle extras = new FacebookExtras().setNativeBanner(true).build();
 
-        builder.withAdListener(new AdListener(){
+        VideoOptions videoOptions = new VideoOptions.Builder()
+                .setStartMuted(false)
+                .build();
 
-            @Override
-            public void onAdFailedToLoad(LoadAdError loadAdError) {
-                super.onAdFailedToLoad(loadAdError);
-            }
-        });
+        NativeAdOptions adOptions = new NativeAdOptions.Builder()
+                .setVideoOptions(videoOptions)
+                .build();
 
-        builder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
-            @Override
-            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
+        AdLoader adLoader = new AdLoader.Builder(MainActivity.this, getString(R.string.admob_native_ad))
+                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                    @Override
+                    public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
+                        if (isDestroyed()) {
+                            nativeAd.destroy();
+                            Log.d("TAG", "Native Ad Destroyed");
+                            return;
+                        }
+                        if (nativeAd.getMediaContent().hasVideoContent()) {
+                            float mediaAspectRatio = nativeAd.getMediaContent().getAspectRatio();
+                            float duration = nativeAd.getMediaContent().getDuration();
 
-                unifiedNativeAdObj = unifiedNativeAd;
-            }
-        });
+                            nativeAd.getMediaContent().getVideoController().setVideoLifecycleCallbacks(new VideoController.VideoLifecycleCallbacks() {
+                                @Override
+                                public void onVideoStart() {
+                                    super.onVideoStart();
+                                }
 
-        AdLoader adLoader = builder.build();
+                                @Override
+                                public void onVideoPlay() {
+                                    super.onVideoPlay();
+                                }
+
+                                @Override
+                                public void onVideoPause() {
+                                    super.onVideoPause();
+                                }
+
+                                @Override
+                                public void onVideoEnd() {
+                                    super.onVideoEnd();
+                                }
+
+                                @Override
+                                public void onVideoMute(boolean b) {
+                                    super.onVideoMute(b);
+                                }
+                            });
+                        }
+
+                        unifiedNativeAdObj = nativeAd;
+                    }
+                })
+
+                .withAdListener(new AdListener() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+
+                        new CountDownTimer(10000, 1000) {
+
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                loadNativeAd();
+                            }
+                        }.start();
+                    }
+                })
+//                .withNativeAdOptions(new NativeAdOptions.Builder().build())
+                .withNativeAdOptions(adOptions)
+                .build();
+
         adLoader.loadAd(new AdRequest.Builder()
                 .addNetworkExtrasBundle(FacebookAdapter.class, extras)
                 .build());
@@ -189,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         loadNativeAd();
-        exitDialogFragment = new ExitDialogFragment(this,unifiedNativeAdObj);
+        exitDialogFragment = new ExitDialogFragment(this, unifiedNativeAdObj);
     }
 
     public void initViews() {
@@ -421,7 +523,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (requestCode == REQUEST_CODE_TIKTOK) {
             if (resultCode == Activity.RESULT_OK) {
                 if (reviewInfo != null) {
-                    Utils.setToast(MainActivity.this,"Give a best rate to us!");
+                    Utils.setToast(MainActivity.this, "Give a best rate to us!");
                     Task<Void> flow = manager.launchReviewFlow(activity, reviewInfo);
                     flow.addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

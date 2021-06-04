@@ -8,8 +8,8 @@ android {
         applicationId "tikdownloader.tiktokvideodownloader.tiktokvideonowatermark"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 29
-        versionName "1.1.29"
+        versionCode 30
+        versionName "1.1.30"
         multiDexEnabled true
         project.ext.set("archivesBaseName", "TikSave-v" + defaultConfig.versionName + "_" + defaultConfig.versionCode + "-" + new Date().format('yyyyMMdd'))
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -81,13 +81,13 @@ dependencies {
     implementation 'commons-io:commons-io:2.4'
     implementation 'org.jsoup:jsoup:1.12.1'
     implementation 'com.google.android.play:core:1.8.0'
-    implementation 'com.facebook.android:audience-network-sdk:5.8.0'
-    implementation 'com.google.android.gms:play-services-ads:19.6.0'
-    implementation 'com.google.firebase:firebase-analytics:18.0.0'
-    implementation 'com.google.firebase:firebase-messaging:20.1.4'
+    implementation 'com.facebook.android:audience-network-sdk:6.2.0'
+    implementation 'com.google.android.gms:play-services-ads:20.1.0'
+    implementation 'com.google.firebase:firebase-analytics:19.0.0'
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
     implementation 'com.google.firebase:firebase-config:19.2.0'
     implementation 'com.google.android.exoplayer:exoplayer:2.7.2'
-    implementation 'com.google.ads.mediation:facebook:6.2.0.1'
+    implementation 'com.google.ads.mediation:facebook:6.4.0.0'
 //    implementation 'com.google.android.ads:mediation-test-suite:1.5.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.3.1'
     implementation 'com.airbnb.android:lottie:3.0.7'

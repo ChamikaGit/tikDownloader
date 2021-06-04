@@ -25,46 +25,46 @@ public class AdsUtils {
         googleAdView.loadAd(adRequest);
     }
 
-    public static void showGoogleInterstitialAd(Context context) {
-
-        MobileAds.initialize(context, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
-        final com.google.android.gms.ads.InterstitialAd mInterstitialAd = new com.google.android.gms.ads.InterstitialAd(context);
-        mInterstitialAd.setAdUnitId(context.getResources().getString(R.string.admob_interstitial_ad));
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                mInterstitialAd.show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-            }
-
-            @Override
-            public void onAdOpened() {
-            }
-
-            @Override
-            public void onAdClicked() {
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-            }
-
-            @Override
-            public void onAdClosed() {
-            }
-        });
-
-
-    }
+//    public static void showGoogleInterstitialAd(Context context) {
+//
+//        MobileAds.initialize(context, new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {
+//            }
+//        });
+//        final com.google.android.gms.ads.InterstitialAd mInterstitialAd = new com.google.android.gms.ads.InterstitialAd(context);
+//        mInterstitialAd.setAdUnitId(context.getResources().getString(R.string.admob_interstitial_ad));
+//        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+//
+//        mInterstitialAd.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//                mInterstitialAd.show();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//            }
+//
+//            @Override
+//            public void onAdClicked() {
+//            }
+//
+//            @Override
+//            public void onAdLeftApplication() {
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//            }
+//        });
+//
+//
+//    }
 
 
 

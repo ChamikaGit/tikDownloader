@@ -12,28 +12,29 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.google.android.ads.nativetemplates.TemplateView;
+
 import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.formats.UnifiedNativeAd;
+import com.google.android.gms.ads.nativead.NativeAd;
 
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.MainActivity;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.TemplateView;
 
 public class ExitDialogFragment extends DialogFragment implements View.OnClickListener {
 
     private TextView tvYes, tvNo;
     private AdView adView;
     private OnItemClickListener onItemClickListener;
-    private UnifiedNativeAd unifiedNativeAd;
+    private NativeAd unifiedNativeAd;
     private TemplateView templateView;
 
 
     public ExitDialogFragment() {
     }
 
-    public ExitDialogFragment(OnItemClickListener onItemClickListener,UnifiedNativeAd unifiedNativeAd) {
+    public ExitDialogFragment(OnItemClickListener onItemClickListener, NativeAd unifiedNativeAd) {
         this.onItemClickListener = onItemClickListener;
         this.unifiedNativeAd = unifiedNativeAd;
     }
@@ -65,7 +66,7 @@ public class ExitDialogFragment extends DialogFragment implements View.OnClickLi
             templateView.setVisibility(View.GONE);
         }else {
             templateView.setVisibility(View.VISIBLE);
-            templateView.setNativeAd(this.unifiedNativeAd);
+            templateView.setNativeAd(unifiedNativeAd);
         }
     }
 

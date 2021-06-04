@@ -21,21 +21,27 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.bumptech.glide.Glide;
 import com.google.ads.mediation.facebook.FacebookAdapter;
 import com.google.ads.mediation.facebook.FacebookExtras;
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -91,7 +97,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
     boolean IsWithWaternark = true;
     private MyApplication myApplication;
 
-    private InterstitialAd mInterstitialAd, mInterstitialAdBackPress, mInterstitialAdOpen;
+    private InterstitialAd mInterstitialAdDownload, mInterstitialAdBackPress, mInterstitialAdOpen;
     private ImageView img, imgPicture;
     private TextView tvName, tvDescription, tvKeywords, tvCommentCount, tvDownloadNow, tvPast;
     private ProgressBar progressBar;
@@ -100,7 +106,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
     private int tryCount = 0;
     private int newCount = 1;
     private String notMarked = "", marked = "";
-    private UnifiedNativeAd unifiedNativeAdObj;
+    private NativeAd unifiedNativeAdObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +116,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         int getCount = new Settings(this).getAdShowCount();
         newCount = getCount + 1;
         new Settings(this).setAdShowCount(newCount);
-        if (newCount % 3 == 0) {
+        if (newCount % 5 == 0) {
             progressDialog = new ProgressDialog(this);
             progressDialog.setCancelable(false);
             progressDialog.setTitle("Ad Loading");
@@ -140,162 +146,319 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         });
 
 
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-        mInterstitialAdBackPress = new InterstitialAd(this);
-        mInterstitialAdBackPress.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
-        mInterstitialAdBackPress.loadAd(new AdRequest.Builder().build());
-
-        mInterstitialAdOpen = new InterstitialAd(this);
-        mInterstitialAdOpen.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
-        mInterstitialAdOpen.loadAd(new AdRequest.Builder().build());
-
-
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                // Code to be executed when an ad request fails.
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when the ad is displayed.
-            }
-
-            @Override
-            public void onAdClicked() {
-
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-            }
-
-            @Override
-            public void onAdClosed() {
-
-                //version_14
-//                GetTikTokData();
-//                getAllBanners(binding.etText.getText().toString());
-                // Code to be executed when the interstitial ad is closed.
-            }
-        });
-
-        mInterstitialAdBackPress.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                // Code to be executed when an ad request fails.
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when the ad is displayed.
-            }
-
-            @Override
-            public void onAdClicked() {
-
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-            }
-
-            @Override
-            public void onAdClosed() {
-
-                onBackPressed();
-            }
-        });
-
-        mInterstitialAdOpen.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
-                if (newCount % 3 == 0) {
-                    mInterstitialAdOpen.show();
-                }
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                // Code to be executed when an ad request fails.
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when the ad is displayed.
-            }
-
-            @Override
-            public void onAdClicked() {
-
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onAdClosed() {
-            }
-        });
-
+//        mInterstitialAd = new InterstitialAd(this);
+//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
+//        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+//
+//        mInterstitialAdBackPress = new InterstitialAd(this);
+//        mInterstitialAdBackPress.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
+//        mInterstitialAdBackPress.loadAd(new AdRequest.Builder().build());
+//
+//        mInterstitialAdOpen = new InterstitialAd(this);
+//        mInterstitialAdOpen.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
+//        mInterstitialAdOpen.loadAd(new AdRequest.Builder().build());
+//
+//
+//        mInterstitialAd.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//                // Code to be executed when an ad finishes loading.
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                // Code to be executed when an ad request fails.
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//                // Code to be executed when the ad is displayed.
+//            }
+//
+//            @Override
+//            public void onAdClicked() {
+//
+//                // Code to be executed when the user clicks on an ad.
+//            }
+//
+//            @Override
+//            public void onAdLeftApplication() {
+//                // Code to be executed when the user has left the app.
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//
+//                //version_14
+////                GetTikTokData();
+////                getAllBanners(binding.etText.getText().toString());
+//                // Code to be executed when the interstitial ad is closed.
+//            }
+//        });
+//
+//        mInterstitialAdBackPress.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//                // Code to be executed when an ad finishes loading.
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                // Code to be executed when an ad request fails.
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//                // Code to be executed when the ad is displayed.
+//            }
+//
+//            @Override
+//            public void onAdClicked() {
+//
+//                // Code to be executed when the user clicks on an ad.
+//            }
+//
+//            @Override
+//            public void onAdLeftApplication() {
+//                // Code to be executed when the user has left the app.
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//
+//                onBackPressed();
+//            }
+//        });
+//
+//        mInterstitialAdOpen.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//                // Code to be executed when an ad finishes loading.
+//                if (progressDialog.isShowing()) {
+//                    progressDialog.dismiss();
+//                }
+//                if (newCount % 3 == 0) {
+//                    mInterstitialAdOpen.show();
+//                }
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                // Code to be executed when an ad request fails.
+//                if (progressDialog.isShowing()) {
+//                    progressDialog.dismiss();
+//                }
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//                // Code to be executed when the ad is displayed.
+//            }
+//
+//            @Override
+//            public void onAdClicked() {
+//
+//                // Code to be executed when the user clicks on an ad.
+//            }
+//
+//            @Override
+//            public void onAdLeftApplication() {
+//                // Code to be executed when the user has left the app.
+//                if (progressDialog.isShowing()) {
+//                    progressDialog.dismiss();
+//                }
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//            }
+//        });
+        loadAdOpen();
+        loadAdDownload();
         loadNativeAd();
 
 
     }
 
+    private void loadAdOpen() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        InterstitialAd.load(this, getResources().getString(R.string.admob_interstitial_ad), adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                TikTokNewActivity.this.mInterstitialAdOpen = interstitialAd;
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+                if (newCount % 5 == 0) {
+                    mInterstitialAdOpen.show(TikTokNewActivity.this);
+                }
+                interstitialAd.setFullScreenContentCallback(
+                        new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                TikTokNewActivity.this.mInterstitialAdOpen = null;
+                                Log.d("TAG", "The ad was dismissed.");
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                TikTokNewActivity.this.mInterstitialAdOpen = null;
+                                Log.d("TAG", "The ad failed to show.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                Log.d("TAG", "The ad was shown.");
+                            }
+                        });
+
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                mInterstitialAdOpen = null;
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+
+            }
+        });
+
+    }
+
+
+    private void loadAdDownload() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        InterstitialAd.load(this, getResources().getString(R.string.admob_interstitial_ad), adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                TikTokNewActivity.this.mInterstitialAdDownload = interstitialAd;
+
+                interstitialAd.setFullScreenContentCallback(
+                        new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                TikTokNewActivity.this.mInterstitialAdDownload = null;
+                                Log.d("TAG", "The ad was dismissed.");
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                TikTokNewActivity.this.mInterstitialAdDownload = null;
+                                Log.d("TAG", "The ad failed to show.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                Log.d("TAG", "The ad was shown.");
+                            }
+                        });
+
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                mInterstitialAdDownload = null;
+
+            }
+        });
+
+    }
+
+//    private void loadNativeAd() {
+//
+//        AdLoader.Builder builder = new AdLoader.Builder(TikTokNewActivity.this, getString(R.string.admob_native_ad));
+//        //for facebook
+//        Bundle extras = new FacebookExtras().setNativeBanner(true).build();
+//
+//        builder.withAdListener(new AdListener() {
+//
+//            @Override
+//            public void onAdFailedToLoad(LoadAdError loadAdError) {
+//                super.onAdFailedToLoad(loadAdError);
+//            }
+//        });
+//
+//        builder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
+//            @Override
+//            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
+//
+//                unifiedNativeAdObj = unifiedNativeAd;
+//            }
+//        });
+//
+//        AdLoader adLoader = builder.build();
+//        adLoader.loadAd(new AdRequest.Builder()
+//                .addNetworkExtrasBundle(FacebookAdapter.class, extras)
+//                .build());
+//    }
+
     private void loadNativeAd() {
 
-        AdLoader.Builder builder =  new AdLoader.Builder(TikTokNewActivity.this,getString(R.string.admob_native_ad));
-        //for facebook
+//        AdLoader.Builder builder =  new AdLoader.Builder(MainActivity.this,getString(R.string.admob_native_ad));
+//
+//        //for facebook
+//        Bundle extras = new FacebookExtras().setNativeBanner(true).build();
+//
+//        builder.withAdListener(new AdListener(){
+//
+//            @Override
+//            public void onAdFailedToLoad(LoadAdError loadAdError) {
+//                super.onAdFailedToLoad(loadAdError);
+//            }
+//        });
+//
+//        builder.forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+//            @Override
+//            public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
+//                if (isDestroyed()) {
+//                    nativeAd.destroy();
+//                    Log.d("TAG", "Native Ad Destroyed");
+//                    return;
+//                }
+//                unifiedNativeAdObj = nativeAd;
+//            }
+//        });
+//
+////        builder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
+////            @Override
+////            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
+////
+////                unifiedNativeAdObj = unifiedNativeAd;
+////            }
+////        });
+//        builder.withNativeAdOptions(new NativeAdOptions.Builder().build());
+//
+//        AdLoader adLoader = builder.build();
+//        adLoader.loadAd(new AdRequest.Builder()
+//                .addNetworkExtrasBundle(FacebookAdapter.class, extras)
+//                .build());
+
         Bundle extras = new FacebookExtras().setNativeBanner(true).build();
 
-        builder.withAdListener(new AdListener(){
+        AdLoader adLoader = new AdLoader.Builder(TikTokNewActivity.this, getString(R.string.admob_native_ad))
+                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                    @Override
+                    public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
+                        if (isDestroyed()) {
+                            nativeAd.destroy();
+                            Log.d("TAG", "Native Ad Destroyed");
+                            return;
+                        }
 
-            @Override
-            public void onAdFailedToLoad(LoadAdError loadAdError) {
-                super.onAdFailedToLoad(loadAdError);
-            }
-        });
+                        unifiedNativeAdObj = nativeAd;
+                    }
+                })
 
-        builder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
-            @Override
-            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
+                .withAdListener(new AdListener() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+                    }
+                })
+                .withNativeAdOptions(new NativeAdOptions.Builder().build())
+                .build();
 
-                unifiedNativeAdObj = unifiedNativeAd;
-            }
-        });
-
-        AdLoader adLoader = builder.build();
         adLoader.loadAd(new AdRequest.Builder()
                 .addNetworkExtrasBundle(FacebookAdapter.class, extras)
                 .build());
@@ -513,7 +676,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             Utils.showProgressDialog(activity);
 //            RestClient.getInstance(mActivity).getService().getTiktokData
             APIServices service = RestClient.getInstance(TikTokNewActivity.this).getService();
-            Call<JsonObject> call = service.getTiktokDataNew(Utils.TikTokUrl,LL);
+            Call<JsonObject> call = service.getTiktokDataNew(Utils.TikTokUrl, LL);
             call.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -527,8 +690,8 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 //                    marked = tiktokModel.getNotMarked().replace("http://", "https://");
                                 marked = responseBody.get("marked").getAsString();
 //                                marked = model.getNotMarked();
-                                Log.e("marked1 ","marked "+marked);
-                                VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, responseBody.get("thumb").getAsString(),unifiedNativeAdObj);
+                                Log.e("marked1 ", "marked " + marked);
+                                VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, responseBody.get("thumb").getAsString(), unifiedNativeAdObj);
                                 videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
 //                    startDownload(tiktokModel.getMarked().replace("http://", "https://"),
 //                            RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
@@ -539,8 +702,8 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 //                    notMarked = tiktokModel.getNotMarked().replace("http://", "https://");
                                 notMarked = responseBody.get("not_marked").getAsString();
 //                                notMarked = model.getNotMarked();
-                                Log.e("notMarked ","notMarked "+notMarked);
-                                VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, responseBody.get("thumb").getAsString(),unifiedNativeAdObj);
+                                Log.e("notMarked ", "notMarked " + notMarked);
+                                VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, responseBody.get("thumb").getAsString(), unifiedNativeAdObj);
                                 videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
 //                    startDownload(tiktokModel.getNotMarked().replace("http://", "https://"),
 //                            RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
@@ -554,7 +717,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                     } else {
                         Utils.hideProgressDialog(activity);
                         TryAgainDialogFragment tryAgainDialogFragment = new TryAgainDialogFragment(TikTokNewActivity.this);
-                        tryAgainDialogFragment.show(getSupportFragmentManager(),"TryAgainDialogFragment");
+                        tryAgainDialogFragment.show(getSupportFragmentManager(), "TryAgainDialogFragment");
                     }
                 }
 
@@ -659,8 +822,8 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 
 //                    marked = tiktokModel.getNotMarked().replace("http://", "https://");
                     marked = tiktokModel.getNotMarked();
-                    Log.e("marked1 ","marked "+marked);
-                    VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, tiktokModel.getThumb(),unifiedNativeAdObj);
+                    Log.e("marked1 ", "marked " + marked);
+                    VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, tiktokModel.getThumb(), unifiedNativeAdObj);
                     videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
 //                    startDownload(tiktokModel.getMarked().replace("http://", "https://"),
 //                            RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
@@ -670,8 +833,8 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                 } else {
 //                    notMarked = tiktokModel.getNotMarked().replace("http://", "https://");
                     notMarked = tiktokModel.getNotMarked();
-                    Log.e("notMarked ","notMarked "+notMarked);
-                    VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, tiktokModel.getThumb(),unifiedNativeAdObj);
+                    Log.e("notMarked ", "notMarked " + notMarked);
+                    VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, tiktokModel.getThumb(), unifiedNativeAdObj);
                     videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
 //                    startDownload(tiktokModel.getNotMarked().replace("http://", "https://"),
 //                            RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
@@ -737,22 +900,22 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
     @Override
     public void onDownloadClick(Dialog dialog) {
 
-        if (dialog.isShowing()){
+        if (dialog.isShowing()) {
             dialog.dismiss();
         }
-        if (IsWithWaternark){
-            Log.e("startDownload ","marked "+marked);
-            startDownload(marked,RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4");
+        if (IsWithWaternark) {
+            Log.e("startDownload ", "marked " + marked);
+            startDownload(marked, RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4");
             binding.etText.setText("");
-            showInterstitial();
-            loadIndustrisialAd();
+            showInterstitialOpen();
+            loadAdDownload();
             loadNativeAd();
-        }else {
-            Log.e("startDownload ","marked "+notMarked);
-            startDownload(notMarked,RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4");
+        } else {
+            Log.e("startDownload ", "marked " + notMarked);
+            startDownload(notMarked, RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4");
             binding.etText.setText("");
-            showInterstitial();
-            loadIndustrisialAd();
+            showInterstitialOpen();
+            loadAdDownload();
             loadNativeAd();
         }
 
@@ -763,25 +926,25 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 
     }
 
-    private void loadIndustrisialAd() {
-        mInterstitialAd = new InterstitialAd(TikTokNewActivity.this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-    }
+//    private void loadIndustrisialAd() {
+//        mInterstitialAd = new InterstitialAd(TikTokNewActivity.this);
+//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
+//        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+//    }
 
 
     public void startDownload(String downloadPath, String destinationPath, Context context, String FileName) {
-        Log.e("marked2 ","marked "+downloadPath);
+        Log.e("marked2 ", "marked " + downloadPath);
         setToast(context, "Download Started");
         Uri uri = Uri.parse(downloadPath.trim()); // Path where you want to download file.
-        Log.e("marked3 ","uri "+uri.toString());
+        Log.e("marked3 ", "uri " + uri.toString());
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.allowScanningByMediaScanner();
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);  // Tell on which network you want to download file.
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);  // This will show notification on top when downloading the file.
-        request.setTitle(FileName+""); // Title for notification.
+        request.setTitle(FileName + ""); // Title for notification.
         request.setVisibleInDownloadsUi(true);
-        request.setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS,destinationPath+FileName);  // Storage directory path
+        request.setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS, destinationPath + FileName);  // Storage directory path
         ((DownloadManager) context.getSystemService(DOWNLOAD_SERVICE)).enqueue(request); // This will start downloading
 
         try {
@@ -794,9 +957,9 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             } else {
                 context.sendBroadcast(new Intent("android.intent.action.MEDIA_MOUNTED", Uri.fromFile(new File(DIRECTORY_DOWNLOADS + "/" + destinationPath + FileName))));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            Log.e("printStackTrace ","printStackTrace "+e.getMessage().toString());
+            Log.e("printStackTrace ", "printStackTrace " + e.getMessage().toString());
         }
     }
 
@@ -1137,9 +1300,9 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 //    }
 
     //version_14
-    private void showInterstitial() {
-        if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
+    private void showInterstitialOpen() {
+        if (mInterstitialAdDownload != null) {
+            mInterstitialAdDownload.show(TikTokNewActivity.this);
         }
     }
 
