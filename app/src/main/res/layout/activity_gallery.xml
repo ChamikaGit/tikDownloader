@@ -74,20 +74,29 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/adView"
+            android:layout_above="@+id/my_template"
             android:layout_below="@+id/RLTopLayout"/>
 
 
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView"
+        <tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.TemplateView
+            android:id="@+id/my_template"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            ads:adSize="BANNER"
+            android:visibility="gone"
             android:layout_alignParentBottom="true"
-            ads:adUnitId="@string/admob_banner_ad">
+            app:gnt_template_type="@layout/gnt_small_template_view" />
 
-        </com.google.android.gms.ads.AdView>
+
+<!--        <com.google.android.gms.ads.AdView-->
+<!--            android:id="@+id/adView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="5dp"-->
+<!--            ads:adSize="BANNER"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            ads:adUnitId="@string/admob_banner_ad">-->
+
+<!--        </com.google.android.gms.ads.AdView>-->
 
     </RelativeLayout>
 </layout>

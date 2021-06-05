@@ -3,6 +3,7 @@ package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 
@@ -14,19 +15,27 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.ads.mediation.facebook.FacebookAdapter;
+import com.google.ads.mediation.facebook.FacebookExtras;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.VideoController;
+import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdOptions;
 
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityGalleryBinding;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.fragment.TikTokDownloadedFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Settings;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.TemplateView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +49,8 @@ public class GalleryActivity extends AppCompatActivity {
     private InterstitialAd mInterstitialAdBackPress, mInterstitialAdOpen;
     private ProgressDialog progressDialog;
     private int newCount = 1;
+    private TemplateView templateView;
+    private NativeAd unifiedNativeAdObj;
 
 
     @Override
@@ -47,6 +58,7 @@ public class GalleryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_gallery);
         activity = this;
+        templateView = findViewById(R.id.my_template);
         initViews();
 
         int getCount = new Settings(this).getAdShowCountGallery();
@@ -61,7 +73,8 @@ public class GalleryActivity extends AppCompatActivity {
             progressDialog.show();
         }
 
-        AdsUtils.showGoogleBannerAd(GalleryActivity.this, binding.adView);
+//        AdsUtils.showGoogleBannerAd(GalleryActivity.this, binding.adView);
+        loadNativeAd();
         loadAdOpen();
         loadAdBack();
 
@@ -151,6 +164,101 @@ public class GalleryActivity extends AppCompatActivity {
 //            }
 //        });
 
+    }
+
+    private void loadNativeAd() {
+
+        Bundle extras = new FacebookExtras().setNativeBanner(true).build();
+
+        VideoOptions videoOptions = new VideoOptions.Builder()
+                .setStartMuted(false)
+                .build();
+
+        NativeAdOptions adOptions = new NativeAdOptions.Builder()
+                .setVideoOptions(videoOptions)
+                .build();
+
+        AdLoader adLoader = new AdLoader.Builder(GalleryActivity.this, getString(R.string.admob_native_ad))
+                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                    @Override
+                    public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
+                        if (isDestroyed()) {
+                            nativeAd.destroy();
+                            Log.d("TAG", "Native Ad Destroyed");
+                            return;
+                        }
+                        if (nativeAd.getMediaContent().hasVideoContent()) {
+                            float mediaAspectRatio = nativeAd.getMediaContent().getAspectRatio();
+                            float duration = nativeAd.getMediaContent().getDuration();
+
+                            nativeAd.getMediaContent().getVideoController().setVideoLifecycleCallbacks(new VideoController.VideoLifecycleCallbacks() {
+                                @Override
+                                public void onVideoStart() {
+                                    super.onVideoStart();
+                                }
+
+                                @Override
+                                public void onVideoPlay() {
+                                    super.onVideoPlay();
+                                }
+
+                                @Override
+                                public void onVideoPause() {
+                                    super.onVideoPause();
+                                }
+
+                                @Override
+                                public void onVideoEnd() {
+                                    super.onVideoEnd();
+                                }
+
+                                @Override
+                                public void onVideoMute(boolean b) {
+                                    super.onVideoMute(b);
+                                }
+                            });
+                        }
+
+                        unifiedNativeAdObj = nativeAd;
+                        showNativeAd(unifiedNativeAdObj);
+                    }
+                })
+
+                .withAdListener(new AdListener() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+
+                        new CountDownTimer(10000, 1000) {
+
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                loadNativeAd();
+                            }
+                        }.start();
+                    }
+                })
+//                .withNativeAdOptions(new NativeAdOptions.Builder().build())
+                .withNativeAdOptions(adOptions)
+                .build();
+
+        adLoader.loadAd(new AdRequest.Builder()
+                .addNetworkExtrasBundle(FacebookAdapter.class, extras)
+                .build());
+    }
+
+    private void showNativeAd(NativeAd unifiedNativeAdObj) {
+        if (unifiedNativeAdObj == null){
+            templateView.setVisibility(View.GONE);
+        }else {
+            templateView.setVisibility(View.VISIBLE);
+            templateView.setNativeAd(unifiedNativeAdObj);
+        }
     }
 
     private void loadAdBack() {

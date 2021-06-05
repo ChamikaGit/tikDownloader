@@ -7,10 +7,14 @@ import android.os.Bundle;
 
 import com.facebook.ads.AudienceNetworkAds;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MyApplication extends Application {
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -35,6 +39,11 @@ public class MyApplication extends Application {
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
+        if(BuildConfig.DEBUG){
+            List<String> testDeviceIds = Arrays.asList("2CBF563B58BA400B60874AFF2690AEED");
+            RequestConfiguration configuration = new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
+            MobileAds.setRequestConfiguration(configuration);
+        }
     }
 
     public void trackFireBaseEvent(String eventName, String action, String value) {
