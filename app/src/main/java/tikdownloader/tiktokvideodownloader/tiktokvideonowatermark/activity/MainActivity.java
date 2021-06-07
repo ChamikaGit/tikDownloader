@@ -56,6 +56,7 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityMainBinding;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.ExitDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.HowToUseDialogFragment;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.SubscriptionDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.ClipboardListener;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Settings;
@@ -67,7 +68,7 @@ import java.util.Objects;
 
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.createFileFolder;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, ExitDialogFragment.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ExitDialogFragment.OnItemClickListener,SubscriptionDialogFragment.OnItemClickListener{
     private MyApplication myApplication;
     MainActivity activity;
     ActivityMainBinding binding;
@@ -333,6 +334,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.rvShareApp.setOnClickListener(this);
         binding.rvRateApp.setOnClickListener(this);
         binding.rvMoreApp.setOnClickListener(this);
+        binding.rvProSubscription.setOnClickListener(this);
 
         createFileFolder();
 
@@ -395,8 +397,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Utils.MoreApp(activity);
                 getMainApp().trackFireBaseEvent("MORE_BUTTON", "CLICK", "TRUE");
                 break;
+            case R.id.rvProSubscription:
+                OpenSubscriptionDialog();
+                break;
 
         }
+    }
+
+    private void OpenSubscriptionDialog() {
+        SubscriptionDialogFragment subscriptionDialogFragment = new SubscriptionDialogFragment(this);
+        subscriptionDialogFragment.show(getSupportFragmentManager(), "SubscriptionDialogFragment");
     }
 
 
@@ -539,5 +549,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
+    }
+
+    @Override
+    public void subscriptionClick() {
+
     }
 }
