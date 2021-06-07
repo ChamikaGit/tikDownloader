@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -17,6 +18,8 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 public class SubscriptionDialogFragment extends DialogFragment implements View.OnClickListener {
 
     public OnItemClickListener onItemClickListener;
+    public TextView tvTickWeek,tvTickMonth;
+    public RelativeLayout relWeek,relMonth;
 
     public interface OnItemClickListener {
         void subscriptionClick();
@@ -37,8 +40,15 @@ public class SubscriptionDialogFragment extends DialogFragment implements View.O
         View view = inflater.inflate(R.layout.dialogfragment_subscription, container, false);
         tvYes = view.findViewById(R.id.tvYes);
         tvNo = view.findViewById(R.id.tvNo);
+        tvTickWeek = view.findViewById(R.id.tvTickWeek);
+        tvTickMonth = view.findViewById(R.id.tvTickMonth);
+        relWeek = view.findViewById(R.id.relWeek);
+        relMonth = view.findViewById(R.id.relMonth);
+        relWeek.setOnClickListener(this);
+        relMonth.setOnClickListener(this);
         tvYes.setOnClickListener(this);
         tvNo.setOnClickListener(this);
+        tvTickWeek.setVisibility(View.VISIBLE);
         return view;
     }
 
@@ -69,6 +79,15 @@ public class SubscriptionDialogFragment extends DialogFragment implements View.O
                     dialog2.dismiss();
                 }
                 onItemClickListener.subscriptionClick();
+                break;
+
+            case R.id.relWeek:
+                tvTickWeek.setVisibility(View.VISIBLE);
+                tvTickMonth.setVisibility(View.GONE);
+                break;
+            case R.id.relMonth:
+                tvTickWeek.setVisibility(View.GONE);
+                tvTickMonth.setVisibility(View.VISIBLE);
                 break;
 
         }

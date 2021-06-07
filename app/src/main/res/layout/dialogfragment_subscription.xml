@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:padding="10dp">
 
     <RelativeLayout
@@ -91,7 +91,7 @@
                             android:gravity="center"
                             android:text="Remove all ads (Ads Free)"
                             android:textColor="@color/pink"
-                            android:textStyle="bold"
+                            android:textStyle="normal"
                             android:textSize="16sp" />
 
                         <TextView
@@ -101,7 +101,7 @@
                             android:layout_centerHorizontal="true"
                             android:gravity="center"
                             android:text="Get all the premium features"
-                            android:textStyle="bold"
+                            android:textStyle="normal"
                             android:layout_below="@+id/tvAds"
                             android:layout_marginTop="2dp"
                             android:textColor="@color/pink"
@@ -142,12 +142,13 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="175dp"
+                        android:layout_height="150dp"
                         android:orientation="horizontal"
                         android:weightSum="2">
 
 
                         <RelativeLayout
+                            android:id="@+id/relWeek"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -194,16 +195,36 @@
 
                             </LinearLayout>
 
+                            <TextView
+                                android:id="@+id/tvTickWeek"
+                                android:layout_width="30dp"
+                                android:layout_height="25dp"
+                                android:background="@drawable/img_green_tick"
+                                android:layout_alignParentEnd="true"
+                                android:visibility="gone"
+                                android:layout_margin="10dp"/>
+
 
 
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:id="@+id/relMonth"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:layout_margin="5dp"
                             android:background="@drawable/subscribe_item_bg_monthly">
+
+                            <TextView
+                                android:id="@+id/tvTickMonth"
+                                android:layout_width="30dp"
+                                android:layout_height="25dp"
+                                android:background="@drawable/img_green_tick"
+                                android:layout_alignParentEnd="true"
+                                android:visibility="gone"
+                                android:layout_margin="10dp"/>
+
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
