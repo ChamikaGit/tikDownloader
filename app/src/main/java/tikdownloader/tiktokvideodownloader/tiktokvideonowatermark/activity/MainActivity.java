@@ -22,12 +22,24 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
+import com.android.billingclient.api.AcknowledgePurchaseParams;
+import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.SkuDetailsParams;
+import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.google.ads.mediation.facebook.FacebookAdapter;
 import com.google.ads.mediation.facebook.FacebookExtras;
 import com.google.android.gms.ads.AdListener;
@@ -36,7 +48,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.VideoController;
 import com.google.android.gms.ads.VideoOptions;
-import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
@@ -51,6 +62,7 @@ import com.google.android.play.core.tasks.OnFailureListener;
 import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
 
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.BuildConfig;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.MyApplication;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityMainBinding;
@@ -59,16 +71,19 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.SubscriptionDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.ClipboardListener;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Security;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Settings;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.createFileFolder;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, ExitDialogFragment.OnItemClickListener,SubscriptionDialogFragment.OnItemClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ExitDialogFragment.OnItemClickListener, SubscriptionDialogFragment.OnItemClickListener, PurchasesUpdatedListener {
     private MyApplication myApplication;
     MainActivity activity;
     ActivityMainBinding binding;
@@ -89,6 +104,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ReviewManager manager;
     private final int REQUEST_CODE_TIKTOK = 52;
     private NativeAd unifiedNativeAdObj;
+
+    //in-app-subscription
+    public static final String ITEM_SKU_SUBSCRIBE_WEEKLY = "ads_free_weekly";
+    public static final String ITEM_SKU_SUBSCRIBE_MONTHLY = "ads_free_monthly";
+    public static String ITEM_SKU_SUBSCRIBE = "";
+    private BillingClient billingClient;
+    private String subscriptionBundleState = "";
 
 
     @Override
@@ -111,6 +133,238 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intiReview();
         }
         openSubscriptionDialog();
+        // Establish connection to billing client
+        //check subscription status from google play store cache
+        //to check if item is already Subscribed or subscription is not renewed and cancelled
+        billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    Purchase.PurchasesResult queryPurchase = billingClient.queryPurchases(SUBS);
+                    List<Purchase> queryPurchases = queryPurchase.getPurchasesList();
+                    if (queryPurchases != null && queryPurchases.size() > 0) {
+                        handlePurchases(queryPurchases);
+                    }
+                    //if no item in purchase list means subscription is not subscribed
+                    //Or subscription is cancelled and not renewed for next month
+                    // so update pref in both cases
+                    // so next time on app launch our premium content will be locked again
+                    else {
+//                        saveSubscribeValueToPref(false);
+                        settings.setSubscriptionState(false);
+                    }
+                }
+            }
+
+            @Override
+            public void onBillingServiceDisconnected() {
+                Toast.makeText(getApplicationContext(), "Service Disconnected", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //item subscribed
+//        if (getSubscribeValueFromPref()) {
+//            subscribe.setVisibility(View.GONE);
+//            premiumContent.setVisibility(View.VISIBLE);
+//            subscriptionStatus.setText("Subscription Status : Subscribed");
+//        }
+//        //item not subscribed
+//        else {
+//            premiumContent.setVisibility(View.GONE);
+//            subscribe.setVisibility(View.VISIBLE);
+//            subscriptionStatus.setText("Subscription Status : Not Subscribed");
+//        }
+    }
+
+
+//
+//    private SharedPreferences getPreferenceObject() {
+//        return getApplicationContext().getSharedPreferences(PREF_FILE, 0);
+//    }
+//    private SharedPreferences.Editor getPreferenceEditObject() {
+//        SharedPreferences pref = getApplicationContext().getSharedPreferences(PREF_FILE, 0);
+//        return pref.edit();
+//    }
+//    private boolean getSubscribeValueFromPref(){
+//        return getPreferenceObject().getBoolean( SUBSCRIBE_KEY,false);
+//    }
+//    private void saveSubscribeValueToPref(boolean value){
+//        getPreferenceEditObject().putBoolean(SUBSCRIBE_KEY,value).commit();
+//    }
+
+    //initiate purchase on button click
+    public void subscribe(String productId) {
+        //check if service is already connected
+        if (billingClient.isReady()) {
+            initiatePurchase(productId);
+        }
+        //else reconnect service
+        else {
+            billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build();
+            billingClient.startConnection(new BillingClientStateListener() {
+                @Override
+                public void onBillingSetupFinished(BillingResult billingResult) {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        initiatePurchase(productId);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Error " + billingResult.getDebugMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onBillingServiceDisconnected() {
+                    Toast.makeText(getApplicationContext(), "Service Disconnected ", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void initiatePurchase(String productId) {
+        List<String> skuList = new ArrayList<>();
+        skuList.add(productId);
+        SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
+        params.setSkusList(skuList).setType(SUBS);
+        BillingResult billingResult = billingClient.isFeatureSupported(BillingClient.FeatureType.SUBSCRIPTIONS);
+        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+            billingClient.querySkuDetailsAsync(params.build(),
+                    new SkuDetailsResponseListener() {
+                        @Override
+                        public void onSkuDetailsResponse(BillingResult billingResult,
+                                                         List<SkuDetails> skuDetailsList) {
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                if (skuDetailsList != null && skuDetailsList.size() > 0) {
+                                    BillingFlowParams flowParams = BillingFlowParams.newBuilder()
+                                            .setSkuDetails(skuDetailsList.get(0))
+                                            .build();
+                                    billingClient.launchBillingFlow(MainActivity.this, flowParams);
+                                } else {
+                                    //try to add subscription item "sub_example" in google play console
+                                    Toast.makeText(getApplicationContext(), "Item not Found", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(),
+                                        " Error " + billingResult.getDebugMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Sorry Subscription not Supported. Please Update Play Store", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
+        //if item subscribed
+        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
+            handlePurchases(purchases);
+        }
+        //if item already subscribed then check and reflect changes
+        else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+            Purchase.PurchasesResult queryAlreadyPurchasesResult = billingClient.queryPurchases(SUBS);
+            List<Purchase> alreadyPurchases = queryAlreadyPurchasesResult.getPurchasesList();
+            if (alreadyPurchases != null) {
+                handlePurchases(alreadyPurchases);
+            }
+        }
+        //if Purchase canceled
+        else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
+            Toast.makeText(getApplicationContext(), "Purchase Canceled", Toast.LENGTH_SHORT).show();
+        }
+        // Handle any other error msgs
+        else {
+            Toast.makeText(getApplicationContext(), "Error " + billingResult.getDebugMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    void handlePurchases(List<Purchase> purchases) {
+        for (Purchase purchase : purchases) {
+            //if item is purchased
+            if (ITEM_SKU_SUBSCRIBE.equals(purchase.getSku()) && purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                if (!verifyValidSignature(purchase.getOriginalJson(), purchase.getSignature())) {
+                    // Invalid purchase
+                    // show error to user
+                    Toast.makeText(getApplicationContext(), "Error : invalid Purchase", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // else purchase is valid
+                //if item is purchased and not acknowledged
+                if (!purchase.isAcknowledged()) {
+                    AcknowledgePurchaseParams acknowledgePurchaseParams =
+                            AcknowledgePurchaseParams.newBuilder()
+                                    .setPurchaseToken(purchase.getPurchaseToken())
+                                    .build();
+                    billingClient.acknowledgePurchase(acknowledgePurchaseParams, ackPurchase);
+                }
+                //else item is purchased and also acknowledged
+                else {
+                    // Grant entitlement to the user on item purchase
+                    // restart activity
+//                    if (!getSubscribeValueFromPref()) {
+//                        saveSubscribeValueToPref(true);
+//                        Toast.makeText(getApplicationContext(), "Item Purchased", Toast.LENGTH_SHORT).show();
+//                        this.recreate();
+//                    }
+                    if (!settings.getSubscriptionState()) {
+                        settings.setSubscriptionState(true);
+                        Toast.makeText(getApplicationContext(), "Item Purchased", Toast.LENGTH_SHORT).show();
+                        this.recreate();
+                    }
+                }
+            }
+            //if purchase is pending
+            else if (ITEM_SKU_SUBSCRIBE.equals(purchase.getSku()) && purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
+                Toast.makeText(getApplicationContext(),
+                        "Purchase is Pending. Please complete Transaction", Toast.LENGTH_SHORT).show();
+            }
+            //if purchase is unknown mark false
+            else if (ITEM_SKU_SUBSCRIBE.equals(purchase.getSku()) && purchase.getPurchaseState() == Purchase.PurchaseState.UNSPECIFIED_STATE) {
+                settings.setSubscriptionState(false);
+//                saveSubscribeValueToPref(false);
+//                premiumContent.setVisibility(View.GONE);
+//                subscribe.setVisibility(View.VISIBLE);
+//                subscriptionStatus.setText("Subscription Status : Not Subscribed");
+                Toast.makeText(getApplicationContext(), "Purchase Status Unknown", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    AcknowledgePurchaseResponseListener ackPurchase = new AcknowledgePurchaseResponseListener() {
+        @Override
+        public void onAcknowledgePurchaseResponse(BillingResult billingResult) {
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                //if purchase is acknowledged
+                // Grant entitlement to the user. and restart activity
+//                saveSubscribeValueToPref(true);
+                settings.setSubscriptionState(true);
+                MainActivity.this.recreate();
+            }
+        }
+    };
+
+    /**
+     * Verifies that the purchase was signed correctly for this developer's public key.
+     * <p>Note: It's strongly recommended to perform such check on your backend since hackers can
+     * replace this method with "constant true" if they decompile/rebuild your app.
+     * </p>
+     */
+    private boolean verifyValidSignature(String signedData, String signature) {
+        try {
+            // To get key go to Developer Console > Select your app > Development Tools > Services & APIs.
+            String base64Key = BuildConfig.LicencensKey;
+            return Security.verifyPurchase(base64Key, signedData, signature);
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (billingClient != null) {
+            billingClient.endConnection();
+        }
     }
 
     private void loadNativeAd() {
@@ -414,16 +668,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void openTikTokDiscover() {
-        Intent intent = new Intent(this,WebviewAcitivity.class);
-        intent.putExtra("URL","https://www.tiktok.com/tag/discover");
-        intent.putExtra("Title","Tiktok Discover");
+        Intent intent = new Intent(this, WebviewAcitivity.class);
+        intent.putExtra("URL", "https://www.tiktok.com/tag/discover");
+        intent.putExtra("Title", "Tiktok Discover");
         startActivity(intent);
     }
 
     private void openTikTokTrendings() {
-        Intent intent = new Intent(this,WebviewAcitivity.class);
-        intent.putExtra("URL","https://www.tiktok.com/tag/trending");
-        intent.putExtra("Title","Tiktok Trendings");
+        Intent intent = new Intent(this, WebviewAcitivity.class);
+        intent.putExtra("URL", "https://www.tiktok.com/tag/trending");
+        intent.putExtra("Title", "Tiktok Trendings");
         startActivity(intent);
     }
 
@@ -575,7 +829,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void subscriptionClick() {
+    public void subscriptionClick(String state) {
 
+        if (!state.equals("")) {
+            subscriptionBundleState = state;
+            if (subscriptionBundleState.equals("weekly")) {
+                ITEM_SKU_SUBSCRIBE = ITEM_SKU_SUBSCRIBE_WEEKLY;
+                subscribe(ITEM_SKU_SUBSCRIBE_WEEKLY);
+            } else if (subscriptionBundleState.equals("monthly")) {
+                ITEM_SKU_SUBSCRIBE = ITEM_SKU_SUBSCRIBE_MONTHLY;
+                subscribe(ITEM_SKU_SUBSCRIBE_MONTHLY);
+            }
+        }else {
+            Toast.makeText(this,"Service Not Available",Toast.LENGTH_SHORT).show();
+        }
     }
 }

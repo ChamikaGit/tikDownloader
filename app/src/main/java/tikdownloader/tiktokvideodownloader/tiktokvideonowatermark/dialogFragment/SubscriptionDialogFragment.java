@@ -20,9 +20,10 @@ public class SubscriptionDialogFragment extends DialogFragment implements View.O
     public OnItemClickListener onItemClickListener;
     public TextView tvTickWeek,tvTickMonth;
     public RelativeLayout relWeek,relMonth;
+    public String state ="";
 
     public interface OnItemClickListener {
-        void subscriptionClick();
+        void subscriptionClick(String state);
     }
 
     public SubscriptionDialogFragment(OnItemClickListener onItemClickListener) {
@@ -49,6 +50,7 @@ public class SubscriptionDialogFragment extends DialogFragment implements View.O
         tvYes.setOnClickListener(this);
         tvNo.setOnClickListener(this);
         tvTickWeek.setVisibility(View.VISIBLE);
+        state ="monthly";
         return view;
     }
 
@@ -78,16 +80,18 @@ public class SubscriptionDialogFragment extends DialogFragment implements View.O
                 if (dialog2 != null) {
                     dialog2.dismiss();
                 }
-                onItemClickListener.subscriptionClick();
+                onItemClickListener.subscriptionClick(state);
                 break;
 
             case R.id.relWeek:
                 tvTickWeek.setVisibility(View.VISIBLE);
                 tvTickMonth.setVisibility(View.GONE);
+                state ="weekly";
                 break;
             case R.id.relMonth:
                 tvTickWeek.setVisibility(View.GONE);
                 tvTickMonth.setVisibility(View.VISIBLE);
+                state ="monthly";
                 break;
 
         }

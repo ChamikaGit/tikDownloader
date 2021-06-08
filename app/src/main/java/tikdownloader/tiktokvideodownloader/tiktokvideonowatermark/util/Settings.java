@@ -80,5 +80,14 @@ public class Settings {
         return value;
     }
 
+    public void setSubscriptionState(boolean value) {
+        getPref().edit().putBoolean("SubscriptionState", value).commit();
+    }
+
+    public boolean getSubscriptionState() {
+        boolean value = getPref().getBoolean("SubscriptionState", false);
+        return value;
+    }
+
 }
 
