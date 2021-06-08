@@ -287,7 +287,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="165dp"
                                 android:layout_marginStart="5dp"
-                                android:layout_marginTop="10dp"
+                                android:layout_marginTop="0dp"
                                 android:layout_marginEnd="5dp"
                                 android:layout_marginBottom="10dp"
                                 android:layout_weight="1"
@@ -304,7 +304,7 @@
                                     android:layout_marginStart="10dp"
                                     android:background="@drawable/circle"
                                     android:padding="12dp"
-                                    android:src="@drawable/tiktok_logo" />
+                                    android:src="@drawable/trending" />
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
@@ -350,7 +350,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="165dp"
                                 android:layout_marginStart="5dp"
-                                android:layout_marginTop="10dp"
+                                android:layout_marginTop="0dp"
                                 android:layout_marginEnd="5dp"
                                 android:layout_marginBottom="10dp"
                                 android:layout_weight="1"
@@ -366,7 +366,7 @@
                                     android:layout_marginStart="10dp"
                                     android:background="@drawable/circle"
                                     android:padding="12dp"
-                                    android:src="@drawable/tiktok_logo" />
+                                    android:src="@drawable/search" />
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"

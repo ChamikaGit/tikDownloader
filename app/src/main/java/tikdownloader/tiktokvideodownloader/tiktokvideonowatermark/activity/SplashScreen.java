@@ -1,5 +1,6 @@
 package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -23,11 +24,13 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.BuildConfig;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.NoInternetDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Settings;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
 
 import static com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE;
 
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreen extends AppCompatActivity implements NoInternetDialogFragment.OnItemClickListener {
     SplashScreen activity;
     Context context;
     AppUpdateManager appUpdateManager;
@@ -54,7 +57,14 @@ public class SplashScreen extends AppCompatActivity {
         // finally build config settings and sets to Remote Config
         mFirebaseRemoteConfig.setConfigSettingsAsync(configBuilder.build());
         mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
-        UpdateApp();
+        Utils utils = new Utils(activity);
+        if (utils.isNetworkAvailable()) {
+            UpdateApp();
+        } else {
+            NoInternetDialogFragment noInternetDialogFragment = new NoInternetDialogFragment(this);
+            noInternetDialogFragment.show(getSupportFragmentManager(), "NoInternetDialogFragment");
+        }
+
         tvVersionNO.setText("v" + BuildConfig.VERSION_NAME);
     }
 
@@ -143,4 +153,18 @@ public class SplashScreen extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onYesClick(Dialog dialog) {
+        try {
+            Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void onNoClick(Dialog dialog) {
+        finish();
+    }
 }

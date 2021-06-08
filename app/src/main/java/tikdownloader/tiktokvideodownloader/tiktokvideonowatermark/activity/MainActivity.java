@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (settings.getReviewCount() > 2) {
             intiReview();
         }
+        openSubscriptionDialog();
     }
 
     private void loadNativeAd() {
@@ -335,6 +336,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.rvRateApp.setOnClickListener(this);
         binding.rvMoreApp.setOnClickListener(this);
         binding.rvProSubscription.setOnClickListener(this);
+        binding.rvTikTokTrendings.setOnClickListener(this);
+        binding.rvTikTokDiscover.setOnClickListener(this);
 
         createFileFolder();
 
@@ -398,13 +401,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getMainApp().trackFireBaseEvent("MORE_BUTTON", "CLICK", "TRUE");
                 break;
             case R.id.rvProSubscription:
-                OpenSubscriptionDialog();
+                openSubscriptionDialog();
+                break;
+            case R.id.rvTikTokTrendings:
+                openTikTokTrendings();
+                break;
+            case R.id.rvTikTokDiscover:
+                openTikTokDiscover();
                 break;
 
         }
     }
 
-    private void OpenSubscriptionDialog() {
+    private void openTikTokDiscover() {
+        Intent intent = new Intent(this,WebviewAcitivity.class);
+        intent.putExtra("URL","https://www.tiktok.com/tag/discover");
+        intent.putExtra("Title","Tiktok Discover");
+        startActivity(intent);
+    }
+
+    private void openTikTokTrendings() {
+        Intent intent = new Intent(this,WebviewAcitivity.class);
+        intent.putExtra("URL","https://www.tiktok.com/tag/trending");
+        intent.putExtra("Title","Tiktok Trendings");
+        startActivity(intent);
+    }
+
+    private void openSubscriptionDialog() {
         SubscriptionDialogFragment subscriptionDialogFragment = new SubscriptionDialogFragment(this);
         subscriptionDialogFragment.show(getSupportFragmentManager(), "SubscriptionDialogFragment");
     }
