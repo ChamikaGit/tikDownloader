@@ -46,6 +46,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         playerView = findViewById(R.id.videoPlayer);
         progressBar = findViewById(R.id.progressBar);
         im_close = findViewById(R.id.im_close);

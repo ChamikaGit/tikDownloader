@@ -78,6 +78,7 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
@@ -119,20 +120,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         myApplication = (MyApplication) getApplication();
         activity = this;
-
-        AdsUtils.showGoogleBannerAd(MainActivity.this, binding.adView);
-//        MediationTestSuite.launch(MainActivity.this);
-
         initViews();
         checkUpdate();
         settings = new Settings(this);
+        if (!settings.getSubscriptionState()) {
+            //check if user enable the in-app subscribed
+            AdsUtils.showGoogleBannerAd(MainActivity.this, binding.adView);
+        }
+//        MediationTestSuite.launch(MainActivity.this);
         reviewCount = settings.getReviewCount();
         reviewCount++;
         settings.setReviewCount(reviewCount);
         if (settings.getReviewCount() > 2) {
             intiReview();
         }
-        openSubscriptionDialog();
+//        openSubscriptionDialog();
         // Establish connection to billing client
         //check subscription status from google play store cache
         //to check if item is already Subscribed or subscription is not renewed and cancelled
@@ -145,14 +147,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     List<Purchase> queryPurchases = queryPurchase.getPurchasesList();
                     if (queryPurchases != null && queryPurchases.size() > 0) {
                         handlePurchases(queryPurchases);
-                    }
-                    //if no item in purchase list means subscription is not subscribed
-                    //Or subscription is cancelled and not renewed for next month
-                    // so update pref in both cases
-                    // so next time on app launch our premium content will be locked again
-                    else {
-//                        saveSubscribeValueToPref(false);
+                    } else {
                         settings.setSubscriptionState(false);
+                    }
+                    if (!settings.getSubscriptionState()) {
+                        openSubscriptionDialog();
                     }
                 }
             }
@@ -163,6 +162,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+
+        if (settings.getSubscriptionState()){
+            binding.tvPro.setText("PRO");
+            binding.tvPro.setTextColor(getResources().getColor(R.color.pink));
+        }else {
+            binding.tvPro.setText("BE A PRO");
+        }
         //item subscribed
 //        if (getSubscribeValueFromPref()) {
 //            subscribe.setVisibility(View.GONE);
@@ -301,11 +307,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else {
                     // Grant entitlement to the user on item purchase
                     // restart activity
-//                    if (!getSubscribeValueFromPref()) {
-//                        saveSubscribeValueToPref(true);
-//                        Toast.makeText(getApplicationContext(), "Item Purchased", Toast.LENGTH_SHORT).show();
-//                        this.recreate();
-//                    }
                     if (!settings.getSubscriptionState()) {
                         settings.setSubscriptionState(true);
                         Toast.makeText(getApplicationContext(), "Item Purchased", Toast.LENGTH_SHORT).show();
@@ -315,16 +316,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             //if purchase is pending
             else if (ITEM_SKU_SUBSCRIBE.equals(purchase.getSku()) && purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
-                Toast.makeText(getApplicationContext(),
-                        "Purchase is Pending. Please complete Transaction", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Purchase is Pending. Please complete Transaction", Toast.LENGTH_SHORT).show();
             }
             //if purchase is unknown mark false
             else if (ITEM_SKU_SUBSCRIBE.equals(purchase.getSku()) && purchase.getPurchaseState() == Purchase.PurchaseState.UNSPECIFIED_STATE) {
                 settings.setSubscriptionState(false);
-//                saveSubscribeValueToPref(false);
-//                premiumContent.setVisibility(View.GONE);
-//                subscribe.setVisibility(View.VISIBLE);
-//                subscriptionStatus.setText("Subscription Status : Not Subscribed");
                 Toast.makeText(getApplicationContext(), "Purchase Status Unknown", Toast.LENGTH_SHORT).show();
             }
         }
@@ -669,20 +665,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void openTikTokDiscover() {
         Intent intent = new Intent(this, WebviewAcitivity.class);
-        intent.putExtra("URL", "https://www.tiktok.com/tag/discover");
+        intent.putExtra("URL", "https://www.tiktok.com/discover?lang="+ Locale.getDefault().getLanguage());
         intent.putExtra("Title", "Tiktok Discover");
         startActivity(intent);
     }
 
     private void openTikTokTrendings() {
         Intent intent = new Intent(this, WebviewAcitivity.class);
-        intent.putExtra("URL", "https://www.tiktok.com/tag/trending");
+        intent.putExtra("URL", "https://www.tiktok.com/?lang="+Locale.getDefault().getLanguage()+"&is_copy_url=1&is_from_webapp=v1");
         intent.putExtra("Title", "Tiktok Trendings");
         startActivity(intent);
     }
 
     private void openSubscriptionDialog() {
-        SubscriptionDialogFragment subscriptionDialogFragment = new SubscriptionDialogFragment(this);
+        SubscriptionDialogFragment subscriptionDialogFragment = new SubscriptionDialogFragment(this, settings.getSubscribedItemMonthlyPrice(), settings.getSubscribedItemWeeklyPrice());
         subscriptionDialogFragment.show(getSupportFragmentManager(), "SubscriptionDialogFragment");
     }
 
@@ -798,10 +794,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onYesClick(Dialog dialog) {
         dialog.dismiss();
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+//        Intent intent = new Intent(Intent.ACTION_MAIN);
+//        intent.addCategory(Intent.CATEGORY_HOME);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -840,8 +837,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ITEM_SKU_SUBSCRIBE = ITEM_SKU_SUBSCRIBE_MONTHLY;
                 subscribe(ITEM_SKU_SUBSCRIBE_MONTHLY);
             }
-        }else {
-            Toast.makeText(this,"Service Not Available",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Service Not Available", Toast.LENGTH_SHORT).show();
         }
     }
 }

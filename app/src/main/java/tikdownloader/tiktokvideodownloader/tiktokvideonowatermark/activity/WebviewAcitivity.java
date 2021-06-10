@@ -2,6 +2,7 @@ package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -78,6 +79,7 @@ public class WebviewAcitivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
+            Log.e("URL","URL : "+url);
             return true;
         }
 
@@ -95,20 +97,23 @@ public class WebviewAcitivity extends AppCompatActivity {
 //            binding.webView1.setVisibility(View.VISIBLE);
 //        }
 
-        @Override
-        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-            super.onReceivedError(view, request, error);
-            binding.webView1.setVisibility(View.GONE);
-            binding.tvNoInternet.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-            super.onReceivedHttpError(view, request, errorResponse);
-            binding.webView1.setVisibility(View.GONE);
-            binding.tvNoInternet.setVisibility(View.VISIBLE);
-
-        }
+//        @Override
+//        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+//            Log.e("URL","request : "+request+ " "+error);
+//            super.onReceivedError(view, request, error);
+//            binding.webView1.setVisibility(View.GONE);
+//            binding.tvNoInternet.setVisibility(View.VISIBLE);
+//        }
+//
+//        @Override
+//        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+//            Log.e("URL","request : "+request+ " "+errorResponse);
+//            super.onReceivedHttpError(view, request, errorResponse);
+//            binding.webView1.setVisibility(View.GONE);
+//            binding.tvNoInternet.setVisibility(View.VISIBLE);
+//
+//
+//        }
     }
 
 }

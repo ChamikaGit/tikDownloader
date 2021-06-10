@@ -18,16 +18,18 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 public class SubscriptionDialogFragment extends DialogFragment implements View.OnClickListener {
 
     public OnItemClickListener onItemClickListener;
-    public TextView tvTickWeek,tvTickMonth;
+    public TextView tvTickWeek,tvTickMonth,tvPriceWeek,tvPriceMonth;
     public RelativeLayout relWeek,relMonth;
-    public String state ="";
+    public String state ="",subscribedItemMonthlyPrice ="",subscribedItemWeeklyPrice="";
 
     public interface OnItemClickListener {
         void subscriptionClick(String state);
     }
 
-    public SubscriptionDialogFragment(OnItemClickListener onItemClickListener) {
+    public SubscriptionDialogFragment(OnItemClickListener onItemClickListener, String subscribedItemMonthlyPrice, String subscribedItemWeeklyPrice) {
         this.onItemClickListener = onItemClickListener;
+        this.subscribedItemMonthlyPrice = subscribedItemMonthlyPrice;
+        this.subscribedItemWeeklyPrice = subscribedItemWeeklyPrice;
     }
 
     private TextView tvYes, tvNo;
@@ -45,12 +47,16 @@ public class SubscriptionDialogFragment extends DialogFragment implements View.O
         tvTickMonth = view.findViewById(R.id.tvTickMonth);
         relWeek = view.findViewById(R.id.relWeek);
         relMonth = view.findViewById(R.id.relMonth);
+        tvPriceWeek = view.findViewById(R.id.tvPriceWeek);
+        tvPriceMonth = view.findViewById(R.id.tvPriceMonth);
         relWeek.setOnClickListener(this);
         relMonth.setOnClickListener(this);
         tvYes.setOnClickListener(this);
         tvNo.setOnClickListener(this);
-        tvTickWeek.setVisibility(View.VISIBLE);
+        tvPriceWeek.setText(subscribedItemWeeklyPrice);
+        tvPriceMonth.setText(subscribedItemMonthlyPrice);
         state ="monthly";
+        tvTickMonth.setVisibility(View.VISIBLE);
         return view;
     }
 

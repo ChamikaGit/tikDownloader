@@ -181,9 +181,10 @@
                                     android:textSize="12sp"/>
 
                                 <TextView
+                                    android:id="@+id/tvPriceWeek"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="200 LKR"
+                                    android:text=""
                                     android:layout_marginTop="4dp"
                                     android:layout_gravity="center_horizontal"
                                     android:textColor="@color/white"
@@ -252,9 +253,10 @@
                                     android:textSize="12sp"/>
 
                                 <TextView
+                                    android:id="@+id/tvPriceMonth"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="700 LKR"
+                                    android:text=""
                                     android:layout_marginTop="4dp"
                                     android:layout_gravity="center_horizontal"
                                     android:textColor="@color/white"

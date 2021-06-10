@@ -89,5 +89,33 @@ public class Settings {
         return value;
     }
 
+    public void setCurrentSubscribedItem(String value) {
+        getPref().edit().putString("currentSubscribedItem", value).commit();
+    }
+
+    public String getCurrentSubscribedItem() {
+        String value = getPref().getString("currentSubscribedItem", "");
+        return value;
+    }
+
+
+    public void setSubscribedItemWeeklyPrice(String value) {
+        getPref().edit().putString("subscribedItemWeeklyPrice", value).commit();
+    }
+
+    public String getSubscribedItemWeeklyPrice() {
+        String value = getPref().getString("subscribedItemWeeklyPrice", "");
+        return value;
+    }
+
+    public void setSubscribedItemMonthlyPrice(String value) {
+        getPref().edit().putString("subscribedItemMonthlyPrice", value).commit();
+    }
+
+    public String getSubscribedItemMonthlyPrice() {
+        String value = getPref().getString("subscribedItemMonthlyPrice", "");
+        return value;
+    }
+
 }
 
