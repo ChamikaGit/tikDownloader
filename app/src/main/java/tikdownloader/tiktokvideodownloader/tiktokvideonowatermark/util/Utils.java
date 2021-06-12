@@ -31,19 +31,18 @@ public class Utils {
     private static Context context;
 
     public static String INVOICENUMBER = "ADD YOUR INVOICE NUMBER";
-//    public static String TikTokUrl = "http://codingdunia.com/ccprojects/tiktok/api/getContent/";
+    //    public static String TikTokUrl = "http://codingdunia.com/ccprojects/tiktok/api/getContent/";
 //    public static String TikTokUrl = "http://androidqueue.com/tiktokapi/api.php";
 //    public static String TikTokUrl = "https://netanime.tv/tiktok/index.php";
-public static String TikTokUrl = "https://appskastudio.xyz/tiktok/index.php";
+    public static String TikTokUrl = "https://appskastudio.xyz/tiktok/index.php";
+    public static String TikTokUrlNew = "https://tiktokfull.com/app/external";
     //version_14
-
-
 
 
     public static String RootDirectoryFacebook = "/StatusSaver/Facebook/";
     public static String RootDirectoryInsta = "/StatusSaver/Insta/";
     public static String RootDirectoryTikTok = "/StatusSaver/TikTok/";
-    public static String RootDirectoryTwitter ="/StatusSaver/Twitter/";
+    public static String RootDirectoryTwitter = "/StatusSaver/Twitter/";
 
     public static File RootDirectoryFacebookShow = new File(Environment.getExternalStorageDirectory() + "/Download/StatusSaver/Facebook");
     public static File RootDirectoryInstaShow = new File(Environment.getExternalStorageDirectory() + "/Download/StatusSaver/Insta");
@@ -112,17 +111,17 @@ public static String TikTokUrl = "https://appskastudio.xyz/tiktok/index.php";
     }
 
     public static void startDownload(String downloadPath, String destinationPath, Context context, String FileName) {
-        Log.e("marked2 ","marked "+downloadPath);
+        Log.e("marked2 ", "marked " + downloadPath);
         setToast(context, "Download Started");
         Uri uri = Uri.parse(downloadPath.trim()); // Path where you want to download file.
-        Log.e("marked3 ","uri "+uri.toString());
+        Log.e("marked3 ", "uri " + uri.toString());
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.allowScanningByMediaScanner();
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);  // Tell on which network you want to download file.
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);  // This will show notification on top when downloading the file.
-        request.setTitle(FileName+""); // Title for notification.
+        request.setTitle(FileName + ""); // Title for notification.
         request.setVisibleInDownloadsUi(true);
-        request.setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS,destinationPath+FileName);  // Storage directory path
+        request.setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS, destinationPath + FileName);  // Storage directory path
         ((DownloadManager) context.getSystemService(DOWNLOAD_SERVICE)).enqueue(request); // This will start downloading
 
         try {
@@ -135,9 +134,9 @@ public static String TikTokUrl = "https://appskastudio.xyz/tiktok/index.php";
             } else {
                 context.sendBroadcast(new Intent("android.intent.action.MEDIA_MOUNTED", Uri.fromFile(new File(DIRECTORY_DOWNLOADS + "/" + destinationPath + FileName))));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            Log.e("printStackTrace ","printStackTrace "+e.getMessage().toString());
+            Log.e("printStackTrace ", "printStackTrace " + e.getMessage().toString());
         }
     }
 
@@ -155,6 +154,7 @@ public static String TikTokUrl = "https://appskastudio.xyz/tiktok/index.php";
             ex.printStackTrace();
         }
     }
+
     public static void shareImageVideoOnWhatsapp(Context context, String filePath, boolean isVideo) {
         Uri imageUri = Uri.parse(filePath);
         Intent shareIntent = new Intent();
@@ -164,14 +164,14 @@ public static String TikTokUrl = "https://appskastudio.xyz/tiktok/index.php";
         shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
         if (isVideo) {
             shareIntent.setType("video/*");
-        }else {
+        } else {
             shareIntent.setType("image/*");
         }
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         try {
             context.startActivity(shareIntent);
         } catch (Exception e) {
-            Utils.setToast(context,"Whtasapp not installed.");
+            Utils.setToast(context, "Whtasapp not installed.");
         }
     }
 
@@ -215,17 +215,17 @@ public static String TikTokUrl = "https://appskastudio.xyz/tiktok/index.php";
         context.startActivity(Intent.createChooser(sendInt, "Share"));
     }
 
-    public static void OpenApp(Context context,String Package) {
+    public static void OpenApp(Context context, String Package) {
         Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(Package);
         if (launchIntent != null) {
             context.startActivity(launchIntent);
         } else {
-            setToast(context,"App Not Available.");
+            setToast(context, "App Not Available.");
         }
     }
 
     public static boolean isNullOrEmpty(String s) {
-        return (s == null) || (s.length() == 0) || (s.equalsIgnoreCase("null"))||(s.equalsIgnoreCase("0"));
+        return (s == null) || (s.length() == 0) || (s.equalsIgnoreCase("null")) || (s.equalsIgnoreCase("0"));
     }
 
 }

@@ -48,4 +48,7 @@ public interface APIServices {
     @GET
     Call<JsonObject> getTiktokDataNew(@Url String Url, @Query("url") String url);
 
+    @GET
+    Call<JsonObject> getTikTokDataTikTokAllPartner(@Url String Url, @Query("videoUrl") String url,@Query("token") String token);
+
 }

@@ -35,7 +35,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
@@ -55,6 +54,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -74,6 +74,7 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.RetrofitCl
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityTikTokBinding;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.TryAgainDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.VideoReadyDialogFragment;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.jni.TikTokFullCryptor;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TiktokModel;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TiktokModelNew;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
@@ -547,7 +548,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             } else if (!Patterns.WEB_URL.matcher(LL).matches()) {
                 Utils.setToast(activity, "Enter Valid Url");
             } else {
-                GetTikTokData();
+                GetTikTokData(IsWithWaternark);
             }
             getMainApp().trackFireBaseEvent("WITH_WATERMARK", "CLICK", "TRUE");
         });
@@ -572,7 +573,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             } else if (!Patterns.WEB_URL.matcher(LL).matches()) {
                 Utils.setToast(activity, "Enter Valid Url");
             } else {
-                GetTikTokData();
+                GetTikTokData(IsWithWaternark);
             }
 
             getMainApp().trackFireBaseEvent("WITHOUT_WATERMARK", "CLICK", "TRUE");
@@ -618,7 +619,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         });
     }
 
-    private void GetTikTokData() {
+    private void GetTikTokData(boolean isWithWaternark) {
 //        try {
 //            Utils.createFileFolder();
 //            URL url = new URL(binding.etText.getText().toString());
@@ -641,7 +642,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             if (host.contains("tiktok")) {
                 Utils.showProgressDialog(activity);
                 // new callGetTikTokData().execute(binding.etText.getText().toString());
-                callVideoDownload(binding.etText.getText().toString());
+                callVideoDownload(binding.etText.getText().toString(),isWithWaternark);
 //                showInterstitial();
 
             } else {
@@ -653,14 +654,18 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         }
     }
 
-    private void callVideoDownload(String Url) {
+    private void callVideoDownload(String Url, boolean isWithWaternark) {
         try {
             Utils utils = new Utils(activity);
             if (utils.isNetworkAvailable()) {
 //                if (commonClassForAPI != null) {
 //                    commonClassForAPI.callTiktokVideo(tiktokObserver, Url);
 //                }
-                getTikTokAPIData(Url);
+                if (isWithWaternark) {
+                    getTikTokAPIData(Url);
+                }else {
+                    getTikTokAPIDataPartner(Url);
+                }
             } else {
                 Utils.setToast(activity, "No Internet Connection");
             }
@@ -714,6 +719,90 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    } else {
+                        Utils.hideProgressDialog(activity);
+                        TryAgainDialogFragment tryAgainDialogFragment = new TryAgainDialogFragment(TikTokNewActivity.this);
+                        tryAgainDialogFragment.show(getSupportFragmentManager(), "TryAgainDialogFragment");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Utils.hideProgressDialog(activity);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("Error", e.getMessage());
+        }
+
+    }
+
+    private void getTikTokAPIDataPartner(String LL) {
+        try {
+            Utils.showProgressDialog(activity);
+//            RestClient.getInstance(mActivity).getService().getTiktokData
+            APIServices service = RestClient.getInstance(TikTokNewActivity.this).getService();
+            Call<JsonObject> call = service.getTikTokDataTikTokAllPartner(Utils.TikTokUrlNew, LL,BuildConfig.TOKEN);
+            call.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Utils.hideProgressDialog(activity);
+                    if (response.code() == 200) {
+//                        TiktokModel model = response.body();
+                        JsonObject responseBody = response.body();
+                        JsonElement data = responseBody.get("data");
+//                        Log.e("Tiktok data",data.getAsString());
+//                        try {
+//                            System.out.println("======jni-crypt-test======");
+//                            byte[] dataCrypt = TikTokFullCryptor.hexStr2Bytes(data.getAsString());
+//                            dataCrypt = TikTokFullCryptor.crypt(dataCrypt,System.currentTimeMillis(),1);
+//                            System.out.println("decrypt:"+new String(dataCrypt,"UTF-8"));
+//                            JSONObject jsonObj = new JSONObject(new String(dataCrypt,"UTF-8"));
+//
+//                        } catch (UnsupportedEncodingException | JSONException e) {
+//                            e.printStackTrace();
+//                        }
+                        try {
+                            System.out.println("======jni-crypt-test======");
+                            byte[] dataCrypt = TikTokFullCryptor.hexStr2Bytes(data.getAsString());
+                            dataCrypt= TikTokFullCryptor.crypt(dataCrypt, System.currentTimeMillis(), 1);
+                            System.out.println("decrypt:"+new String(dataCrypt,"UTF-8"));
+
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+
+//                        try {
+//                            if (IsWithWaternark) {
+////                    marked = tiktokModel.getNotMarked().replace("http://", "https://");
+//                                marked = responseBody.get("marked").getAsString();
+////                                marked = model.getNotMarked();
+//                                Log.e("marked1 ", "marked " + marked);
+//                                VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, responseBody.get("thumb").getAsString(), unifiedNativeAdObj);
+//                                videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
+////                    startDownload(tiktokModel.getMarked().replace("http://", "https://"),
+////                            RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
+////                    binding.etText.setText("");
+////                    showInterstitial();
+////                    loadIndustrisialAd();
+//                            } else {
+////                    notMarked = tiktokModel.getNotMarked().replace("http://", "https://");
+//                                notMarked = responseBody.get("not_marked").getAsString();
+////                                notMarked = model.getNotMarked();
+//                                Log.e("notMarked ", "notMarked " + notMarked);
+//                                VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, responseBody.get("thumb").getAsString(), unifiedNativeAdObj);
+//                                videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
+////                    startDownload(tiktokModel.getNotMarked().replace("http://", "https://"),
+////                            RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
+////                    binding.etText.setText("");
+////                    showInterstitial();
+////                    loadIndustrisialAd();
+//                            }
+//                        }
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
                     } else {
                         Utils.hideProgressDialog(activity);
                         TryAgainDialogFragment tryAgainDialogFragment = new TryAgainDialogFragment(TikTokNewActivity.this);
@@ -894,7 +983,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         if (dialog.isShowing())
             dialog.dismiss();
         Utils.showProgressDialog(activity);
-        callVideoDownload(binding.etText.getText().toString());
+        callVideoDownload(binding.etText.getText().toString(), IsWithWaternark);
     }
 
     @Override

@@ -46,6 +46,7 @@ android {
             applicationId "tikdownloader.tiktokvideodownloader.tiktokvideonowatermark"
             buildConfigField "String", "URL", "\"https://tiktok.codespikex.com/download?id=\""
             buildConfigField "String","LicencensKey","\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqT4Q5hRbaTixqxHssCRinKIOZBnNdl/LiyI1LlMyKKWnrVq56eABtjSqWiQjUEdsSmX67chkYtDPwf0AhCkf4dKMw+WyaZGRJK2e4F18pmm0dpHHwo/kWHMIIu34ABhSFbt4hM3DNlph2Pw4Gr3adw+wmC2wR7MxvxyY5KsMtL0XKBd+Su1ZcVixIYMQniqcaKa73gUJp35YasO7hT/wjmvtht1nrg3vi4kqytw/V6NdwMYqDwTnzKva+v4YwPz1Kf/Te3Ae01Ve8tuli26rQ0h4C3T7rzMK3xP6DVSq8OO4LSxk45usjEAOkmAydQ7TVDgygVdMMS7yrVFrdy3itQIDAQAB\""
+            buildConfigField "String","TOKEN","\"2ozYQxKOej6BzwF7QNewTc7Qz8PHyXn6\""
         }
         live {
             dimension "default"
@@ -53,6 +54,7 @@ android {
             applicationId "tikdownloader.tiktokvideodownloader.tiktokvideonowatermark"
             buildConfigField "String", "URL", "\"https://tiktok.codespikex.com/download?id=\""
             buildConfigField "String","LicencensKey","\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqT4Q5hRbaTixqxHssCRinKIOZBnNdl/LiyI1LlMyKKWnrVq56eABtjSqWiQjUEdsSmX67chkYtDPwf0AhCkf4dKMw+WyaZGRJK2e4F18pmm0dpHHwo/kWHMIIu34ABhSFbt4hM3DNlph2Pw4Gr3adw+wmC2wR7MxvxyY5KsMtL0XKBd+Su1ZcVixIYMQniqcaKa73gUJp35YasO7hT/wjmvtht1nrg3vi4kqytw/V6NdwMYqDwTnzKva+v4YwPz1Kf/Te3Ae01Ve8tuli26rQ0h4C3T7rzMK3xP6DVSq8OO4LSxk45usjEAOkmAydQ7TVDgygVdMMS7yrVFrdy3itQIDAQAB\""
+            buildConfigField "String","TOKEN","\"2ozYQxKOej6BzwF7QNewTc7Qz8PHyXn6\""
 
         }
     }
