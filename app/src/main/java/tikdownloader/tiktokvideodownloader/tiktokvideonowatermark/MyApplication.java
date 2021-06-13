@@ -10,11 +10,18 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.security.ProviderInstaller;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.net.ssl.SSLContext;
 
 public class MyApplication extends Application {
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -33,6 +40,19 @@ public class MyApplication extends Application {
         AudienceNetworkAds.initialize(this);
         FirebaseMessaging.getInstance().subscribeToTopic("all");
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        try {
+            // Google Play will install latest OpenSSL
+            ProviderInstaller.installIfNeeded(appContext);
+            SSLContext sslContext;
+            sslContext = SSLContext.getInstance("TLSv1.2");
+            sslContext.init(null, null, null);
+            sslContext.createSSLEngine();
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException
+                | NoSuchAlgorithmException | KeyManagementException e) {
+            e.printStackTrace();
+        }
+
         //admob initilization
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
@@ -40,7 +60,7 @@ public class MyApplication extends Application {
             }
         });
         if(BuildConfig.DEBUG){
-            List<String> testDeviceIds = Arrays.asList("2CBF563B58BA400B60874AFF2690AEED");
+            List<String> testDeviceIds = Arrays.asList("2CBF563B58BA400B60874AFF2690AEED","BC95797D2B25EDCE1862C0646F339445");
             RequestConfiguration configuration = new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
             MobileAds.setRequestConfiguration(configuration);
         }

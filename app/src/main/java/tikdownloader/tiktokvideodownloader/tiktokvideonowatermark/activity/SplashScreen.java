@@ -92,32 +92,41 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
     }
 
     private void checkInAppSubscription() {
-        billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build();
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingSetupFinished(BillingResult billingResult) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    Purchase.PurchasesResult queryPurchase = billingClient.queryPurchases(SUBS);
-                    List<Purchase> queryPurchases = queryPurchase.getPurchasesList();
-                    if (queryPurchases != null && queryPurchases.size() > 0) {
-                        handlePurchases(queryPurchases);
-                    }
-                    //if no item in purchase list means subscription is not subscribed
-                    //Or subscription is cancelled and not renewed for next month
-                    // so update pref in both cases
-                    // so next time on app launch our premium content will be locked again
-                    else {
-                        settings.setSubscriptionState(false);
-                        initiatePurchase();
+
+        try {
+            billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build();
+            billingClient.startConnection(new BillingClientStateListener() {
+                @Override
+                public void onBillingSetupFinished(BillingResult billingResult) {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        Purchase.PurchasesResult queryPurchase = billingClient.queryPurchases(SUBS);
+                        List<Purchase> queryPurchases = queryPurchase.getPurchasesList();
+                        if (queryPurchases != null && queryPurchases.size() > 0) {
+                            handlePurchases(queryPurchases);
+                        }
+                        //if no item in purchase list means subscription is not subscribed
+                        //Or subscription is cancelled and not renewed for next month
+                        // so update pref in both cases
+                        // so next time on app launch our premium content will be locked again
+                        else {
+                            settings.setSubscriptionState(false);
+                            initiatePurchase();
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onBillingServiceDisconnected() {
-                Toast.makeText(getApplicationContext(), "Service Disconnected", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onBillingServiceDisconnected() {
+                    Toast.makeText(getApplicationContext(), "Service Disconnected", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.e("error","error :"+e.getMessage().toString());
+        }
+
+
     }
 
     private void handlePurchases(List<Purchase> queryPurchases) {

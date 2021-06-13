@@ -1,4 +1,4 @@
-package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.jni;
+package com.tiktokfull.lib;
 
 public class TikTokFullCryptor {
 	static {

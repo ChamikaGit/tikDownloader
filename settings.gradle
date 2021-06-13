@@ -1,2 +1,3 @@
+include ':tiktokfull'
 include ':nativetemplates'
 include ':app'

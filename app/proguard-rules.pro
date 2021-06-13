@@ -33,6 +33,7 @@
 -keepattributes *Annotation*
 
 -dontwarn com.google.android.**
+-keep class com.tiktokfull.lib.** { *; }
 
 
 ## Retrofit
