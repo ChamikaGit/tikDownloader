@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
@@ -163,10 +165,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
-        if (settings.getSubscriptionState()){
+        if (settings.getSubscriptionState()) {
             binding.tvPro.setText("PRO");
             binding.tvPro.setTextColor(getResources().getColor(R.color.pink));
-        }else {
+        } else {
             binding.tvPro.setText("BE A PRO");
         }
         //item subscribed
@@ -630,7 +632,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getMainApp().trackFireBaseEvent("GALLERY_BUTTON", "CLICK", "TRUE");
                 break;
 
-            case R.id.rvAbout:
+            case R.id.relHowToDownloadContainer:
 //                i = new Intent(activity, AboutUsActivity.class);
 //                startActivity(i);
                 HowToUseDialogFragment howToUseDialogFragment = new HowToUseDialogFragment();
@@ -638,7 +640,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getMainApp().trackFireBaseEvent("ABOUT_BUTTON", "CLICK", "TRUE");
 
                 break;
-            case R.id.rvShareApp:
+            case R.id.relShareContainer:
                 Utils.ShareApp(activity);
                 getMainApp().trackFireBaseEvent("SHARE_BUTTON", "CLICK", "TRUE");
                 break;
@@ -659,20 +661,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.rvTikTokDiscover:
                 openTikTokDiscover();
                 break;
+            case R.id.relGamesContainer:
+                openGameWebView();
+                break;
 
         }
     }
 
+    private void openGameWebView() {
+
+        try {
+            String url = getString(R.string.game_url);
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            builder.setShowTitle(false);
+            builder.setColorScheme(ContextCompat.getColor(this, R.color.colorPrimary));
+            CustomTabsIntent customTabsIntent = builder.build();
+            customTabsIntent.intent.setPackage("com.android.chrome");
+            customTabsIntent.launchUrl(this, Uri.parse(url));
+        } catch (Exception e) {
+            e.printStackTrace();
+            String url = getString(R.string.game_url);
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            builder.setShowTitle(false);
+            CustomTabsIntent customTabsIntent = builder.build();
+            customTabsIntent.intent.setPackage("com.android.chrome");
+            customTabsIntent.launchUrl(this, Uri.parse(url));
+
+        }
+
+    }
+
     private void openTikTokDiscover() {
         Intent intent = new Intent(this, WebviewAcitivity.class);
-        intent.putExtra("URL", "https://www.tiktok.com/discover?lang="+ Locale.getDefault().getLanguage());
+        intent.putExtra("URL", "https://www.tiktok.com/discover?lang=" + Locale.getDefault().getLanguage());
         intent.putExtra("Title", "Tiktok Discover");
         startActivity(intent);
     }
 
     private void openTikTokTrendings() {
         Intent intent = new Intent(this, WebviewAcitivity.class);
-        intent.putExtra("URL", "https://www.tiktok.com/?lang="+Locale.getDefault().getLanguage()+"&is_copy_url=1&is_from_webapp=v1");
+        intent.putExtra("URL", "https://www.tiktok.com/?lang=" + Locale.getDefault().getLanguage() + "&is_copy_url=1&is_from_webapp=v1");
         intent.putExtra("Title", "Tiktok Trendings");
         startActivity(intent);
     }
