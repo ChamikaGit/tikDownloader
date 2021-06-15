@@ -4,9 +4,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +29,12 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -35,6 +45,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,10 +73,13 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
 
     //in-app purchase
     private BillingClient billingClient;
+    private AdLoader adLoader;
+    public static NativeAd nativeAdObjSplash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
         settings = new Settings(this);
         tvVersionNO = findViewById(R.id.tvVersionNO);
@@ -83,12 +97,31 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
         Utils utils = new Utils(activity);
         if (utils.isNetworkAvailable()) {
             checkInAppSubscription();
+            loadNativeAd();
         } else {
             NoInternetDialogFragment noInternetDialogFragment = new NoInternetDialogFragment(this);
             noInternetDialogFragment.show(getSupportFragmentManager(), "NoInternetDialogFragment");
         }
 
         tvVersionNO.setText("v" + BuildConfig.VERSION_NAME);
+    }
+
+    private void loadNativeAd() {
+        adLoader = new AdLoader.Builder(getApplicationContext(), getString(R.string.admob_native_ad))
+                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                    @Override
+                    public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
+                        nativeAdObjSplash = nativeAd;
+                    }
+                })
+                .withAdListener(new AdListener() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError error) {
+                        nativeAdObjSplash = null;
+                        Toast.makeText(SplashScreen.this, "Failed to load native ad: " + error, Toast.LENGTH_SHORT).show();
+                    }
+                }).build();
+        adLoader.loadAd(new AdRequest.Builder().build());
     }
 
     private void checkInAppSubscription() {
@@ -121,9 +154,9 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
                 }
             });
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            Log.e("error","error :"+e.getMessage().toString());
+            Log.e("error", "error :" + e.getMessage().toString());
         }
 
 
@@ -258,9 +291,16 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Intent i = new Intent(SplashScreen.this, MainActivity.class);
-                            startActivity(i);
-                            finish();
+                            if (settings.getSubscriptionState()) {
+                                openMainActivitiy();
+                            } else {
+                                if (nativeAdObjSplash != null) {
+                                    openNativeAdActvity();
+                                } else {
+                                    Log.e("native_ad", "native_ad : null");
+                                    openMainActivitiy();
+                                }
+                            }
                         }
                     }, 2000);
 
@@ -271,6 +311,17 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
             }
         });
 
+    }
+
+    private void openNativeAdActvity() {
+        Intent intent = new Intent(SplashScreen.this, NativeAdsActivity.class);
+        startActivity(intent);
+    }
+
+    private void openMainActivitiy() {
+        Intent i = new Intent(SplashScreen.this, MainActivity.class);
+        startActivity(i);
+        finish();
     }
 
     public void UpdateApp() {

@@ -544,8 +544,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
-        loadNativeAd();
         exitDialogFragment = new ExitDialogFragment(this, unifiedNativeAdObj);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadNativeAd();
     }
 
     public void initViews() {
