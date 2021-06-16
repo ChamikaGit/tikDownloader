@@ -16,9 +16,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,8 +45,10 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
+import com.google.android.gms.ads.nativead.NativeAdView;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -110,6 +116,9 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
     private int newCount = 1;
     private String notMarked = "", marked = "";
     private NativeAd unifiedNativeAdObj;
+    public static NativeAd nativeAdObjDownloadScreen;
+    private AdLoader adLoaderDownloadScreen;
+    private View shine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,27 +136,27 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             progressDialog.setMessage("Please wait..!");
             progressDialog.show();
         }
-        img = findViewById(R.id.img);
-        imgPicture = findViewById(R.id.imgPicture);
-        tvName = findViewById(R.id.tvName);
-        tvDescription = findViewById(R.id.tvDescription);
-        tvKeywords = findViewById(R.id.tvKeywords);
-        tvCommentCount = findViewById(R.id.tvCommentCount);
-        tvDownloadNow = findViewById(R.id.tvDownloadNow);
-        tvPast = findViewById(R.id.tvPast);
-        relDetailsContainer = findViewById(R.id.relDetailsContainer);
+//        img = findViewById(R.id.img);
+//        imgPicture = findViewById(R.id.imgPicture);
+//        tvName = findViewById(R.id.tvName);
+//        tvDescription = findViewById(R.id.tvDescription);
+//        tvKeywords = findViewById(R.id.tvKeywords);
+//        tvCommentCount = findViewById(R.id.tvCommentCount);
+//        tvDownloadNow = findViewById(R.id.tvDownloadNow);
+//        tvPast = findViewById(R.id.tvPast);
+//        relDetailsContainer = findViewById(R.id.relDetailsContainer);
         progressBar = findViewById(R.id.progressBar);
         activity = this;
         commonClassForAPI = CommonClassForAPI.getInstance(activity);
         createFileFolder();
         initViews();
-        AdsUtils.showGoogleBannerAd(TikTokNewActivity.this, binding.adView);
+//        AdsUtils.showGoogleBannerAd(TikTokNewActivity.this, binding.adView);
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
+//        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {
+//            }
+//        });
 
 
 //        mInterstitialAd = new InterstitialAd(this);
@@ -277,6 +286,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 //            public void onAdClosed() {
 //            }
 //        });
+        loadNativeAdDownloadScreen();
         loadAdOpen();
         loadAdDownload();
         loadNativeAd();
@@ -404,6 +414,137 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 //                .build());
 //    }
 
+    private void loadNativeAdDownloadScreen() {
+        adLoaderDownloadScreen = new AdLoader.Builder(getApplicationContext(), getString(R.string.admob_native_ad))
+                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                    @Override
+                    public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
+                        nativeAdObjDownloadScreen = nativeAd;
+                        if (nativeAdObjDownloadScreen != null) {
+                            FrameLayout nativeContainer = findViewById(R.id.native_container);
+                            NativeAdView adView = (NativeAdView) getLayoutInflater().inflate(R.layout.native_ad_banner_rectangle, null);
+                            populateNativeAdView(nativeAdObjDownloadScreen, adView);
+                            nativeContainer.removeAllViews();
+                            nativeContainer.addView(adView);
+                        }
+                    }
+                })
+                .withAdListener(new AdListener() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError error) {
+                        nativeAdObjDownloadScreen = null;
+//                        Toast.makeText(SplashScreen.this, "Failed to load native ad: " + error, Toast.LENGTH_SHORT).show();
+                    }
+                }).build();
+        adLoaderDownloadScreen.loadAd(new AdRequest.Builder().build());
+    }
+
+    private void populateNativeAdView(NativeAd nativeAd, NativeAdView adView) {
+        // Set the media view. Media content will be automatically populated in the media view once
+        // adView.setNativeAd() is called.
+        MediaView mediaView = adView.findViewById(R.id.ad_media);
+        adView.setMediaView(mediaView);
+
+        // Set other ad assets.
+        adView.setHeadlineView(adView.findViewById(R.id.ad_headline));
+        adView.setBodyView(adView.findViewById(R.id.ad_body));
+        adView.setCallToActionView(adView.findViewById(R.id.ad_call_to_action));
+        adView.setIconView(adView.findViewById(R.id.ad_app_icon));
+//        adView.setPriceView(adView.findViewById(R.id.ad_price));
+//        adView.setStarRatingView(adView.findViewById(R.id.ad_stars));
+//        adView.setStoreView(adView.findViewById(R.id.ad_store));
+        adView.setAdvertiserView(adView.findViewById(R.id.ad_advertiser));
+
+        // The headline is guaranteed to be in every NativeAd.
+        ((TextView) adView.getHeadlineView()).setText(nativeAd.getHeadline());
+
+        // These assets aren't guaranteed to be in every NativeAd, so it's important to
+        // check before trying to display them.
+        if (nativeAd.getBody() == null) {
+            adView.getBodyView().setVisibility(View.INVISIBLE);
+        } else {
+            adView.getBodyView().setVisibility(View.VISIBLE);
+            ((TextView) adView.getBodyView()).setText(nativeAd.getBody());
+        }
+
+        if (nativeAd.getCallToAction() == null) {
+            adView.getCallToActionView().setVisibility(View.GONE);
+        } else {
+            adView.getCallToActionView().setVisibility(View.VISIBLE);
+//      ((RelativeLayout) adView.getCallToActionView()).setText(nativeAd.getCallToAction());
+            ((TextView) adView.findViewById(R.id.tvCallActionText)).setText(nativeAd.getCallToAction());
+        }
+
+        if (nativeAd.getIcon() == null) {
+            adView.getIconView().setVisibility(View.GONE);
+        } else {
+            ((ImageView) adView.getIconView()).setImageDrawable(
+                    nativeAd.getIcon().getDrawable());
+            adView.getIconView().setVisibility(View.VISIBLE);
+        }
+
+//        if (nativeAd.getPrice() == null) {
+//            adView.getPriceView().setVisibility(View.GONE);
+//        } else {
+//            adView.getPriceView().setVisibility(View.GONE);
+//            ((TextView) adView.getPriceView()).setText(nativeAd.getPrice());
+//        }
+
+//        if (nativeAd.getStore() == null) {
+//            adView.getStoreView().setVisibility(View.GONE);
+//        } else {
+//            adView.getStoreView().setVisibility(View.GONE);
+//            ((TextView) adView.getStoreView()).setText(nativeAd.getStore());
+//        }
+
+//        if (nativeAd.getStarRating() == null || nativeAd.getStarRating() < 3) {
+//            adView.getStarRatingView().setVisibility(View.INVISIBLE);
+//        } else {
+//            ((RatingBar) adView.getStarRatingView())
+//                    .setRating(nativeAd.getStarRating().floatValue());
+//            adView.getStarRatingView().setVisibility(View.VISIBLE);
+//        }
+
+        if (nativeAd.getAdvertiser() == null) {
+            adView.getAdvertiserView().setVisibility(View.INVISIBLE);
+        } else {
+            ((TextView) adView.getAdvertiserView()).setText(nativeAd.getAdvertiser());
+            adView.getAdvertiserView().setVisibility(View.VISIBLE);
+        }
+
+        // This method tells the Google Mobile Ads SDK that you have finished populating your
+        // native ad view with this native ad. The SDK will populate the adView's MediaView
+        // with the media content from this native ad.
+        adView.setNativeAd(nativeAd);
+
+        shine = adView.findViewById(R.id.shine);
+        shineAnimation();
+    }
+
+    private void shineAnimation() {
+
+        Animation anim = AnimationUtils.loadAnimation(this, R.anim.left_right);
+        shine.startAnimation(anim);
+
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                shine.startAnimation(animation);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+    }
+
     private void loadNativeAd() {
 
 //        AdLoader.Builder builder =  new AdLoader.Builder(MainActivity.this,getString(R.string.admob_native_ad));
@@ -511,7 +652,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 
     private void initViews() {
         clipBoard = (ClipboardManager) activity.getSystemService(CLIPBOARD_SERVICE);
-        binding.layoutHowTo.LLHowToLayout.setVisibility(View.VISIBLE);
+//        binding.layoutHowTo.LLHowToLayout.setVisibility(View.VISIBLE);
         binding.imBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -523,19 +664,19 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             public void onClick(View view) {
                 if (!SharePrefs.getInstance(activity).getBoolean(SharePrefs.ISSHOWHOWTOTT)) {
                     SharePrefs.getInstance(activity).putBoolean(SharePrefs.ISSHOWHOWTOTT, true);
-                    binding.layoutHowTo.LLHowToLayout.setVisibility(View.VISIBLE);
+//                    binding.layoutHowTo.LLHowToLayout.setVisibility(View.VISIBLE);
                 } else {
-                    binding.layoutHowTo.LLHowToLayout.setVisibility(View.GONE);
+//                    binding.layoutHowTo.LLHowToLayout.setVisibility(View.GONE);
                 }
             }
         });
 
-        binding.layoutHowTo.imHowto1.setImageResource(R.drawable.tt1);
-        binding.layoutHowTo.imHowto2.setImageResource(R.drawable.tt_2);
-        binding.layoutHowTo.imHowto3.setImageResource(R.drawable.tt3);
-        binding.layoutHowTo.imHowto4.setImageResource(R.drawable.tt4);
-        binding.layoutHowTo.tvHowTo1.setText("1. Open TikTok");
-        binding.layoutHowTo.tvHowTo3.setText("1. Open TikTok");
+//        binding.layoutHowTo.imHowto1.setImageResource(R.drawable.tt1);
+//        binding.layoutHowTo.imHowto2.setImageResource(R.drawable.tt_2);
+//        binding.layoutHowTo.imHowto3.setImageResource(R.drawable.tt3);
+//        binding.layoutHowTo.imHowto4.setImageResource(R.drawable.tt4);
+//        binding.layoutHowTo.tvHowTo1.setText("1. Open TikTok");
+//        binding.layoutHowTo.tvHowTo3.setText("1. Open TikTok");
 
 
         binding.tvWithMark.setOnClickListener(v -> {
@@ -614,11 +755,11 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                         if (host.contains("tiktok.com")) {
                             //Utils.showProgressDialog(activity);
 //                            progressBar.setVisibility(View.VISIBLE);
-                            img.setVisibility(View.VISIBLE);
+//                            img.setVisibility(View.VISIBLE);
                             //new callGetTikTokDefaultData().execute(binding.etText.getText().toString());
                         } else {
 //                Utils.setToast(activity, "Enter Valid Url");
-                            img.setVisibility(View.GONE);
+//                            img.setVisibility(View.GONE);
 //                            progressBar.setVisibility(View.GONE);
                         }
                     } catch (MalformedURLException e) {
