@@ -118,7 +118,7 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError error) {
                         nativeAdObjSplash = null;
-                        Toast.makeText(SplashScreen.this, "Failed to load native ad: " + error, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(SplashScreen.this, "Failed to load native ad: " + error, Toast.LENGTH_SHORT).show();
                     }
                 }).build();
         adLoader.loadAd(new AdRequest.Builder().build());
@@ -288,9 +288,9 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
                     Log.d("firebaseRemoteConfig", "Config params updated: " + updated);
 //                    Toast.makeText(SplashScreen.this, "Fetch and activate succeeded",
 //                            Toast.LENGTH_SHORT).show();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
                             if (settings.getSubscriptionState()) {
                                 openMainActivitiy();
                             } else {
@@ -301,8 +301,8 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
                                     openMainActivitiy();
                                 }
                             }
-                        }
-                    }, 2000);
+//                        }
+//                    }, 2000);
 
                 } else {
                     Toast.makeText(SplashScreen.this, "Fetch failed",

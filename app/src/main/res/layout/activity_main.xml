@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
+        android:background="@color/splash_color">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -414,10 +414,26 @@
                         android:layout_below="@+id/linBottomContainer"
                         android:onClick="onClick">
 
-                        <pl.droidsonroids.gif.GifImageView
+                        <androidx.cardview.widget.CardView
+                            android:clipToPadding="true"
+                            app:cardBackgroundColor="@color/splash_color"
+                            app:cardCornerRadius="12dp"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/gif_game" />
+                            android:layout_height="wrap_content">
+
+
+                            <pl.droidsonroids.gif.GifImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="90dp"
+                                android:scaleType="centerCrop"
+                                android:background="@drawable/gif_game" />
+
+                        </androidx.cardview.widget.CardView>
+
+<!--                        <pl.droidsonroids.gif.GifImageView-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:background="@drawable/gif_game" />-->
 
 
                     </RelativeLayout>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.NativeAdsActivity"
-    android:background="@color/colorPrimary">
+    android:background="@color/splash_color">
 
 
     <FrameLayout
@@ -17,20 +17,41 @@
 
     <RelativeLayout
         android:id="@+id/relSkipContainer"
-        android:layout_width="100dp"
-        android:layout_height="35dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
-        android:onClick="onClick"
-        android:background="#910F22">
+        android:background="@color/white"
+        android:onClick="onClick">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@mipmap/ic_launcher_round"
+            android:layout_alignParentStart="true"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="SKIP (5)"
+            android:text="TikSave"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tvSkipTime"
+            android:layout_width="100dp"
+            android:layout_height="47dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="SKIP"
+            android:gravity="center"
             android:textColor="#FFFFFF"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/bg_circular"
             android:textStyle="bold" />
 
     </RelativeLayout>

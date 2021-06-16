@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
@@ -29,6 +30,8 @@ public class NativeAdsActivity extends AppCompatActivity implements View.OnClick
     private Intent intent;
     private NativeAd nativeAdObj;
     private RelativeLayout relSkipContainer;
+    private TextView tvSkipTime;
+    private CountDownTimer countDownTimer;
 
 
     @Override
@@ -37,6 +40,7 @@ public class NativeAdsActivity extends AppCompatActivity implements View.OnClick
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_native_ads);
         relSkipContainer = findViewById(R.id.relSkipContainer);
+        tvSkipTime = findViewById(R.id.tvSkipTime);
         relSkipContainer.setOnClickListener(this::onClick);
         intent = getIntent();
         if (intent != null) {
@@ -50,12 +54,22 @@ public class NativeAdsActivity extends AppCompatActivity implements View.OnClick
             }
         }
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        countDownTimer = new CountDownTimer(7000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                tvSkipTime.setText("SKIP (" + millisUntilFinished / 1000+")");
+                //here you can have your logic to set text to edittext
+            }
+            public void onFinish() {
                 openMainActivitiy();
             }
-        },4000);
+        }.start();
+
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                openMainActivitiy();
+//            }
+//        },4000);
     }
 
 
@@ -88,7 +102,7 @@ public class NativeAdsActivity extends AppCompatActivity implements View.OnClick
         }
 
         if (nativeAd.getCallToAction() == null) {
-            adView.getCallToActionView().setVisibility(View.INVISIBLE);
+            adView.getCallToActionView().setVisibility(View.GONE);
         } else {
             adView.getCallToActionView().setVisibility(View.VISIBLE);
 //      ((RelativeLayout) adView.getCallToActionView()).setText(nativeAd.getCallToAction());
@@ -104,16 +118,16 @@ public class NativeAdsActivity extends AppCompatActivity implements View.OnClick
         }
 
         if (nativeAd.getPrice() == null) {
-            adView.getPriceView().setVisibility(View.INVISIBLE);
+            adView.getPriceView().setVisibility(View.GONE);
         } else {
-            adView.getPriceView().setVisibility(View.VISIBLE);
+            adView.getPriceView().setVisibility(View.GONE);
             ((TextView) adView.getPriceView()).setText(nativeAd.getPrice());
         }
 
         if (nativeAd.getStore() == null) {
-            adView.getStoreView().setVisibility(View.INVISIBLE);
+            adView.getStoreView().setVisibility(View.GONE);
         } else {
-            adView.getStoreView().setVisibility(View.VISIBLE);
+            adView.getStoreView().setVisibility(View.GONE);
             ((TextView) adView.getStoreView()).setText(nativeAd.getStore());
         }
 
@@ -177,12 +191,15 @@ public class NativeAdsActivity extends AppCompatActivity implements View.OnClick
         if (nativeAdObj != null) {
             nativeAdObj.destroy();
         }
+        if (countDownTimer!=null){
+            countDownTimer.cancel();
+        }
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.relSkipContainer) {
-            openMainActivitiy();
+//            openMainActivitiy();
         }
     }
 }

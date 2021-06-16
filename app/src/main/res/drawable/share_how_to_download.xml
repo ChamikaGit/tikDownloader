@@ -2,11 +2,11 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
 
-        <shape android:shape="rectangle">
+        <shape android:shape="rectangle" >
             <corners android:radius="12dp" />
             <gradient
-                android:startColor="#7F0993"
-                android:endColor="#200125"
+                android:startColor="#200125"
+                android:endColor="#7F0993"
                  />
         </shape>
     </item>

@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -83,6 +84,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import static androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_SYSTEM;
 import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.createFileFolder;
 
@@ -667,10 +669,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 openTikTokDiscover();
                 break;
             case R.id.relGamesContainer:
-                openGameWebView();
+                try {
+                    checkChromAppInstalled();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
 
         }
+    }
+
+    private void checkChromAppInstalled() {
+        boolean isAppInstalled = appInstalledOrNot("com.android.chrome");
+        if (isAppInstalled) {
+            openGameWebView();
+        } else {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.game_url)));
+            startActivity(browserIntent);
+        }
+    }
+
+    private boolean appInstalledOrNot(String uri) {
+        PackageManager pm = getPackageManager();
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+
+        return false;
     }
 
     private void openGameWebView() {
@@ -679,7 +706,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String url = getString(R.string.game_url);
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
             builder.setShowTitle(false);
-            builder.setColorScheme(ContextCompat.getColor(this, R.color.colorPrimary));
+            builder.setColorScheme(COLOR_SCHEME_SYSTEM);
             CustomTabsIntent customTabsIntent = builder.build();
             customTabsIntent.intent.setPackage("com.android.chrome");
             customTabsIntent.launchUrl(this, Uri.parse(url));
@@ -688,6 +715,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String url = getString(R.string.game_url);
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
             builder.setShowTitle(false);
+            builder.setToolbarColor(Color.parseColor("#021B2A"));
             CustomTabsIntent customTabsIntent = builder.build();
             customTabsIntent.intent.setPackage("com.android.chrome");
             customTabsIntent.launchUrl(this, Uri.parse(url));
@@ -752,8 +780,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .setAutoCancel(true)
                     .setSmallIcon(R.mipmap.ic_launcher_round)
                     .setColor(getResources().getColor(R.color.white))
-                    .setLargeIcon(BitmapFactory.decodeResource(activity.getResources(),
-                            R.mipmap.ic_launcher_round))
+                    .setLargeIcon(BitmapFactory.decodeResource(activity.getResources(), R.mipmap.ic_launcher_round))
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setContentTitle("Copied text")
