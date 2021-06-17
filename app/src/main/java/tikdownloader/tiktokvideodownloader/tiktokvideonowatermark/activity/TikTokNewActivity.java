@@ -21,6 +21,7 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -32,6 +33,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.bumptech.glide.Glide;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.ads.mediation.facebook.FacebookAdapter;
 import com.google.ads.mediation.facebook.FacebookExtras;
 import com.google.android.gms.ads.AdError;
@@ -110,7 +112,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
     private ImageView img, imgPicture;
     private TextView tvName, tvDescription, tvKeywords, tvCommentCount, tvDownloadNow, tvPast;
     private ProgressBar progressBar;
-    private RelativeLayout relDetailsContainer;
+    private LinearLayout relHowToDownloadContainerNew;
     private ProgressDialog progressDialog;
     private int tryCount = 0;
     private int newCount = 1;
@@ -119,6 +121,8 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
     public static NativeAd nativeAdObjDownloadScreen;
     private AdLoader adLoaderDownloadScreen;
     private View shine;
+    private boolean isHowtoDownloadVisible = false;
+    private ShimmerFrameLayout shimmerFrameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +149,11 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 //        tvDownloadNow = findViewById(R.id.tvDownloadNow);
 //        tvPast = findViewById(R.id.tvPast);
 //        relDetailsContainer = findViewById(R.id.relDetailsContainer);
+        relHowToDownloadContainerNew = findViewById(R.id.relHowToDownloadContainerNew);
         progressBar = findViewById(R.id.progressBar);
+        shimmerFrameLayout = (ShimmerFrameLayout) findViewById(R.id.native_ad_banner_shimmer);
+        shimmerFrameLayout.startShimmer();
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
         activity = this;
         commonClassForAPI = CommonClassForAPI.getInstance(activity);
         createFileFolder();
@@ -421,11 +429,16 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
                         nativeAdObjDownloadScreen = nativeAd;
                         if (nativeAdObjDownloadScreen != null) {
+                            shimmerFrameLayout.stopShimmer();
+                            shimmerFrameLayout.setVisibility(View.GONE);
                             FrameLayout nativeContainer = findViewById(R.id.native_container);
                             NativeAdView adView = (NativeAdView) getLayoutInflater().inflate(R.layout.native_ad_banner_rectangle, null);
                             populateNativeAdView(nativeAdObjDownloadScreen, adView);
                             nativeContainer.removeAllViews();
                             nativeContainer.addView(adView);
+                        } else {
+                            shimmerFrameLayout.stopShimmer();
+                            shimmerFrameLayout.setVisibility(View.GONE);
                         }
                     }
                 })
@@ -433,6 +446,8 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError error) {
                         nativeAdObjDownloadScreen = null;
+                        shimmerFrameLayout.stopShimmer();
+                        shimmerFrameLayout.setVisibility(View.GONE);
 //                        Toast.makeText(SplashScreen.this, "Failed to load native ad: " + error, Toast.LENGTH_SHORT).show();
                     }
                 }).build();
@@ -768,6 +783,20 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                 }
             }
         });
+
+        binding.relHowToDownloadView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isHowtoDownloadVisible) {
+                    isHowtoDownloadVisible = false;
+                    relHowToDownloadContainerNew.setVisibility(View.GONE);
+                } else {
+                    isHowtoDownloadVisible = true;
+                    relHowToDownloadContainerNew.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
     }
 
     private void GetTikTokData(boolean isWithWaternark) {
@@ -906,35 +935,40 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                         if (BuildConfig.DEBUG) {
                             Log.e("Tiktok data", data.getAsString());
                         }
-                        if (data.getAsString() != null) {
+                        if (data.getAsString() != null || !data.getAsString().equals("")) {
                             try {
-                                byte[] dataCrypt = TikTokFullCryptor.hexStr2Bytes(data.getAsString());
-                                dataCrypt = TikTokFullCryptor.crypt(dataCrypt, System.currentTimeMillis(), 1);
-                                String decrypt = "" + new String(dataCrypt, "UTF-8");
-                                if (BuildConfig.DEBUG) {
-                                    Log.e("Tiktok data", new String(dataCrypt, "UTF-8"));
-                                }
-                                JSONObject jsonObject = new JSONObject(decrypt);
-                                if (jsonObject != null) {
-                                    JSONArray jsonArray = jsonObject.getJSONArray("links");
-                                    if (jsonArray.length() > 0) {
-                                        JSONObject linksObject = jsonArray.getJSONObject(0);
-                                        notMarked = linksObject.getString("url");
-                                        if (BuildConfig.DEBUG) {
-                                            Log.e("Tiktok data url ", notMarked);
-                                        }
-                                        VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, jsonObject.getString("thumbnail"), unifiedNativeAdObj);
-                                        videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
-                                    } else {
-                                        Toast.makeText(TikTokNewActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                                try {
+                                    byte[] dataCrypt = TikTokFullCryptor.hexStr2Bytes(data.getAsString());
+                                    dataCrypt = TikTokFullCryptor.crypt(dataCrypt, System.currentTimeMillis(), 1);
+                                    String decrypt = "" + new String(dataCrypt, "UTF-8");
+                                    if (BuildConfig.DEBUG) {
+                                        Log.e("Tiktok data", new String(dataCrypt, "UTF-8"));
                                     }
-
+                                    JSONObject jsonObject = new JSONObject(decrypt);
+                                    if (jsonObject != null) {
+                                        JSONArray jsonArray = jsonObject.getJSONArray("links");
+                                        if (jsonArray.length() > 0) {
+                                            JSONObject linksObject = jsonArray.getJSONObject(0);
+                                            notMarked = linksObject.getString("url");
+                                            if (BuildConfig.DEBUG) {
+                                                Log.e("Tiktok data url ", notMarked);
+                                            }
+                                            VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, jsonObject.getString("thumbnail"), unifiedNativeAdObj);
+                                            videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
+                                        } else {
+                                            Toast.makeText(TikTokNewActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                } catch (UnsupportedEncodingException | JSONException e) {
+                                    e.printStackTrace();
                                 }
-
-                            } catch (UnsupportedEncodingException | JSONException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
+                                Toast.makeText(TikTokNewActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                                Log.e("TAG", e.getMessage());
                             }
-                        }else {
+
+                        } else {
                             Toast.makeText(TikTokNewActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
                         }
 
@@ -1159,14 +1193,14 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         }
         if (IsWithWaternark) {
             Log.e("startDownload ", "marked " + marked);
-            startDownload(marked, RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4",true);
+            startDownload(marked, RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4", true);
             binding.etText.setText("");
             showInterstitialOpen();
             loadAdDownload();
             loadNativeAd();
         } else {
             Log.e("startDownload ", "marked " + notMarked);
-            startDownload(notMarked, RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4",false);
+            startDownload(notMarked, RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4", false);
             binding.etText.setText("");
             showInterstitialOpen();
             loadAdDownload();
@@ -1187,14 +1221,14 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 //    }
 
 
-    public void startDownload(String downloadPath, String destinationPath, Context context, String FileName,boolean isWatermark) {
+    public void startDownload(String downloadPath, String destinationPath, Context context, String FileName, boolean isWatermark) {
         Log.e("marked2 ", "marked " + downloadPath);
         setToast(context, "Download Started");
         Uri uri = null;
-        if (isWatermark){
-             uri = Uri.parse(downloadPath.trim().replace("https://", "http://")); // Path where you want to download file.
-        }else {
-             uri = Uri.parse(downloadPath.trim()); // Path where you want to download file.
+        if (isWatermark) {
+            uri = Uri.parse(downloadPath.trim().replace("https://", "http://")); // Path where you want to download file.
+        } else {
+            uri = Uri.parse(downloadPath.trim()); // Path where you want to download file.
         }
         Log.e("marked3 ", "uri " + uri.toString().replace("https://", "http://"));
         DownloadManager.Request request = new DownloadManager.Request(uri);
@@ -1307,7 +1341,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 
         protected void onPostExecute(Document result) {
             progressBar.setVisibility(View.GONE);
-            relDetailsContainer.setVisibility(View.VISIBLE);
+//            relDetailsContainer.setVisibility(View.VISIBLE);
             tvDownloadNow.setVisibility(View.VISIBLE);
 //            try {
 //                String URL = result.select("script[id=\"videoObject\"]").last().html();

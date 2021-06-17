@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#021B2A</color>
-    <color name="colorPrimaryDark">#212121</color>
+    <color name="colorPrimaryDark">#2E2C2C</color>
     <color name="colorAccent">#407806</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000</color>
@@ -29,4 +29,11 @@
     <color name="gnt_ad_green">#3A6728</color>
     <color name="gnt_gray">#808080</color>
     <color name="gnt_outline">#E0E0E0</color>
+    <color name="green_past">#64B610</color>
+    <color name="et_dark">#4A4747</color>
+    <color name="gnt_yellow">#DDA808</color>
+    <color name="colorGrey">#dddddd</color>
+
+
+
 </resources>

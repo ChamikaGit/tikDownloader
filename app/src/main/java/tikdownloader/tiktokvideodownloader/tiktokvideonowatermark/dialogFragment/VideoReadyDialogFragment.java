@@ -101,7 +101,7 @@ public class VideoReadyDialogFragment extends DialogFragment implements View.OnC
         Dialog dialog = getDialog();
         if (dialog != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setGravity(Gravity.BOTTOM);
+            dialog.getWindow().setGravity(Gravity.CENTER_VERTICAL);
         }
     }
 

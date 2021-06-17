@@ -16,12 +16,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityWebviewBinding;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Settings;
 
 
 public class WebviewAcitivity extends AppCompatActivity {
 
     ActivityWebviewBinding binding;
     String IntentURL, IntentTitle="";
+    private Settings settings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,11 @@ public class WebviewAcitivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        settings = new Settings(this);
+        if (!settings.getSubscriptionState()) {
+            //check if user enable the in-app subscribed
+            AdsUtils.showGoogleBannerAd(WebviewAcitivity.this, binding.adView);
+        }
         binding.TVTitle.setText(IntentTitle);
         LoadPage(IntentURL);
         binding.swipeRefreshLayout.setEnabled(false);

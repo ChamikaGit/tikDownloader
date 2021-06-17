@@ -1,5 +1,4 @@
-<com.google.android.gms.ads.nativead.NativeAdView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.gms.ads.nativead.NativeAdView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:background="@color/splash_color"
+        android:background="@drawable/bg_dark_filled_coners"
         android:minHeight="50dp"
         android:orientation="vertical">
 
@@ -15,11 +14,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:background="#B9FF9800"
-            android:paddingStart="5dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="5dp"
+            android:background="@drawable/bg_yellow_filled_coners_small"
+            android:padding="5dp"
             android:text="@string/string_ad"
             android:textColor="#FFFFFF"
             android:textSize="12sp" />
@@ -69,18 +65,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
+                            android:layout_marginStart="10dp"
                             android:gravity="center"
                             android:textColor="#FFFFFF"
                             android:textSize="14sp"
-                            android:layout_marginStart="10dp"
                             android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
-                            android:layout_marginTop="5dp"
                             android:layout_marginStart="10dp"
+                            android:layout_marginTop="5dp"
                             android:orientation="vertical">
 
                             <TextView
@@ -101,13 +97,12 @@
                                 android:backgroundTint="@color/white"
                                 android:isIndicator="true"
                                 android:numStars="5"
-                                android:visibility="gone"
-                                android:stepSize="0.5" />
+                                android:stepSize="0.5"
+                                android:visibility="gone" />
                         </LinearLayout>
 
                     </LinearLayout>
                 </LinearLayout>
-
 
 
                 <com.google.android.gms.ads.nativead.MediaView
@@ -135,9 +130,9 @@
                         android:paddingLeft="5dp"
                         android:paddingEnd="5dp"
                         android:paddingRight="5dp"
-                        android:visibility="gone"
                         android:textColor="#FFFFFF"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/ad_store"
@@ -149,8 +144,8 @@
                         android:paddingEnd="5dp"
                         android:paddingRight="5dp"
                         android:textColor="#FFFFFF"
-                        android:visibility="gone"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/ad_body"
@@ -169,8 +164,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
                         android:layout_marginStart="0dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginEnd="0dp">
 
                         <RelativeLayout
@@ -178,7 +173,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
-                            android:background="@drawable/bg_circular"
+                            android:background="@drawable/bg_green_filled"
                             android:gravity="center">
 
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.NativeAdsActivity"
-    android:background="@color/splash_color">
+    android:background="@color/black">
 
 
     <FrameLayout
@@ -51,7 +51,7 @@
             android:gravity="center"
             android:textColor="#FFFFFF"
             android:layout_marginEnd="5dp"
-            android:background="@drawable/bg_circular"
+            android:background="@drawable/bg_green_filled"
             android:textStyle="bold" />
 
     </RelativeLayout>
