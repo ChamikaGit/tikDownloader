@@ -471,7 +471,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
-                        NativeAd nativeAdObjMainScreen = nativeAd;
+                        nativeAdObjMainScreen = nativeAd;
                         if (nativeAdObjMainScreen != null) {
                             nativeContainer.setVisibility(View.VISIBLE);
                             shimmerFrameLayout.stopShimmer();
