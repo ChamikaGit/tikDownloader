@@ -74,108 +74,22 @@ public class GalleryActivity extends AppCompatActivity {
         templateView = findViewById(R.id.my_template);
         initViews();
 
-        int getCount = new Settings(this).getAdShowCountGallery();
-        newCount = getCount + 1;
-        new Settings(this).setAdShowCountGallery(newCount);
-
-        if (newCount % 3 == 0) {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setCancelable(false);
-            progressDialog.setTitle("Ad Loading");
-            progressDialog.setMessage("Please wait..!");
-            progressDialog.show();
-        }
+//        int getCount = new Settings(this).getAdShowCountGallery();
+//        newCount = getCount + 1;
+//        new Settings(this).setAdShowCountGallery(newCount);
+//
+//        if (newCount % 3 == 0) {
+//            progressDialog = new ProgressDialog(this);
+//            progressDialog.setCancelable(false);
+//            progressDialog.setTitle("Ad Loading");
+//            progressDialog.setMessage("Please wait..!");
+//            progressDialog.show();
+//        }
 
 //        AdsUtils.showGoogleBannerAd(GalleryActivity.this, binding.adView);
 //        loadNativeAd();
-        loadAdOpen();
-        loadAdBack();
-
-//        mInterstitialAdBackPress = new InterstitialAd(this);
-//        mInterstitialAdBackPress.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
-//        mInterstitialAdBackPress.loadAd(new AdRequest.Builder().build());
-//
-//        mInterstitialAdOpen = new InterstitialAd(this);
-//        mInterstitialAdOpen.setAdUnitId(getResources().getString(R.string.admob_interstitial_ad));
-//        mInterstitialAdOpen.loadAd(new AdRequest.Builder().build());
-//
-//        mInterstitialAdBackPress.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdLoaded() {
-//                // Code to be executed when an ad finishes loading.
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(int errorCode) {
-//                // Code to be executed when an ad request fails.
-//            }
-//
-//            @Override
-//            public void onAdOpened() {
-//                // Code to be executed when the ad is displayed.
-//            }
-//
-//            @Override
-//            public void onAdClicked() {
-//
-//                // Code to be executed when the user clicks on an ad.
-//            }
-//
-//            @Override
-//            public void onAdLeftApplication() {
-//                // Code to be executed when the user has left the app.
-//            }
-//
-//            @Override
-//            public void onAdClosed() {
-//
-//                onBackPressed();
-//            }
-//        });
-//
-//        mInterstitialAdOpen.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdLoaded() {
-//                // Code to be executed when an ad finishes loading.
-//                if (progressDialog.isShowing()) {
-//                    progressDialog.dismiss();
-//                }
-//                if (newCount % 3 == 0) {
-//                    mInterstitialAdOpen.show();
-//                }
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(int errorCode) {
-//                // Code to be executed when an ad request fails.
-//                if (progressDialog.isShowing()) {
-//                    progressDialog.dismiss();
-//                }
-//            }
-//
-//            @Override
-//            public void onAdOpened() {
-//                // Code to be executed when the ad is displayed.
-//            }
-//
-//            @Override
-//            public void onAdClicked() {
-//
-//                // Code to be executed when the user clicks on an ad.
-//            }
-//
-//            @Override
-//            public void onAdLeftApplication() {
-//                // Code to be executed when the user has left the app.
-//                if (progressDialog.isShowing()) {
-//                    progressDialog.dismiss();
-//                }
-//            }
-//
-//            @Override
-//            public void onAdClosed() {
-//            }
-//        });
+//        loadAdOpen();
+//        loadAdBack();
 
     }
 
@@ -276,6 +190,7 @@ public class GalleryActivity extends AppCompatActivity {
 
 
     private void loadNativeAdGalleryScreen() {
+        Bundle extras = new FacebookExtras().setNativeBanner(true).build();
         adLoaderGalleryScreen = new AdLoader.Builder(getApplicationContext(), getString(R.string.admob_native_ad))
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
@@ -304,7 +219,9 @@ public class GalleryActivity extends AppCompatActivity {
 //                        Toast.makeText(SplashScreen.this, "Failed to load native ad: " + error, Toast.LENGTH_SHORT).show();
                     }
                 }).build();
-        adLoaderGalleryScreen.loadAd(new AdRequest.Builder().build());
+        adLoaderGalleryScreen.loadAd(new AdRequest.Builder()
+                .addNetworkExtrasBundle(FacebookAdapter.class, extras)
+                .build());
     }
 
     private void populateNativeAdView(NativeAd nativeAd, NativeAdView adView) {

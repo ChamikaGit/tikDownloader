@@ -1,6 +1,7 @@
 package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -17,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityWebviewBinding;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.ObservableWebView;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Settings;
 
 
@@ -62,6 +66,30 @@ public class WebviewAcitivity extends AppCompatActivity {
 
             }
         });
+
+//        binding.webView1.setOnScrollChangedCallback(new ObservableWebView.OnScrollChangedCallback() {
+//
+//            @Override
+//            public void onScroll(int l, int t, int oldl, int oldt) {
+////                int tek = (int) Math.floor(binding.webView1.getContentHeight() * binding.webView1.getScale());
+////                if(tek - binding.webView1.getScrollY() == binding.webView1.getHeight())
+//
+//                Log.e("WEB_LOG: ","WEB_LOG l :"+l+" "+"WEB_LOG t:"+t);
+////                    Toast.makeText(WebviewAcitivity.this, "End", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            binding.webView1.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+//                @Override
+//                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+//
+//                        Toast.makeText(WebviewAcitivity.this, "Scrolled", Toast.LENGTH_SHORT).show();
+//
+//
+//                }
+//            });
+//        }
 
 
     }

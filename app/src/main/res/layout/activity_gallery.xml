@@ -33,9 +33,9 @@
 
                 <TextView
                     android:id="@+id/TVTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    android:layout_toEndOf="@+id/imBack"
                     android:layout_centerVertical="true"
                     android:text="TikTok Video Gallery"
                     android:textColor="@color/white"
@@ -75,7 +75,7 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/my_template"
+            android:layout_above="@+id/relNativeAdsContainer"
             android:layout_below="@+id/RLTopLayout"/>
 
 
@@ -88,10 +88,11 @@
 <!--            app:gnt_template_type="@layout/gnt_small_template_view" />-->
 
         <RelativeLayout
+            android:id="@+id/relNativeAdsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="0dp">

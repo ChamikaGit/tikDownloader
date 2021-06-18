@@ -385,13 +385,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Bundle extras = new FacebookExtras().setNativeBanner(true).build();
 
-        VideoOptions videoOptions = new VideoOptions.Builder()
-                .setStartMuted(false)
-                .build();
-
-        NativeAdOptions adOptions = new NativeAdOptions.Builder()
-                .setVideoOptions(videoOptions)
-                .build();
+//        VideoOptions videoOptions = new VideoOptions.Builder()
+//                .setStartMuted(false)
+//                .build();
+//
+//        NativeAdOptions adOptions = new NativeAdOptions.Builder()
+//                .setVideoOptions(videoOptions)
+//                .build();
 
         AdLoader adLoader = new AdLoader.Builder(MainActivity.this, getString(R.string.admob_native_ad))
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
@@ -458,7 +458,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 })
 //                .withNativeAdOptions(new NativeAdOptions.Builder().build())
-                .withNativeAdOptions(adOptions)
+//                .withNativeAdOptions(adOptions)
                 .build();
 
         adLoader.loadAd(new AdRequest.Builder()
@@ -467,7 +467,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void loadNativeAdMainScreen() {
-        adLoaderMainScreen = new AdLoader.Builder(getApplicationContext(), getString(R.string.admob_native_ad))
+        adLoaderMainScreen = new AdLoader.Builder(getApplicationContext(), getString(R.string.admob_native_ad_media))
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {

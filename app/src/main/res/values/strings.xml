@@ -15,12 +15,14 @@
     <!--        <string name="admob_banner_ad">ca-app-pub-8434077743160830/8496040410</string>-->
     <!--        <string name="admob_interstitial_ad">ca-app-pub-8434077743160830/1382949108</string>-->
     <!--    <string name="admob_native_ad">ca-app-pub-8434077743160830/7135964159</string>-->
+<!--    <string name="admob_native_ad_media">ca-app-pub-8434077743160830/1797308306</string>-->
 
     <!--test_ad_mob-->
     <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
     <string name="admob_banner_ad">ca-app-pub-3940256099942544/6300978111</string>
     <string name="admob_interstitial_ad">ca-app-pub-3940256099942544/8691691433</string>
     <string name="admob_native_ad">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="admob_native_ad_media">ca-app-pub-3940256099942544/1044960115</string>
     <!--    <string name="admob_native_ad">ca-app-pub-3940256099942544/1044960115</string>-->
 
     <string name="about_content">Version: 1.0\nDeveloped by:-\chamiappsdev@gmail.com</string>
