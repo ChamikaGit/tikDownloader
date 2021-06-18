@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.viewpager.widget.ViewPager;
+
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,9 +15,12 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.adapter.ShowImagesAdapter;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityFullViewBinding;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Settings;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
+
 import java.io.File;
 import java.util.ArrayList;
+
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.shareImage;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.shareImageVideoOnWhatsapp;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.shareVideo;
@@ -27,38 +31,43 @@ public class FullViewActivity extends AppCompatActivity {
     private ArrayList<File> fileArrayList;
     private int Position = 0;
     ShowImagesAdapter showImagesAdapter;
+    private Settings settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_full_view);
         activity = this;
+        settings = new Settings(this);
 
-        AdsUtils.showGoogleBannerAd(FullViewActivity.this, binding.adView);
-
+        if (!settings.getSubscriptionState()) {
+            AdsUtils.showGoogleBannerAd(FullViewActivity.this, binding.adView);
+        }
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            fileArrayList= (ArrayList<File>) getIntent().getSerializableExtra("ImageDataFile");
-            Position = getIntent().getIntExtra("Position",0);
+            fileArrayList = (ArrayList<File>) getIntent().getSerializableExtra("ImageDataFile");
+            Position = getIntent().getIntExtra("Position", 0);
         }
         initViews();
 
     }
 
-    public void initViews(){
-        showImagesAdapter=new ShowImagesAdapter(this, fileArrayList,FullViewActivity.this);
+    public void initViews() {
+        showImagesAdapter = new ShowImagesAdapter(this, fileArrayList, FullViewActivity.this);
         binding.vpView.setAdapter(showImagesAdapter);
         binding.vpView.setCurrentItem(Position);
 
         binding.vpView.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int arg0) {
-                Position=arg0;
-                System.out.println("Current position=="+Position);
+                Position = arg0;
+                System.out.println("Current position==" + Position);
             }
+
             @Override
             public void onPageScrolled(int arg0, float arg1, int arg2) {
             }
+
             @Override
             public void onPageScrollStateChanged(int num) {
             }
@@ -71,8 +80,8 @@ public class FullViewActivity extends AppCompatActivity {
                 AlertDialog.Builder ab = new AlertDialog.Builder(activity);
                 ab.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        boolean b=fileArrayList.get(Position).delete();
-                        if (b){
+                        boolean b = fileArrayList.get(Position).delete();
+                        if (b) {
                             deleteFileAA(Position);
                         }
                     }
@@ -90,21 +99,21 @@ public class FullViewActivity extends AppCompatActivity {
         binding.imShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (fileArrayList.get(Position).getName().contains(".mp4")){
-                    Log.d("SSSSS", "onClick: "+fileArrayList.get(Position)+"");
-                    shareVideo(activity,fileArrayList.get(Position).getPath());
-                }else {
-                    shareImage(activity,fileArrayList.get(Position).getPath());
+                if (fileArrayList.get(Position).getName().contains(".mp4")) {
+                    Log.d("SSSSS", "onClick: " + fileArrayList.get(Position) + "");
+                    shareVideo(activity, fileArrayList.get(Position).getPath());
+                } else {
+                    shareImage(activity, fileArrayList.get(Position).getPath());
                 }
             }
         });
         binding.imWhatsappShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (fileArrayList.get(Position).getName().contains(".mp4")){
-                    shareImageVideoOnWhatsapp(activity,fileArrayList.get(Position).getPath(),true);
-                }else {
-                    shareImageVideoOnWhatsapp(activity,fileArrayList.get(Position).getPath(),false);
+                if (fileArrayList.get(Position).getName().contains(".mp4")) {
+                    shareImageVideoOnWhatsapp(activity, fileArrayList.get(Position).getPath(), true);
+                } else {
+                    shareImageVideoOnWhatsapp(activity, fileArrayList.get(Position).getPath(), false);
                 }
             }
         });
@@ -112,19 +121,22 @@ public class FullViewActivity extends AppCompatActivity {
             onBackPressed();
         });
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         activity = this;
     }
-    public void deleteFileAA(int position){
+
+    public void deleteFileAA(int position) {
         fileArrayList.remove(position);
         showImagesAdapter.notifyDataSetChanged();
-        Utils.setToast(activity,"File Deleted.");
-        if (fileArrayList.size()==0){
+        Utils.setToast(activity, "File Deleted.");
+        if (fileArrayList.size() == 0) {
             onBackPressed();
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

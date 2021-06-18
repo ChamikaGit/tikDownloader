@@ -117,5 +117,14 @@ public class Settings {
         return value;
     }
 
+    public void setSubscriptionPopUpCount(int count) {
+        getPref().edit().putInt("subscriptionPopUpCount", count).commit();
+    }
+
+    public int getSubscriptionPopUpCount() {
+        int value = getPref().getInt("subscriptionPopUpCount", 5);
+        return value;
+    }
+
 }
 

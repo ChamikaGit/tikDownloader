@@ -54,7 +54,7 @@ public class NativeAdsActivity extends AppCompatActivity implements View.OnClick
             }
         }
 
-        countDownTimer = new CountDownTimer(7000, 1000) {
+        countDownTimer = new CountDownTimer(5000, 1000) {
             public void onTick(long millisUntilFinished) {
                 tvSkipTime.setText("SKIP (" + millisUntilFinished / 1000+")");
                 //here you can have your logic to set text to edittext

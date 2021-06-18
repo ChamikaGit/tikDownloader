@@ -232,25 +232,25 @@ public class GalleryActivity extends AppCompatActivity {
 
         // Set other ad assets.
         adView.setHeadlineView(adView.findViewById(R.id.ad_headline));
-//        adView.setBodyView(adView.findViewById(R.id.ad_body));
+        adView.setBodyView(adView.findViewById(R.id.ad_body));
         adView.setCallToActionView(adView.findViewById(R.id.ad_call_to_action));
         adView.setIconView(adView.findViewById(R.id.ad_app_icon));
 //        adView.setPriceView(adView.findViewById(R.id.ad_price));
 //        adView.setStarRatingView(adView.findViewById(R.id.ad_stars));
 //        adView.setStoreView(adView.findViewById(R.id.ad_store));
-        adView.setAdvertiserView(adView.findViewById(R.id.ad_advertiser));
+        //adView.setAdvertiserView(adView.findViewById(R.id.ad_advertiser));
 
         // The headline is guaranteed to be in every NativeAd.
         ((TextView) adView.getHeadlineView()).setText(nativeAd.getHeadline());
 
         // These assets aren't guaranteed to be in every NativeAd, so it's important to
         // check before trying to display them.
-//        if (nativeAd.getBody() == null) {
-//            adView.getBodyView().setVisibility(View.INVISIBLE);
-//        } else {
-//            adView.getBodyView().setVisibility(View.VISIBLE);
-//            ((TextView) adView.getBodyView()).setText(nativeAd.getBody());
-//        }
+        if (nativeAd.getBody() == null) {
+            adView.getBodyView().setVisibility(View.INVISIBLE);
+        } else {
+            adView.getBodyView().setVisibility(View.VISIBLE);
+            ((TextView) adView.getBodyView()).setText(nativeAd.getBody());
+        }
 
         if (nativeAd.getCallToAction() == null) {
             adView.getCallToActionView().setVisibility(View.GONE);
@@ -290,12 +290,12 @@ public class GalleryActivity extends AppCompatActivity {
 //            adView.getStarRatingView().setVisibility(View.VISIBLE);
 //        }
 
-        if (nativeAd.getAdvertiser() == null) {
-            adView.getAdvertiserView().setVisibility(View.INVISIBLE);
-        } else {
-            ((TextView) adView.getAdvertiserView()).setText(nativeAd.getAdvertiser());
-            adView.getAdvertiserView().setVisibility(View.VISIBLE);
-        }
+//        if (nativeAd.getAdvertiser() == null) {
+//            adView.getAdvertiserView().setVisibility(View.INVISIBLE);
+//        } else {
+//            ((TextView) adView.getAdvertiserView()).setText(nativeAd.getAdvertiser());
+//            adView.getAdvertiserView().setVisibility(View.VISIBLE);
+//        }
 
         // This method tells the Google Mobile Ads SDK that you have finished populating your
         // native ad view with this native ad. The SDK will populate the adView's MediaView
@@ -533,13 +533,16 @@ public class GalleryActivity extends AppCompatActivity {
         super.onResume();
 
         Settings settings = new Settings(this);
+        shimmerFrameLayout = (ShimmerFrameLayout) findViewById(R.id.native_ad_banner_shimmer);
         if (!settings.getSubscriptionState()) {
             nativeContainer = findViewById(R.id.native_container);
             nativeContainer.setVisibility(View.GONE);
-            shimmerFrameLayout = (ShimmerFrameLayout) findViewById(R.id.native_ad_banner_shimmer);
             shimmerFrameLayout.setVisibility(View.VISIBLE);
             shimmerFrameLayout.startShimmer();
             loadNativeAdGalleryScreen();
+        }else {
+            shimmerFrameLayout.stopShimmer();
+            shimmerFrameLayout.setVisibility(View.GONE);
         }
     }
 }

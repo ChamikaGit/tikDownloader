@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,8 +22,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +29,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.ads.mediation.facebook.FacebookAdapter;
 import com.google.ads.mediation.facebook.FacebookExtras;
@@ -42,9 +38,6 @@ import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.nativead.MediaView;
@@ -57,19 +50,12 @@ import com.google.gson.JsonObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import io.reactivex.observers.DisposableObserver;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -85,15 +71,12 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.Ac
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.TryAgainDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.VideoReadyDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.jni.TikTokFullCryptor;
-import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TiktokModel;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TiktokModelNew;
-import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Settings;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.SharePrefs;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
-import static android.content.ContentValues.TAG;
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.RootDirectoryTikTok;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.createFileFolder;
@@ -123,6 +106,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
     private View shine;
     private boolean isHowtoDownloadVisible = false;
     private ShimmerFrameLayout shimmerFrameLayout;
+    private Settings settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +114,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tik_tok);
         hideKeyboard();
         myApplication = (MyApplication) getApplication();
+        settings = new Settings(this);
 //        int getCount = new Settings(this).getAdShowCount();
 //        newCount = getCount + 1;
 //        new Settings(this).setAdShowCount(newCount);
@@ -144,18 +129,24 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         relHowToDownloadContainerNew = findViewById(R.id.relHowToDownloadContainerNew);
         progressBar = findViewById(R.id.progressBar);
         shimmerFrameLayout = (ShimmerFrameLayout) findViewById(R.id.native_ad_banner_shimmer);
-        shimmerFrameLayout.startShimmer();
-        shimmerFrameLayout.setVisibility(View.VISIBLE);
         activity = this;
         commonClassForAPI = CommonClassForAPI.getInstance(activity);
         createFileFolder();
         initViews();
 //        AdsUtils.showGoogleBannerAd(TikTokNewActivity.this, binding.adView);
 
-        loadNativeAdDownloadScreen();
-        //loadAdOpen();
-        loadAdDownload();
-        loadNativeAd();
+
+        if (!settings.getSubscriptionState()) {
+            shimmerFrameLayout.startShimmer();
+            shimmerFrameLayout.setVisibility(View.VISIBLE);
+            loadNativeAdDownloadScreen();
+            //loadAdOpen();
+            loadAdDownload();
+//            loadNativeAd();
+        }else {
+            shimmerFrameLayout.stopShimmer();
+            shimmerFrameLayout.setVisibility(View.GONE);
+        }
 
 
     }
@@ -561,7 +552,9 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             } else if (!Patterns.WEB_URL.matcher(LL).matches()) {
                 Utils.setToast(activity, "Enter Valid Url");
             } else {
-                loadNativeAd();
+                if (!settings.getSubscriptionState()) {
+                    loadNativeAd();
+                }
                 GetTikTokData(IsWithWaternark);
             }
             getMainApp().trackFireBaseEvent("WITH_WATERMARK", "CLICK", "TRUE");
@@ -576,7 +569,9 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             } else if (!Patterns.WEB_URL.matcher(LL).matches()) {
                 Utils.setToast(activity, "Enter Valid Url");
             } else {
-                loadNativeAd();
+                if (!settings.getSubscriptionState()) {
+                    loadNativeAd();
+                }
                 GetTikTokData(IsWithWaternark);
             }
 
@@ -854,15 +849,19 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             Log.e("startDownload ", "marked " + marked);
             startDownload(marked, RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4", true);
             binding.etText.setText("");
-            showInterstitialOpen();
-            loadAdDownload();
+            if (!settings.getSubscriptionState()) {
+                showInterstitialAdDownload();
+                loadAdDownload();
+            }
 //            loadNativeAd();
         } else {
             Log.e("startDownload ", "marked " + notMarked);
             startDownload(notMarked, RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4", false);
             binding.etText.setText("");
-            showInterstitialOpen();
-            loadAdDownload();
+            if (!settings.getSubscriptionState()) {
+                showInterstitialAdDownload();
+                loadAdDownload();
+            }
 //            loadNativeAd();
         }
 
@@ -910,7 +909,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
     }
 
     //version_14
-    private void showInterstitialOpen() {
+    private void showInterstitialAdDownload() {
         if (mInterstitialAdDownload != null) {
             mInterstitialAdDownload.show(TikTokNewActivity.this);
         }

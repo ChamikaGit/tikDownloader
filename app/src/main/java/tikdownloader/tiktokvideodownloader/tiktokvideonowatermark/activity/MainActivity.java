@@ -169,9 +169,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } else {
                         settings.setSubscriptionState(false);
                     }
-                    if (!settings.getSubscriptionState()) {
-                        openSubscriptionDialog();
-                    }
                 }
             }
 
@@ -187,6 +184,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             binding.tvPro.setTextColor(getResources().getColor(R.color.pink));
         } else {
             binding.tvPro.setText("BE A PRO");
+            int currentCount = settings.getSubscriptionPopUpCount();
+            settings.setSubscriptionPopUpCount(currentCount + 1);
+            if (settings.getSubscriptionPopUpCount() % 5 == 0) {
+                openSubscriptionDialog();
+            }
         }
         //item subscribed
 //        if (getSubscribeValueFromPref()) {
@@ -328,8 +330,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // restart activity
                     if (!settings.getSubscriptionState()) {
                         settings.setSubscriptionState(true);
+                        Log.e("TAG : Item Purchased", "Item Purchased");
                         Toast.makeText(getApplicationContext(), "Item Purchased", Toast.LENGTH_SHORT).show();
-                        this.recreate();
+//                        this.recreate();
+                        reOpenTheApp();
                     }
                 }
             }
@@ -345,6 +349,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void reOpenTheApp() {
+        Intent intent = new Intent(MainActivity.this, SplashScreen.class);
+        startActivity(intent);
+        finishAffinity();
+    }
+
     AcknowledgePurchaseResponseListener ackPurchase = new AcknowledgePurchaseResponseListener() {
         @Override
         public void onAcknowledgePurchaseResponse(BillingResult billingResult) {
@@ -353,7 +363,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // Grant entitlement to the user. and restart activity
 //                saveSubscribeValueToPref(true);
                 settings.setSubscriptionState(true);
-                MainActivity.this.recreate();
+//                MainActivity.this.recreate();
+                reOpenTheApp();
             }
         }
     };
@@ -661,20 +672,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         exitDialogFragment = new ExitDialogFragment(this, unifiedNativeAdObj);
+        shimmerFrameLayout = (ShimmerFrameLayout) findViewById(R.id.native_ad_banner_shimmer);
         if (!settings.getSubscriptionState()) {
             nativeContainer = findViewById(R.id.native_container);
             nativeContainer.setVisibility(View.GONE);
-            shimmerFrameLayout = (ShimmerFrameLayout) findViewById(R.id.native_ad_banner_shimmer);
             shimmerFrameLayout.setVisibility(View.VISIBLE);
             shimmerFrameLayout.startShimmer();
             loadNativeAdMainScreen();
+        } else {
+            shimmerFrameLayout.stopShimmer();
+            shimmerFrameLayout.setVisibility(View.GONE);
         }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        loadNativeAd();
+        if (!settings.getSubscriptionState())
+            loadNativeAd();
     }
 
     public void initViews() {
