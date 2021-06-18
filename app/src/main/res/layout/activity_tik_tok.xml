@@ -261,6 +261,7 @@
 
                     <include
                         android:id="@+id/native_ad_banner_shimmer"
+                        android:visibility="visible"
                         layout="@layout/native_ad_banner_rectangle_shimmer" />
 
                 </RelativeLayout>

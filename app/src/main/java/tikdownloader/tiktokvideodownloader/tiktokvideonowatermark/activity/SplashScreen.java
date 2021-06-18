@@ -96,7 +96,6 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
         mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
         Utils utils = new Utils(activity);
         if (utils.isNetworkAvailable()) {
-            checkInAppSubscription();
             loadNativeAd();
         } else {
             NoInternetDialogFragment noInternetDialogFragment = new NoInternetDialogFragment(this);
@@ -107,17 +106,19 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
     }
 
     private void loadNativeAd() {
-        adLoader = new AdLoader.Builder(getApplicationContext(), getString(R.string.admob_native_ad))
+        adLoader = new AdLoader.Builder(getApplicationContext(), getString(R.string.admob_native_ad_media))
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
                         nativeAdObjSplash = nativeAd;
+                        checkInAppSubscription();
                     }
                 })
                 .withAdListener(new AdListener() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError error) {
                         nativeAdObjSplash = null;
+                        checkInAppSubscription();
 //                        Toast.makeText(SplashScreen.this, "Failed to load native ad: " + error, Toast.LENGTH_SHORT).show();
                     }
                 }).build();

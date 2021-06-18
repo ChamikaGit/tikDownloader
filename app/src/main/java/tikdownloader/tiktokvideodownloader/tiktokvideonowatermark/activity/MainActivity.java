@@ -51,6 +51,7 @@ import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.ads.mediation.facebook.FacebookAdapter;
 import com.google.ads.mediation.facebook.FacebookExtras;
+import com.google.android.ads.mediationtestsuite.MediationTestSuite;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            //check if user enable the in-app subscribed
 //            AdsUtils.showGoogleBannerAd(MainActivity.this, binding.adView);
 //        }
-//        MediationTestSuite.launch(MainActivity.this);
+        //MediationTestSuite.launch(MainActivity.this);
         reviewCount = settings.getReviewCount();
         reviewCount++;
         settings.setReviewCount(reviewCount);

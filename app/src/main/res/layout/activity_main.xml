@@ -145,7 +145,7 @@
                             android:id="@+id/rvTikTok"
                             android:layout_width="match_parent"
                             android:layout_height="145dp"
-                            android:layout_marginStart="5dp"
+                            android:layout_marginStart="0dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="5dp"
                             android:layout_marginBottom="10dp"
@@ -210,7 +210,7 @@
                             android:layout_height="145dp"
                             android:layout_marginStart="5dp"
                             android:layout_marginTop="10dp"
-                            android:layout_marginEnd="5dp"
+                            android:layout_marginEnd="0dp"
                             android:layout_marginBottom="10dp"
                             android:layout_weight="1"
                             android:background="@drawable/et_black_dark_filled"
@@ -282,7 +282,7 @@
                             android:id="@+id/rvTikTokTrendings"
                             android:layout_width="match_parent"
                             android:layout_height="145dp"
-                            android:layout_marginStart="5dp"
+                            android:layout_marginStart="0dp"
                             android:layout_marginTop="0dp"
                             android:layout_marginEnd="5dp"
                             android:layout_marginBottom="10dp"
@@ -347,7 +347,7 @@
                             android:layout_height="145dp"
                             android:layout_marginStart="5dp"
                             android:layout_marginTop="0dp"
-                            android:layout_marginEnd="5dp"
+                            android:layout_marginEnd="0dp"
                             android:layout_marginBottom="10dp"
                             android:layout_weight="1"
                             android:background="@drawable/et_black_dark_filled"
@@ -423,6 +423,7 @@
 
                         <include
                             android:id="@+id/native_ad_banner_shimmer"
+                            android:visibility="visible"
                             layout="@layout/native_ad_banner_rectangle_shimmer" />
 
                     </RelativeLayout>
