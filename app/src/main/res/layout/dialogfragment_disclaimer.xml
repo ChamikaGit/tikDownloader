@@ -10,38 +10,12 @@
         android:background="@drawable/et_black_dark_filled"
         android:orientation="vertical">
 
-        <!--  This is your template view -->
-        <tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.TemplateView
-            android:id="@+id/my_template"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            app:gnt_template_type="@layout/gnt_small_template_view" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:elevation="3dp">
-
-            <!--        <RelativeLayout-->
-            <!--            android:id="@+id/headerContainer"-->
-            <!--            android:layout_width="match_parent"-->
-            <!--            android:layout_height="50dp"-->
-            <!--            android:layout_alignParentTop="true">-->
-
-            <!--            <TextView-->
-            <!--                android:id="@+id/tvClose"-->
-            <!--                android:layout_width="30dp"-->
-            <!--                android:layout_height="30dp"-->
-            <!--                android:layout_alignParentEnd="true"-->
-            <!--                android:layout_centerVertical="true"-->
-            <!--                android:layout_marginEnd="10dp"-->
-            <!--                android:background="@drawable/ic_close_black"-->
-            <!--                android:onClick="onClick" />-->
-
-
-            <!--        </RelativeLayout>-->
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -54,11 +28,30 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:padding="14dp"
-                    android:text="Are you sure want to exit?"
+                    android:text="Disclaimer"
                     android:textAllCaps="false"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="14dp"
+                    android:text="Downloader for TikTok/Tik Tok is not affiliated with TikTok.It's a simple tool for video downloader for tiktok.\n\n
+We respect the copyright of the owners.so please DO NOT download or repost the video and other media files without permission of the owners.\n\n
+Any unauthorized action(re-uploding or downloading of contents) and/or violations of intellectual property right are the sole responsibility of the user.\n\n
+We respect the rights of TikTok.This app is not associated with tiktok/Tiktok."
+                    android:textAllCaps="false"
+                    android:textStyle="normal"
+                    android:layout_below="@+id/tvTitle"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
 
 
                 <!--            <com.google.android.gms.ads.AdView-->
@@ -77,7 +70,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:layout_below="@+id/tvTitle"
+                    android:layout_below="@+id/tvDescription"
                     android:orientation="horizontal"
                     android:padding="5dp"
                     android:layout_marginBottom="10dp"
@@ -93,11 +86,11 @@
                         android:backgroundTint="@color/colorPrimaryDark"
                         android:gravity="center"
                         android:padding="14dp"
-                        android:text="Yes"
+                        android:text="Agree"
                         android:textAllCaps="false"
                         android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:textColor="@color/gnt_yellow"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tvNo"
@@ -113,7 +106,7 @@
                         android:textAllCaps="false"
                         android:textStyle="bold"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
 
                 </LinearLayout>

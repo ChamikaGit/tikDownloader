@@ -126,5 +126,14 @@ public class Settings {
         return value;
     }
 
+    public void setDisclaimerAgree(boolean value) {
+        getPref().edit().putBoolean("DisclaimerAgree", value).commit();
+    }
+
+    public boolean getDisclaimerAgree() {
+        boolean value = getPref().getBoolean("DisclaimerAgree", false);
+        return value;
+    }
+
 }
 

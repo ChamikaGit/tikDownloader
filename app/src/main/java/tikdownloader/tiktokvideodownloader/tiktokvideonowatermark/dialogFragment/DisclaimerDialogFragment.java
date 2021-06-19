@@ -12,35 +12,30 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-
-import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.nativead.NativeAd;
 
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
-import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.MainActivity;
-import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.TemplateView;
 
-public class ExitDialogFragment extends DialogFragment implements View.OnClickListener {
+public class DisclaimerDialogFragment extends DialogFragment implements View.OnClickListener {
 
     private TextView tvYes, tvNo;
     private AdView adView;
     private OnItemClickListener onItemClickListener;
-    private NativeAd unifiedNativeAd;
     private TemplateView templateView;
 
 
-    public ExitDialogFragment() {
+    public DisclaimerDialogFragment() {
     }
 
-    public ExitDialogFragment(OnItemClickListener onItemClickListener, NativeAd unifiedNativeAd) {
+    public DisclaimerDialogFragment(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
-        this.unifiedNativeAd = unifiedNativeAd;
     }
 
     public interface OnItemClickListener {
-        void onYesClick(Dialog dialog);
+        void onDisclaimerNotAgreeClick(Dialog dialog);
+        void onDisclaimerAgreeClick(Dialog dialog);
     }
 
     @Nullable
@@ -49,26 +44,17 @@ public class ExitDialogFragment extends DialogFragment implements View.OnClickLi
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0));
         getDialog().setCancelable(true);
         getDialog().setCanceledOnTouchOutside(true);
-        View view = inflater.inflate(R.layout.dialogfragment_exit, container, false);
+        View view = inflater.inflate(R.layout.dialogfragment_disclaimer, container, false);
         tvYes = view.findViewById(R.id.tvYes);
         tvNo = view.findViewById(R.id.tvNo);
         templateView = view.findViewById(R.id.my_template);
 //        adView = view.findViewById(R.id.adView);
         tvYes.setOnClickListener(this);
         tvNo.setOnClickListener(this);
-//        AdsUtils.showGoogleBannerAd(getActivity(), adView);
-        showNativeAd();
         return view;
     }
 
-    private void showNativeAd() {
-        if (unifiedNativeAd == null){
-            templateView.setVisibility(View.GONE);
-        }else {
-            templateView.setVisibility(View.VISIBLE);
-            templateView.setNativeAd(unifiedNativeAd);
-        }
-    }
+
 
     @Override
     public void onStart() {
@@ -84,15 +70,16 @@ public class ExitDialogFragment extends DialogFragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tvNo:
+            case R.id.tvYes:
                 Dialog dialog = getDialog();
                 if (dialog != null) {
                     dialog.dismiss();
                 }
+                onItemClickListener.onDisclaimerAgreeClick(getDialog());
                 break;
 
-            case R.id.tvYes:
-                onItemClickListener.onYesClick(getDialog());
+            case R.id.tvNo:
+                onItemClickListener.onDisclaimerNotAgreeClick(getDialog());
                 break;
 
         }

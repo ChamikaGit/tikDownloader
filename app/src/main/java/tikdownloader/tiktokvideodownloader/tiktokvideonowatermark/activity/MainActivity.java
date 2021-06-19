@@ -78,6 +78,7 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.BuildConfig;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.MyApplication;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityMainBinding;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.DisclaimerDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.ExitDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.HowToUseDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.SubscriptionDialogFragment;
@@ -97,7 +98,7 @@ import static androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_SYSTEM;
 import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.createFileFolder;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, ExitDialogFragment.OnItemClickListener, SubscriptionDialogFragment.OnItemClickListener, PurchasesUpdatedListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ExitDialogFragment.OnItemClickListener, SubscriptionDialogFragment.OnItemClickListener, PurchasesUpdatedListener, DisclaimerDialogFragment.OnItemClickListener {
     private MyApplication myApplication;
     MainActivity activity;
     ActivityMainBinding binding;
@@ -139,9 +140,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         myApplication = (MyApplication) getApplication();
         activity = this;
+        settings = new Settings(this);
         initViews();
         checkUpdate();
-        settings = new Settings(this);
 //        if (!settings.getSubscriptionState()) {
 //            //check if user enable the in-app subscribed
 //            AdsUtils.showGoogleBannerAd(MainActivity.this, binding.adView);
@@ -414,37 +415,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Log.d("TAG", "Native Ad Destroyed");
                             return;
                         }
-                        if (nativeAd.getMediaContent().hasVideoContent()) {
-                            float mediaAspectRatio = nativeAd.getMediaContent().getAspectRatio();
-                            float duration = nativeAd.getMediaContent().getDuration();
-
-                            nativeAd.getMediaContent().getVideoController().setVideoLifecycleCallbacks(new VideoController.VideoLifecycleCallbacks() {
-                                @Override
-                                public void onVideoStart() {
-                                    super.onVideoStart();
-                                }
-
-                                @Override
-                                public void onVideoPlay() {
-                                    super.onVideoPlay();
-                                }
-
-                                @Override
-                                public void onVideoPause() {
-                                    super.onVideoPause();
-                                }
-
-                                @Override
-                                public void onVideoEnd() {
-                                    super.onVideoEnd();
-                                }
-
-                                @Override
-                                public void onVideoMute(boolean b) {
-                                    super.onVideoMute(b);
-                                }
-                            });
-                        }
+//                        if (nativeAd.getMediaContent().hasVideoContent()) {
+//                            float mediaAspectRatio = nativeAd.getMediaContent().getAspectRatio();
+//                            float duration = nativeAd.getMediaContent().getDuration();
+//
+//                            nativeAd.getMediaContent().getVideoController().setVideoLifecycleCallbacks(new VideoController.VideoLifecycleCallbacks() {
+//                                @Override
+//                                public void onVideoStart() {
+//                                    super.onVideoStart();
+//                                }
+//
+//                                @Override
+//                                public void onVideoPlay() {
+//                                    super.onVideoPlay();
+//                                }
+//
+//                                @Override
+//                                public void onVideoPause() {
+//                                    super.onVideoPause();
+//                                }
+//
+//                                @Override
+//                                public void onVideoEnd() {
+//                                    super.onVideoEnd();
+//                                }
+//
+//                                @Override
+//                                public void onVideoMute(boolean b) {
+//                                    super.onVideoMute(b);
+//                                }
+//                            });
+//                        }
 
                         unifiedNativeAdObj = nativeAd;
                     }
@@ -454,12 +455,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                         super.onAdFailedToLoad(loadAdError);
-
                         new CountDownTimer(10000, 1000) {
-
                             @Override
                             public void onTick(long millisUntilFinished) {
-
                             }
 
                             @Override
@@ -702,6 +700,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void initViews() {
+        if (!settings.getDisclaimerAgree()) {
+            DisclaimerDialogFragment disclaimerDialogFragment = new DisclaimerDialogFragment(this);
+            disclaimerDialogFragment.show(getSupportFragmentManager(), "DisclaimerDialogFragment");
+            return;
+        }
+
         clipBoard = (ClipboardManager) activity.getSystemService(CLIPBOARD_SERVICE);
         if (activity.getIntent().getExtras() != null) {
             for (String key : activity.getIntent().getExtras().keySet()) {
@@ -1065,5 +1069,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             Toast.makeText(this, "Service Not Available", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onDisclaimerNotAgreeClick(Dialog dialog) {
+        settings.setDisclaimerAgree(false);
+        dialog.dismiss();
+        finish();
+    }
+
+    @Override
+    public void onDisclaimerAgreeClick(Dialog dialog) {
+        settings.setDisclaimerAgree(true);
+        activity.recreate();
     }
 }
