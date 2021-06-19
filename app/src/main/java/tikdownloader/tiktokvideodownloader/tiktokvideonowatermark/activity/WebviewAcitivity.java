@@ -3,6 +3,7 @@ package tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -29,6 +30,7 @@ public class WebviewAcitivity extends AppCompatActivity {
     ActivityWebviewBinding binding;
     String IntentURL, IntentTitle="";
     private Settings settings;
+    private CountDownTimer countDownTimer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +68,20 @@ public class WebviewAcitivity extends AppCompatActivity {
 
             }
         });
+
+        countDownTimer = new CountDownTimer(5000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                binding.RLTopLayout.setVisibility(View.GONE);
+            }
+        }.start();
+
+
 
 //        binding.webView1.setOnScrollChangedCallback(new ObservableWebView.OnScrollChangedCallback() {
 //
@@ -152,4 +168,11 @@ public class WebviewAcitivity extends AppCompatActivity {
 //        }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer!=null){
+            countDownTimer.cancel();
+        }
+    }
 }

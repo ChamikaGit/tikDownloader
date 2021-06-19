@@ -12,6 +12,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -143,8 +144,8 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             loadNativeAdDownloadScreen();
             //loadAdOpen();
             loadAdDownload();
-//            loadNativeAd();
-        }else {
+            loadNativeAd();
+        } else {
             shimmerFrameLayout.stopShimmer();
             shimmerFrameLayout.setVisibility(View.GONE);
         }
@@ -480,6 +481,18 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                         super.onAdFailedToLoad(loadAdError);
+                        new CountDownTimer(10000, 1000) {
+
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                loadNativeAd();
+                            }
+                        }.start();
                     }
                 })
                 .withNativeAdOptions(new NativeAdOptions.Builder().build())
