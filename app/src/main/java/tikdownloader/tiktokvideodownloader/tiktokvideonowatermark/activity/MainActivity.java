@@ -51,16 +51,12 @@ import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.ads.mediation.facebook.FacebookAdapter;
 import com.google.ads.mediation.facebook.FacebookExtras;
-import com.google.android.ads.mediationtestsuite.MediationTestSuite;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.VideoController;
-import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;
-import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.gms.ads.nativead.NativeAdView;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -417,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                .setVideoOptions(videoOptions)
 //                .build();
 
-        AdLoader adLoader = new AdLoader.Builder(MainActivity.this, getString(R.string.admob_native_ad))
+        AdLoader adLoader = new AdLoader.Builder(MainActivity.this, getString(R.string.admob_native_ad_without_media))
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {

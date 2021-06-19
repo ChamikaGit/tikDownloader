@@ -473,7 +473,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 
         Bundle extras = new FacebookExtras().setNativeBanner(true).build();
 
-        AdLoader adLoader = new AdLoader.Builder(TikTokNewActivity.this, getString(R.string.admob_native_ad))
+        AdLoader adLoader = new AdLoader.Builder(TikTokNewActivity.this, getString(R.string.admob_native_ad_without_media))
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
@@ -587,6 +587,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             } else {
                 if (!settings.getSubscriptionState()) {
                     loadNativeAd();
+//                    loadAdDownload();
                 }
                 GetTikTokData(IsWithWaternark);
             }
@@ -662,6 +663,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         } else {
             if (!settings.getSubscriptionState()) {
                 loadNativeAd();
+//                loadAdDownload();
             }
             GetTikTokData(IsWithWaternark);
         }
@@ -723,7 +725,9 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 //                    marked = tiktokModel.getNotMarked().replace("http://", "https://");
                                 marked = responseBody.get("marked").getAsString();
 //                                marked = model.getNotMarked();
-                                Log.e("marked1 ", "marked " + marked);
+                                if (BuildConfig.DEBUG) {
+                                    Log.e("marked1 ", "marked " + marked);
+                                }
                                 VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, responseBody.get("thumb").getAsString(), unifiedNativeAdObj);
                                 videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
 //                    startDownload(tiktokModel.getMarked().replace("http://", "https://"),
@@ -735,7 +739,9 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 //                    notMarked = tiktokModel.getNotMarked().replace("http://", "https://");
                                 notMarked = responseBody.get("not_marked").getAsString();
 //                                notMarked = model.getNotMarked();
-                                Log.e("notMarked ", "notMarked " + notMarked);
+                                if (BuildConfig.DEBUG) {
+                                    Log.e("notMarked ", "notMarked " + notMarked);
+                                }
                                 VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, responseBody.get("thumb").getAsString(), unifiedNativeAdObj);
                                 videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
 //                    startDownload(tiktokModel.getNotMarked().replace("http://", "https://"),
@@ -883,7 +889,9 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             dialog.dismiss();
         }
         if (IsWithWaternark) {
-            Log.e("startDownload ", "marked " + marked);
+            if (BuildConfig.DEBUG) {
+                Log.e("startDownload ", "marked " + marked);
+            }
             startDownload(marked, RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4", true);
             binding.etText.setText("");
             if (!settings.getSubscriptionState()) {
@@ -892,7 +900,9 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             }
 //            loadNativeAd();
         } else {
-            Log.e("startDownload ", "marked " + notMarked);
+            if (BuildConfig.DEBUG) {
+                Log.e("startDownload ", "marked " + notMarked);
+            }
             startDownload(notMarked, RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4", false);
             binding.etText.setText("");
             if (!settings.getSubscriptionState()) {
@@ -911,7 +921,9 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 
 
     public void startDownload(String downloadPath, String destinationPath, Context context, String FileName, boolean isWatermark) {
-        Log.e("marked2 ", "marked " + downloadPath);
+        if (BuildConfig.DEBUG) {
+            Log.e("marked2 ", "marked " + downloadPath);
+        }
         setToast(context, "Download Started");
         Uri uri = null;
         if (isWatermark) {
@@ -919,7 +931,9 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         } else {
             uri = Uri.parse(downloadPath.trim()); // Path where you want to download file.
         }
-        Log.e("marked3 ", "uri " + uri.toString().replace("https://", "http://"));
+        if (BuildConfig.DEBUG) {
+            Log.e("marked3 ", "uri " + uri.toString().replace("https://", "http://"));
+        }
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.allowScanningByMediaScanner();
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);  // Tell on which network you want to download file.

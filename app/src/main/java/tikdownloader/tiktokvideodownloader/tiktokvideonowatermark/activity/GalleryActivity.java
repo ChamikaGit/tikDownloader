@@ -105,7 +105,7 @@ public class GalleryActivity extends AppCompatActivity {
                 .setVideoOptions(videoOptions)
                 .build();
 
-        AdLoader adLoader = new AdLoader.Builder(GalleryActivity.this, getString(R.string.admob_native_ad))
+        AdLoader adLoader = new AdLoader.Builder(GalleryActivity.this, getString(R.string.admob_native_ad_without_media))
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
@@ -191,10 +191,18 @@ public class GalleryActivity extends AppCompatActivity {
 
     private void loadNativeAdGalleryScreen() {
         Bundle extras = new FacebookExtras().setNativeBanner(true).build();
-        adLoaderGalleryScreen = new AdLoader.Builder(getApplicationContext(), getString(R.string.admob_native_ad))
+        adLoaderGalleryScreen = new AdLoader.Builder(getApplicationContext(), getString(R.string.admob_native_ad_without_media))
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
+                        if (isDestroyed()) {
+                            nativeAd.destroy();
+                            Log.d("TAG", "Native Ad Destroyed");
+                            return;
+                        }
+                        if (nativeAdObjGalleryScreen!=null){
+                            nativeAdObjGalleryScreen.destroy();
+                        }
                         nativeAdObjGalleryScreen = nativeAd;
                         if (nativeAdObjGalleryScreen != null) {
                             nativeContainer.setVisibility(View.VISIBLE);
