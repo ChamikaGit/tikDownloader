@@ -9,7 +9,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/adView">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,8 +51,8 @@
                             android:id="@+id/TVTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_toEndOf="@+id/imBack"
                             android:layout_centerVertical="true"
+                            android:layout_toEndOf="@+id/imBack"
                             android:text="Tik Tok Downloader"
                             android:textColor="@color/white"
                             android:textSize="16sp"
@@ -66,11 +67,10 @@
                             android:layout_centerVertical="true"
                             android:layout_margin="10dp"
                             android:padding="10dp"
-                            android:visibility="invisible"
                             android:src="@drawable/ic_about"
-                            android:tint="@color/white" />
+                            android:tint="@color/white"
+                            android:visibility="invisible" />
                     </RelativeLayout>
-
 
 
                     <RelativeLayout
@@ -179,12 +179,12 @@
                                 android:id="@+id/relOpenTiktok"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
-                                android:background="@drawable/et_blue_filled"
                                 android:layout_below="@+id/RLEdittextLayout"
                                 android:layout_marginStart="2dp"
+                                android:layout_marginTop="10dp"
                                 android:layout_marginEnd="2dp"
                                 android:layout_marginBottom="15dp"
-                                android:layout_marginTop="10dp"
+                                android:background="@drawable/et_blue_filled"
                                 android:visibility="visible">
 
                                 <RelativeLayout
@@ -192,8 +192,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_centerHorizontal="true"
-                                    android:padding="14dp"
-                                    android:layout_centerVertical="true">
+                                    android:layout_centerVertical="true"
+                                    android:padding="14dp">
 
                                     <RelativeLayout
                                         android:id="@+id/TVTitleContainer"
@@ -220,10 +220,10 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_toEndOf="@+id/TVTitleContainer"
                                         android:layout_centerHorizontal="true"
                                         android:layout_centerVertical="true"
                                         android:layout_marginStart="10dp"
+                                        android:layout_toEndOf="@+id/TVTitleContainer"
                                         android:text="Open TikTok"
                                         android:textColor="@color/black"
                                         android:textSize="13sp"
@@ -236,9 +236,6 @@
 
                         </LinearLayout>
                     </RelativeLayout>
-
-
-
 
 
                 </RelativeLayout>
@@ -261,8 +258,8 @@
 
                     <include
                         android:id="@+id/native_ad_banner_shimmer"
-                        android:visibility="visible"
-                        layout="@layout/native_ad_banner_rectangle_shimmer" />
+                        layout="@layout/native_ad_banner_rectangle_shimmer"
+                        android:visibility="visible" />
 
                 </RelativeLayout>
 
@@ -309,7 +306,7 @@
                     <include
                         android:id="@+id/relHowToDownloadContainerNew"
                         layout="@layout/layout_how_to"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
 
                 </LinearLayout>
@@ -318,17 +315,18 @@
         </ScrollView>
 
 
-        <!--        <com.google.android.gms.ads.AdView-->
-        <!--            android:id="@+id/adView"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="0dp"-->
-        <!--            android:layout_marginBottom="0dp"-->
-        <!--            ads:adSize="BANNER"-->
-        <!--            android:layout_alignParentBottom="true"-->
-        <!--            ads:adUnitId="@string/admob_banner_ad">-->
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:visibility="gone"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/admob_banner_ad">
 
-        <!--        </com.google.android.gms.ads.AdView>-->
+        </com.google.android.gms.ads.AdView>
 
 
     </RelativeLayout>

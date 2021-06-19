@@ -72,6 +72,7 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.VideoReadyDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.jni.TikTokFullCryptor;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.model.TiktokModelNew;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.AdsUtils;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Settings;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.SharePrefs;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
@@ -278,6 +279,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
                         nativeAdObjDownloadScreen = nativeAd;
                         if (nativeAdObjDownloadScreen != null) {
+                            binding.adView.setVisibility(View.GONE);
                             shimmerFrameLayout.stopShimmer();
                             shimmerFrameLayout.setVisibility(View.GONE);
                             FrameLayout nativeContainer = findViewById(R.id.native_container);
@@ -288,6 +290,10 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                         } else {
                             shimmerFrameLayout.stopShimmer();
                             shimmerFrameLayout.setVisibility(View.GONE);
+                            if (!settings.getSubscriptionState()) {
+                                //check if user enable the in-app subscribed
+                                AdsUtils.showGoogleBannerAd(TikTokNewActivity.this, binding.adView);
+                            }
                         }
                     }
                 })
@@ -297,6 +303,10 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                         nativeAdObjDownloadScreen = null;
                         shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.setVisibility(View.GONE);
+                        if (!settings.getSubscriptionState()) {
+                            //check if user enable the in-app subscribed
+                            AdsUtils.showGoogleBannerAd(TikTokNewActivity.this, binding.adView);
+                        }
 //                        Toast.makeText(SplashScreen.this, "Failed to load native ad: " + error, Toast.LENGTH_SHORT).show();
                     }
                 }).build();

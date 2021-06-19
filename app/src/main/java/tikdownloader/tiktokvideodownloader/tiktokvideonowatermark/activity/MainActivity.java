@@ -485,6 +485,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
                         nativeAdObjMainScreen = nativeAd;
                         if (nativeAdObjMainScreen != null) {
+                            binding.adView.setVisibility(View.GONE);
                             nativeContainer.setVisibility(View.VISIBLE);
                             shimmerFrameLayout.stopShimmer();
                             shimmerFrameLayout.setVisibility(View.GONE);
@@ -495,6 +496,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         } else {
                             shimmerFrameLayout.stopShimmer();
                             shimmerFrameLayout.setVisibility(View.GONE);
+                            if (!settings.getSubscriptionState()) {
+                                //check if user enable the in-app subscribed
+                                AdsUtils.showGoogleBannerAd(MainActivity.this, binding.adView);
+                            }
                         }
                     }
                 })
@@ -504,6 +509,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         nativeAdObjMainScreen = null;
                         shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.setVisibility(View.GONE);
+                        if (!settings.getSubscriptionState()) {
+                            //check if user enable the in-app subscribed
+                            AdsUtils.showGoogleBannerAd(MainActivity.this, binding.adView);
+                        }
 //                        Toast.makeText(SplashScreen.this, "Failed to load native ad: " + error, Toast.LENGTH_SHORT).show();
                     }
                 }).build();
@@ -811,6 +820,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                break;
+            case R.id.relRateContainer:
+//                if (reviewInfo != null) {
+//                    Utils.setToast(MainActivity.this, "Give a best rate to us!");
+//                    Task<Void> flow = manager.launchReviewFlow(activity, reviewInfo);
+//                    flow.addOnSuccessListener(new OnSuccessListener<Void>() {
+//                        @Override
+//                        public void onSuccess(Void result) {
+//
+//                        }
+//                    });
+//                    flow.addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(Exception e) {
+//                        }
+//                    });
+//                }
+                Utils.RateApp(activity);
                 break;
 
         }

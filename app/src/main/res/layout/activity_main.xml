@@ -7,12 +7,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="@color/black">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/lnr_footer">
+            android:layout_above="@+id/adView">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -462,10 +463,91 @@
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:id="@+id/relShareContainer"
+                        android:id="@+id/relRateContainer"
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
                         android:layout_below="@+id/relGamesContainer"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rate_bg"
+                        android:elevation="5dp"
+                        android:onClick="onClick">
+
+                        <TextView
+                            android:id="@+id/tvHeaderRate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="Add a rate"
+                            android:textColor="@color/white"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tvHeaderRate"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="1dp"
+                            android:text="Give a 5 star rate to the app."
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_marginEnd="3dp"
+                                android:background="@drawable/ic_rate"
+                                android:backgroundTint="@color/white" />
+                            <TextView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_marginEnd="3dp"
+                                android:background="@drawable/ic_rate"
+                                android:backgroundTint="@color/white" />
+
+                            <TextView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_marginEnd="3dp"
+                                android:background="@drawable/ic_rate"
+                                android:backgroundTint="@color/white" />
+
+                            <TextView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_marginEnd="3dp"
+                                android:background="@drawable/ic_rate"
+                                android:backgroundTint="@color/white" />
+
+                            <TextView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/ic_rate"
+                                android:backgroundTint="@color/white" />
+
+
+
+                        </LinearLayout>
+
+
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/relShareContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_below="@+id/relRateContainer"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/share_bg"
                         android:elevation="5dp"
@@ -488,7 +570,7 @@
                             android:layout_below="@+id/tvHeader"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="1dp"
-                            android:text="Share Tiksave with your friend"
+                            android:text="Share TikSave with your friends."
                             android:textColor="@color/white"
                             android:textSize="11sp"
                             android:textStyle="bold" />
@@ -533,7 +615,7 @@
                             android:layout_below="@+id/tvHeaderHowToDownload"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="1dp"
-                            android:text="How to download video from Tiktok"
+                            android:text="How to download video from Tiktok."
                             android:textColor="@color/white"
                             android:textSize="11sp"
                             android:textStyle="bold" />
@@ -720,18 +802,18 @@
 
         </LinearLayout>
 
-<!--        <com.google.android.gms.ads.AdView-->
-<!--            android:id="@+id/adView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_alignParentBottom="true"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginBottom="0dp"-->
-<!--            android:visibility="gone"-->
-<!--            ads:adSize="BANNER"-->
-<!--            ads:adUnitId="@string/admob_banner_ad">-->
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="0dp"
+            android:visibility="gone"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/admob_banner_ad">
 
-<!--        </com.google.android.gms.ads.AdView>-->
+        </com.google.android.gms.ads.AdView>
 
 
     </RelativeLayout>
