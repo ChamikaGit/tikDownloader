@@ -133,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private BillingClient billingClient;
     private String subscriptionBundleState = "";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,6 +189,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (settings.getSubscriptionPopUpCount() % 5 == 0) {
                 openSubscriptionDialog();
             }
+        }
+
+        shimmerFrameLayout = (ShimmerFrameLayout) findViewById(R.id.native_ad_banner_shimmer);
+        if (!settings.getSubscriptionState()) {
+            nativeContainer = findViewById(R.id.native_container);
+            nativeContainer.setVisibility(View.GONE);
+            shimmerFrameLayout.setVisibility(View.VISIBLE);
+            shimmerFrameLayout.startShimmer();
+            loadNativeAdMainScreen();
+        } else {
+            shimmerFrameLayout.stopShimmer();
+            shimmerFrameLayout.setVisibility(View.GONE);
         }
         //item subscribed
 //        if (getSubscribeValueFromPref()) {
@@ -446,6 +457,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                                }
 //                            });
 //                        }
+                        if (unifiedNativeAdObj != null) {
+                            unifiedNativeAdObj.destroy();
+                        }
 
                         unifiedNativeAdObj = nativeAd;
                     }
@@ -481,6 +495,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
+                        if (isDestroyed()) {
+                            nativeAd.destroy();
+                            return;
+                        }
+                        if (nativeAdObjMainScreen != null) {
+                            nativeAdObjMainScreen.destroy();
+                        }
                         nativeAdObjMainScreen = nativeAd;
                         if (nativeAdObjMainScreen != null) {
                             binding.adView.setVisibility(View.GONE);
@@ -679,17 +700,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         exitDialogFragment = new ExitDialogFragment(this, unifiedNativeAdObj);
-        shimmerFrameLayout = (ShimmerFrameLayout) findViewById(R.id.native_ad_banner_shimmer);
-        if (!settings.getSubscriptionState()) {
-            nativeContainer = findViewById(R.id.native_container);
-            nativeContainer.setVisibility(View.GONE);
-            shimmerFrameLayout.setVisibility(View.VISIBLE);
-            shimmerFrameLayout.startShimmer();
-            loadNativeAdMainScreen();
-        } else {
-            shimmerFrameLayout.stopShimmer();
-            shimmerFrameLayout.setVisibility(View.GONE);
-        }
+//        shimmerFrameLayout = (ShimmerFrameLayout) findViewById(R.id.native_ad_banner_shimmer);
+//        if (!settings.getSubscriptionState()) {
+//            nativeContainer = findViewById(R.id.native_container);
+//            nativeContainer.setVisibility(View.GONE);
+//            shimmerFrameLayout.setVisibility(View.VISIBLE);
+//            shimmerFrameLayout.startShimmer();
+//            loadNativeAdMainScreen();
+//        } else {
+//            shimmerFrameLayout.stopShimmer();
+//            shimmerFrameLayout.setVisibility(View.GONE);
+//        }
     }
 
     @Override
@@ -877,6 +898,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             builder.setColorScheme(COLOR_SCHEME_SYSTEM);
             CustomTabsIntent customTabsIntent = builder.build();
             customTabsIntent.intent.setPackage("com.android.chrome");
+            customTabsIntent.intent.putExtra("org.chromium.chrome.browser.customtabs.EXTRA_DISABLE_STAR_BUTTON", true);
             customTabsIntent.launchUrl(this, Uri.parse(url));
         } catch (Exception e) {
             e.printStackTrace();
@@ -886,6 +908,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             builder.setToolbarColor(Color.parseColor("#021B2A"));
             CustomTabsIntent customTabsIntent = builder.build();
             customTabsIntent.intent.setPackage("com.android.chrome");
+            customTabsIntent.intent.putExtra("org.chromium.chrome.browser.customtabs.EXTRA_DISABLE_STAR_BUTTON", true);
             customTabsIntent.launchUrl(this, Uri.parse(url));
 
         }

@@ -110,6 +110,10 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
+                        if (isDestroyed()) {
+                            nativeAd.destroy();
+                            return;
+                        }
                         nativeAdObjSplash = nativeAd;
                         checkInAppSubscription();
                     }

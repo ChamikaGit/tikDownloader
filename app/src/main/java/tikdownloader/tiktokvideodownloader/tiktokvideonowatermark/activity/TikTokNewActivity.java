@@ -144,7 +144,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             loadNativeAdDownloadScreen();
             //loadAdOpen();
             loadAdDownload();
-            loadNativeAd();
+//            loadNativeAd();
         } else {
             shimmerFrameLayout.stopShimmer();
             shimmerFrameLayout.setVisibility(View.GONE);
@@ -220,6 +220,8 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                             public void onAdDismissedFullScreenContent() {
                                 TikTokNewActivity.this.mInterstitialAdDownload = null;
                                 Log.d("TAG", "The ad was dismissed.");
+                                //after dismissed the ad activity will be closed
+                                TikTokNewActivity.this.finish();
                             }
 
                             @Override
@@ -274,10 +276,18 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 //    }
 
     private void loadNativeAdDownloadScreen() {
-        adLoaderDownloadScreen = new AdLoader.Builder(getApplicationContext(), getString(R.string.admob_native_ad_media))
+        adLoaderDownloadScreen = new AdLoader.Builder(getApplicationContext(), getString(R.string.admob_native_ad_media2))
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
+                        if (isDestroyed()) {
+                            nativeAd.destroy();
+                            Log.e("isDestroyed","isDestroyed"+isDestroyed());
+                            return;
+                        }
+                        if (nativeAdObjDownloadScreen!=null){
+                            nativeAdObjDownloadScreen.destroy();
+                        }
                         nativeAdObjDownloadScreen = nativeAd;
                         if (nativeAdObjDownloadScreen != null) {
                             binding.adView.setVisibility(View.GONE);
@@ -584,21 +594,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         });
 
         binding.tvWithoutMark.setOnClickListener(v -> {
-            IsWithWaternark = false;
-            //version_14
-            String LL = binding.etText.getText().toString();
-            if (LL.equals("")) {
-                Utils.setToast(activity, "Enter Url");
-            } else if (!Patterns.WEB_URL.matcher(LL).matches()) {
-                Utils.setToast(activity, "Enter Valid Url");
-            } else {
-                if (!settings.getSubscriptionState()) {
-                    loadNativeAd();
-                }
-                GetTikTokData(IsWithWaternark);
-            }
-
-            getMainApp().trackFireBaseEvent("WITHOUT_WATERMARK", "CLICK", "TRUE");
+            watchToDownloadWithOutWaterMark();
         });
 
         binding.LLOpenTikTok.setOnClickListener(v -> {
@@ -653,6 +649,24 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 
             }
         });
+    }
+
+    private void watchToDownloadWithOutWaterMark() {
+        IsWithWaternark = false;
+        //version_14
+        String LL = binding.etText.getText().toString();
+        if (LL.equals("")) {
+            Utils.setToast(activity, "Enter Url");
+        } else if (!Patterns.WEB_URL.matcher(LL).matches()) {
+            Utils.setToast(activity, "Enter Valid Url");
+        } else {
+            if (!settings.getSubscriptionState()) {
+                loadNativeAd();
+            }
+            GetTikTokData(IsWithWaternark);
+        }
+
+        getMainApp().trackFireBaseEvent("WITHOUT_WATERMARK", "CLICK", "TRUE");
     }
 
     private void GetTikTokData(boolean isWithWaternark) {
