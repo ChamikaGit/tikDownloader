@@ -63,21 +63,21 @@ public class Utils {
     }
 
     public static void createFileFolder() {
-        if (!RootDirectoryFacebookShow.exists()) {
-            RootDirectoryFacebookShow.mkdirs();
-        }
-        if (!RootDirectoryInstaShow.exists()) {
-            RootDirectoryInstaShow.mkdirs();
-        }
+//        if (!RootDirectoryFacebookShow.exists()) {
+//            RootDirectoryFacebookShow.mkdirs();
+//        }
+//        if (!RootDirectoryInstaShow.exists()) {
+//            RootDirectoryInstaShow.mkdirs();
+//        }
         if (!RootDirectoryTikTokShow.exists()) {
             RootDirectoryTikTokShow.mkdirs();
         }
-        if (!RootDirectoryTwitterShow.exists()) {
-            RootDirectoryTwitterShow.mkdirs();
-        }
-        if (!RootDirectoryWhatsappShow.exists()) {
-            RootDirectoryWhatsappShow.mkdirs();
-        }
+//        if (!RootDirectoryTwitterShow.exists()) {
+//            RootDirectoryTwitterShow.mkdirs();
+//        }
+//        if (!RootDirectoryWhatsappShow.exists()) {
+//            RootDirectoryWhatsappShow.mkdirs();
+//        }
 
     }
 

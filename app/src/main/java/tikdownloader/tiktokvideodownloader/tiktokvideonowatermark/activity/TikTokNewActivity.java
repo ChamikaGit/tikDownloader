@@ -39,12 +39,16 @@ import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.gms.ads.nativead.NativeAdView;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -69,6 +73,7 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.CommonClas
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.RestClient;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.RetrofitClientInstance;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityTikTokBinding;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.LockVideoDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.TryAgainDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.VideoReadyDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.jni.TikTokFullCryptor;
@@ -79,12 +84,14 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.SharePref
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
+import static android.content.ContentValues.TAG;
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
+import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.activity.MainActivity.RESULT_CODE_FINISH;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.RootDirectoryTikTok;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.createFileFolder;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.setToast;
 
-public class TikTokNewActivity extends AppCompatActivity implements TryAgainDialogFragment.OnItemClickListener, VideoReadyDialogFragment.OnItemClickListener {
+public class TikTokNewActivity extends AppCompatActivity implements TryAgainDialogFragment.OnItemClickListener, VideoReadyDialogFragment.OnItemClickListener, LockVideoDialogFragment.OnItemClickListener {
     private ActivityTikTokBinding binding;
     TikTokNewActivity activity;
     CommonClassForAPI commonClassForAPI;
@@ -109,6 +116,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
     private boolean isHowtoDownloadVisible = false;
     private ShimmerFrameLayout shimmerFrameLayout;
     private Settings settings;
+    private RewardedAd mRewardedAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +152,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             loadNativeAdDownloadScreen();
             //loadAdOpen();
             loadAdDownload();
+            //loadAdRewardAd();
 //            loadNativeAd();
         } else {
             shimmerFrameLayout.stopShimmer();
@@ -151,6 +160,69 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         }
 
 
+    }
+
+    private void loadAdRewardAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        RewardedAd.load(this, getResources().getString(R.string.admob_reward_ad),
+                adRequest, new RewardedAdLoadCallback() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error.
+                        Log.d(TAG, loadAdError.getMessage());
+                        mRewardedAd = null;
+                    }
+
+                    @Override
+                    public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                        mRewardedAd = rewardedAd;
+                        Log.d(TAG, "Ad was loaded.");
+
+                        mRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when ad is shown.
+                                Log.d(TAG, "Ad was shown.");
+                                mRewardedAd = null;
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when ad fails to show.
+                                Log.d(TAG, "Ad failed to show.");
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when ad is dismissed.
+                                // Don't forget to set the ad reference to null so you
+                                // don't show the ad a second time.
+                                mRewardedAd = null;
+                                Log.d(TAG, "Ad was dismissed.");
+                                loadAdRewardAd();
+                            }
+                        });
+                    }
+                });
+    }
+
+    private void showRewardAd() {
+        if (mRewardedAd != null) {
+            Activity activityContext = TikTokNewActivity.this;
+            mRewardedAd.show(activityContext, new OnUserEarnedRewardListener() {
+                @Override
+                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                    // Handle the reward.
+                    Log.d(TAG, "The user earned the reward.");
+//                    int rewardAmount = rewardItem.getAmount();
+//                    String rewardType = rewardItem.getType();
+
+                    watchToDownloadWithOutWaterMark();
+                }
+            });
+        } else {
+            Log.d(TAG, "The rewarded ad wasn't ready yet.");
+        }
     }
 
     public void hideKeyboard() {
@@ -221,6 +293,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                                 TikTokNewActivity.this.mInterstitialAdDownload = null;
                                 Log.d("TAG", "The ad was dismissed.");
                                 //after dismissed the ad activity will be closed
+                                setResult(RESULT_CODE_FINISH);
                                 TikTokNewActivity.this.finish();
                             }
 
@@ -282,10 +355,10 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
                         if (isDestroyed()) {
                             nativeAd.destroy();
-                            Log.e("isDestroyed","isDestroyed"+isDestroyed());
+                            Log.e("isDestroyed", "isDestroyed" + isDestroyed());
                             return;
                         }
-                        if (nativeAdObjDownloadScreen!=null){
+                        if (nativeAdObjDownloadScreen != null) {
                             nativeAdObjDownloadScreen.destroy();
                         }
                         nativeAdObjDownloadScreen = nativeAd;
@@ -595,7 +668,20 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         });
 
         binding.tvWithoutMark.setOnClickListener(v -> {
-            watchToDownloadWithOutWaterMark();
+//            if (!settings.getSubscriptionState()) {
+//                String LL = binding.etText.getText().toString();
+//                if (LL.equals("")) {
+//                    Utils.setToast(activity, "Enter Url");
+//                } else if (!Patterns.WEB_URL.matcher(LL).matches()) {
+//                    Utils.setToast(activity, "Enter Valid Url");
+//                } else {
+//                    LockVideoDialogFragment lockVideoDialogFragment = new LockVideoDialogFragment(this);
+//                    lockVideoDialogFragment.show(getSupportFragmentManager(), "LockVideoDialogFragment");
+//                }
+//
+//            } else {
+                watchToDownloadWithOutWaterMark();
+//            }
         });
 
         binding.LLOpenTikTok.setOnClickListener(v -> {
@@ -1043,5 +1129,17 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         setResult(Activity.RESULT_OK);
         finish();
 //        }
+    }
+
+    @Override
+    public void onWatchVideoClick(Dialog dialog) {
+//        showRewardAd();
+        watchToDownloadWithOutWaterMark();
+    }
+
+    @Override
+    public void onDismissVideoSubscribeClick(Dialog dialog) {
+        setResult(Activity.RESULT_CANCELED);
+        finish();
     }
 }

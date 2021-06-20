@@ -163,6 +163,7 @@
                                 android:id="@+id/tvWithoutMark"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
+                                android:layout_marginTop="5dp"
                                 android:background="@drawable/bg_green_filled">
 
                                 <TextView
@@ -182,12 +183,13 @@
                                     android:textStyle="bold" />
 
                                 <TextView
+                                    android:id="@+id/tvLockIcon"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_toEndOf="@+id/tvWithoutMarkText"
                                     android:layout_centerVertical="true"
                                     android:layout_marginStart="5dp"
-                                    android:visibility="invisible"
+                                    android:visibility="gone"
                                     android:background="@drawable/ic_lock"/>
 
 

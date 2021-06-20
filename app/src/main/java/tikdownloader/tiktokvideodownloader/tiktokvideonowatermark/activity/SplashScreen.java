@@ -312,6 +312,16 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
                 } else {
                     Toast.makeText(SplashScreen.this, "Fetch failed",
                             Toast.LENGTH_SHORT).show();
+                    if (settings.getSubscriptionState()) {
+                        openMainActivitiy();
+                    } else {
+                        if (nativeAdObjSplash != null) {
+                            openNativeAdActvity();
+                        } else {
+                            Log.e("native_ad", "native_ad : null");
+                            openMainActivitiy();
+                        }
+                    }
                 }
             }
         });

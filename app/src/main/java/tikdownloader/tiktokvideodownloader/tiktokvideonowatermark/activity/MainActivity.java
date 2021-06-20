@@ -28,6 +28,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -114,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ReviewInfo reviewInfo;
     private ReviewManager manager;
     private final int REQUEST_CODE_TIKTOK = 52;
+    public static final int RESULT_CODE_FINISH = 52;
     private NativeAd unifiedNativeAdObj;
     private NativeAd nativeAdObjMainScreen;
     private View shine;
@@ -935,7 +940,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Intent i = new Intent(activity, TikTokNewActivity.class);
         i.putExtra("CopyIntent", CopyValue);
-        startActivityForResult(i, REQUEST_CODE_TIKTOK);
+//        startActivityForResult(i, REQUEST_CODE_TIKTOK);
+        someActivityResultLauncher.launch(i);
 
 
     }
@@ -1003,6 +1009,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
+    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                // There are no request codes
+//                        Intent data = result.getData();
+                openSubscriptionDialog();
+            } else if (result.getResultCode() == Activity.RESULT_OK) {
+                if (reviewInfo != null) {
+                    Utils.setToast(MainActivity.this, "Give a best rate to us!");
+                    Task<Void> flow = manager.launchReviewFlow(activity, reviewInfo);
+                    flow.addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void result) {
+
+                        }
+                    });
+                    flow.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(Exception e) {
+                        }
+                    });
+                }
+            }else if (result.getResultCode() == RESULT_CODE_FINISH){
+
+            }
+        }
+    });
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
 
@@ -1054,21 +1089,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == REQUEST_CODE_TIKTOK) {
             if (resultCode == Activity.RESULT_OK) {
-                if (reviewInfo != null) {
-                    Utils.setToast(MainActivity.this, "Give a best rate to us!");
-                    Task<Void> flow = manager.launchReviewFlow(activity, reviewInfo);
-                    flow.addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void result) {
-
-                        }
-                    });
-                    flow.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(Exception e) {
-                        }
-                    });
-                }
+//                if (reviewInfo != null) {
+//                    Utils.setToast(MainActivity.this, "Give a best rate to us!");
+//                    Task<Void> flow = manager.launchReviewFlow(activity, reviewInfo);
+//                    flow.addOnSuccessListener(new OnSuccessListener<Void>() {
+//                        @Override
+//                        public void onSuccess(Void result) {
+//
+//                        }
+//                    });
+//                    flow.addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(Exception e) {
+//                        }
+//                    });
+//                }
             }
         }
     }
