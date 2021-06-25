@@ -122,7 +122,7 @@ public class Settings {
     }
 
     public int getSubscriptionPopUpCount() {
-        int value = getPref().getInt("subscriptionPopUpCount", 5);
+        int value = getPref().getInt("subscriptionPopUpCount", 3);
         return value;
     }
 
