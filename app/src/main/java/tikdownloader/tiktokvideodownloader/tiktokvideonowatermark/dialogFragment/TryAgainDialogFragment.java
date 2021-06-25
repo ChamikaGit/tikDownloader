@@ -18,16 +18,18 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.R;
 
 public class TryAgainDialogFragment extends DialogFragment implements View.OnClickListener {
 
-    private TextView tvYes, tvNo;
+    private TextView tvYes, tvNo,tvDescription;
     private AdView adView;
     private OnItemClickListener onItemClickListener;
+    private String msgDescription = "";
 
 
     public TryAgainDialogFragment() {
     }
 
-    public TryAgainDialogFragment(OnItemClickListener onItemClickListener) {
+    public TryAgainDialogFragment(OnItemClickListener onItemClickListener,String msgDescription) {
         this.onItemClickListener = onItemClickListener;
+        this.msgDescription =msgDescription;
     }
 
     public interface OnItemClickListener {
@@ -43,6 +45,8 @@ public class TryAgainDialogFragment extends DialogFragment implements View.OnCli
         View view = inflater.inflate(R.layout.dialogfragment_try_again, container, false);
         tvYes = view.findViewById(R.id.tvYes);
         tvNo = view.findViewById(R.id.tvNo);
+        tvDescription = view.findViewById(R.id.tvDescription);
+        tvDescription.setText(msgDescription);
 //        adView = view.findViewById(R.id.adView);
         tvYes.setOnClickListener(this);
         tvNo.setOnClickListener(this);
