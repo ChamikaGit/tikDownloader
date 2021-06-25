@@ -62,4 +62,9 @@
         <item name="colorAccent">#ffffff</item>
 
     </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/dialog_up</item>
+        <item name="android:windowExitAnimation">@anim/dialog_down</item>
+    </style>
 </resources>

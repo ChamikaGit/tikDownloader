@@ -42,6 +42,7 @@ public class TryAgainDialogFragment extends DialogFragment implements View.OnCli
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0));
         getDialog().setCancelable(true);
         getDialog().setCanceledOnTouchOutside(true);
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         View view = inflater.inflate(R.layout.dialogfragment_try_again, container, false);
         tvYes = view.findViewById(R.id.tvYes);
         tvNo = view.findViewById(R.id.tvNo);

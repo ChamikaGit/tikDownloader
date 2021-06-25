@@ -40,6 +40,7 @@ public class SubscriptionDialogFragment extends DialogFragment implements View.O
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0));
         getDialog().setCancelable(true);
         getDialog().setCanceledOnTouchOutside(true);
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         View view = inflater.inflate(R.layout.dialogfragment_subscription, container, false);
         tvYes = view.findViewById(R.id.tvYes);
         tvNo = view.findViewById(R.id.tvNo);

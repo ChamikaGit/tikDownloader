@@ -41,6 +41,7 @@ public class NoInternetDialogFragment extends DialogFragment implements View.OnC
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0));
         getDialog().setCancelable(true);
         getDialog().setCanceledOnTouchOutside(true);
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         View view = inflater.inflate(R.layout.dialogfragment_no_internet, container, false);
         tvYes = view.findViewById(R.id.tvYes);
         tvNo = view.findViewById(R.id.tvNo);
