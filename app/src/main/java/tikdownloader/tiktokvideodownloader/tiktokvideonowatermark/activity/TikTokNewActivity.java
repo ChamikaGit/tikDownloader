@@ -544,9 +544,9 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 //                .addNetworkExtrasBundle(FacebookAdapter.class, extras)
 //                .build());
 
-        Bundle extras = new FacebookExtras().setNativeBanner(true).build();
+//        Bundle extras = new FacebookExtras().setNativeBanner(true).build();
 
-        AdLoader adLoader = new AdLoader.Builder(TikTokNewActivity.this, getString(R.string.admob_native_ad_without_media))
+        AdLoader adLoader = new AdLoader.Builder(TikTokNewActivity.this, getString(R.string.admob_native_ad_media3))
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
@@ -581,9 +581,10 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                 .withNativeAdOptions(new NativeAdOptions.Builder().build())
                 .build();
 
-        adLoader.loadAd(new AdRequest.Builder()
-                .addNetworkExtrasBundle(FacebookAdapter.class, extras)
-                .build());
+//        adLoader.loadAd(new AdRequest.Builder()
+//                .addNetworkExtrasBundle(FacebookAdapter.class, extras)
+//                .build());
+        adLoader.loadAd(new AdRequest.Builder().build());
     }
 
     protected synchronized MyApplication getMainApp() {
@@ -1008,7 +1009,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 
     @Override
     public void onDownloadCancelClick(Dialog dialog) {
-
+        loadNativeAd();
     }
 
 
