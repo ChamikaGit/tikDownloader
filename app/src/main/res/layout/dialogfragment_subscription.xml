@@ -57,10 +57,10 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Subscribe to Enjoy!"
+                        android:text="Would you like to get Ads free version of this app? \nSubscribe to Enjoy!"
                         android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
+                        android:textColor="@color/gnt_yellow"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
 

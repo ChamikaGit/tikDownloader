@@ -1034,6 +1034,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }else if (result.getResultCode() == RESULT_CODE_FINISH){
 
+//                int currentCount = settings.getSubscriptionPopUpCount();
+//                settings.setSubscriptionPopUpCount(currentCount + 1);
+//                if (settings.getSubscriptionPopUpCount() % 5 == 0) {
+//                    openSubscriptionDialog();
+//                }
             }
         }
     });
