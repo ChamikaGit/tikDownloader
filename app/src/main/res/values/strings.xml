@@ -17,6 +17,7 @@
     <!--    <string name="admob_native_ad_without_media">ca-app-pub-8434077743160830/7135964159</string>-->
     <!--    <string name="admob_native_ad_media">ca-app-pub-8434077743160830/1797308306</string>-->
     <!--    <string name="admob_native_ad_media2">ca-app-pub-8434077743160830/2421260305</string>-->
+    <!--    <string name="admob_native_ad_media3">ca-app-pub-8434077743160830/8171440118</string>-->
     <!--    <string name="admob_reward_ad">ca-app-pub-3940256099942544/5224354917</string>-->
 
     <!--test_ad_mob-->
@@ -26,6 +27,7 @@
     <string name="admob_native_ad_without_media">ca-app-pub-3940256099942544/2247696110</string>
     <string name="admob_native_ad_media">ca-app-pub-3940256099942544/1044960115</string>
     <string name="admob_native_ad_media2">ca-app-pub-3940256099942544/1044960115</string>
+    <string name="admob_native_ad_media3">ca-app-pub-3940256099942544/1044960115</string>
     <string name="admob_reward_ad">ca-app-pub-3940256099942544/5224354917</string>
 
 

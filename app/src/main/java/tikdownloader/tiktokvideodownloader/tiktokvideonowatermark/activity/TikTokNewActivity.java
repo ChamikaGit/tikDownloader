@@ -153,7 +153,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             //loadAdOpen();
             loadAdDownload();
             //loadAdRewardAd();
-//            loadNativeAd();
+            loadNativeAd();
         } else {
             shimmerFrameLayout.stopShimmer();
             shimmerFrameLayout.setVisibility(View.GONE);
@@ -659,7 +659,8 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                 Utils.setToast(activity, "Enter Valid Url");
             } else {
                 if (!settings.getSubscriptionState()) {
-                    loadNativeAd();
+                    //temp. remove add load method but added on onCreate
+                    //loadNativeAd();
 //                    loadAdDownload();
                 }
                 GetTikTokData(IsWithWaternark);
@@ -680,7 +681,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 //                }
 //
 //            } else {
-                watchToDownloadWithOutWaterMark();
+            watchToDownloadWithOutWaterMark();
 //            }
         });
 
@@ -748,7 +749,8 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             Utils.setToast(activity, "Enter Valid Url");
         } else {
             if (!settings.getSubscriptionState()) {
-                loadNativeAd();
+                //temp. remove add load method but added on onCreate
+//                loadNativeAd();
 //                loadAdDownload();
             }
             GetTikTokData(IsWithWaternark);
@@ -841,7 +843,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                         }
                     } else {
                         Utils.hideProgressDialog(activity);
-                        TryAgainDialogFragment tryAgainDialogFragment = new TryAgainDialogFragment(TikTokNewActivity.this,"");
+                        TryAgainDialogFragment tryAgainDialogFragment = new TryAgainDialogFragment(TikTokNewActivity.this, "");
                         tryAgainDialogFragment.show(getSupportFragmentManager(), "TryAgainDialogFragment");
                     }
                 }
@@ -877,7 +879,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                                 Log.e("Tiktok data", "Tiktok data" + data.getAsString() + "Tiktok length" + data.getAsString().length());
                             }
                         }
-                        if (data.getAsString().length()!=0) {
+                        if (data.getAsString().length() != 0) {
                             try {
                                 try {
                                     byte[] dataCrypt = TikTokFullCryptor.hexStr2Bytes(data.getAsString());
@@ -912,12 +914,12 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 
                         } else {
                             Toast.makeText(TikTokNewActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
-                            TryAgainDialogFragment tryAgainDialogFragment = new TryAgainDialogFragment(TikTokNewActivity.this,"Sorry the video is private or not available right now.");
-                            tryAgainDialogFragment.show(getSupportFragmentManager(),"TryAgainDialogFragment");
+                            TryAgainDialogFragment tryAgainDialogFragment = new TryAgainDialogFragment(TikTokNewActivity.this, "Sorry the video is private or not available right now.");
+                            tryAgainDialogFragment.show(getSupportFragmentManager(), "TryAgainDialogFragment");
                         }
                     } else {
                         Utils.hideProgressDialog(activity);
-                        TryAgainDialogFragment tryAgainDialogFragment = new TryAgainDialogFragment(TikTokNewActivity.this,"");
+                        TryAgainDialogFragment tryAgainDialogFragment = new TryAgainDialogFragment(TikTokNewActivity.this, "");
                         tryAgainDialogFragment.show(getSupportFragmentManager(), "TryAgainDialogFragment");
                     }
                 }
