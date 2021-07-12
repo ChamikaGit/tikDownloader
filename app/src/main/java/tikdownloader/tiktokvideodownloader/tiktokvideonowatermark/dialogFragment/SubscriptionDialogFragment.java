@@ -19,7 +19,7 @@ public class SubscriptionDialogFragment extends DialogFragment implements View.O
 
     public OnItemClickListener onItemClickListener;
     public TextView tvTickWeek,tvTickMonth,tvPriceWeek,tvPriceMonth;
-    public RelativeLayout relWeek,relMonth;
+    public RelativeLayout relWeek,relMonth,relCloseDialog;
     public String state ="",subscribedItemMonthlyPrice ="",subscribedItemWeeklyPrice="";
 
     public interface OnItemClickListener {
@@ -48,12 +48,14 @@ public class SubscriptionDialogFragment extends DialogFragment implements View.O
         tvTickMonth = view.findViewById(R.id.tvTickMonth);
         relWeek = view.findViewById(R.id.relWeek);
         relMonth = view.findViewById(R.id.relMonth);
+        relCloseDialog = view.findViewById(R.id.relCloseDialog);
         tvPriceWeek = view.findViewById(R.id.tvPriceWeek);
         tvPriceMonth = view.findViewById(R.id.tvPriceMonth);
         relWeek.setOnClickListener(this);
         relMonth.setOnClickListener(this);
         tvYes.setOnClickListener(this);
         tvNo.setOnClickListener(this);
+        relCloseDialog.setOnClickListener(this);
         tvPriceWeek.setText(subscribedItemWeeklyPrice);
         tvPriceMonth.setText(subscribedItemMonthlyPrice);
         state ="monthly";
@@ -99,6 +101,9 @@ public class SubscriptionDialogFragment extends DialogFragment implements View.O
                 tvTickWeek.setVisibility(View.GONE);
                 tvTickMonth.setVisibility(View.VISIBLE);
                 state ="monthly";
+                break;
+            case R.id.relCloseDialog:
+                getDialog().dismiss();
                 break;
 
         }

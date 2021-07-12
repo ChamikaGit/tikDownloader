@@ -8,9 +8,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +77,7 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
     private BillingClient billingClient;
     private AdLoader adLoader;
     public static NativeAd nativeAdObjSplash;
+    private ProgressBar pbSplash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,7 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
         setContentView(R.layout.activity_splash_screen);
         settings = new Settings(this);
         tvVersionNO = findViewById(R.id.tvVersionNO);
+        pbSplash = findViewById(R.id.pbSplash);
         context = activity = this;
         appUpdateManager = AppUpdateManagerFactory.create(context);
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
@@ -98,6 +102,7 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
         if (utils.isNetworkAvailable()) {
             loadNativeAd();
         } else {
+            pbSplash.setVisibility(View.GONE);
             NoInternetDialogFragment noInternetDialogFragment = new NoInternetDialogFragment(this);
             noInternetDialogFragment.show(getSupportFragmentManager(), "NoInternetDialogFragment");
         }
@@ -280,51 +285,62 @@ public class SplashScreen extends AppCompatActivity implements NoInternetDialogF
     }
 
     public void HomeScreen() {
-
+        pbSplash.setVisibility(View.GONE);
         Log.e("firebaseRemoteConfig", "firebaseRemoteConfig :" + mFirebaseRemoteConfig.getString(TOKEN));
         Log.e("firebaseRemoteConfig", "firebaseRemoteConfig :" + mFirebaseRemoteConfig.getString(BASE_URL));
         new Settings(this).setAccessToken(mFirebaseRemoteConfig.getString(TOKEN));
         new Settings(this).setBaseUrl(mFirebaseRemoteConfig.getString(BASE_URL));
-        mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
-            @Override
-            public void onComplete(@NonNull com.google.android.gms.tasks.Task<Boolean> task) {
-                if (task.isSuccessful()) {
-                    boolean updated = task.getResult();
-                    Log.d("firebaseRemoteConfig", "Config params updated: " + updated);
-//                    Toast.makeText(SplashScreen.this, "Fetch and activate succeeded",
-//                            Toast.LENGTH_SHORT).show();
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-                            if (settings.getSubscriptionState()) {
-                                openMainActivitiy();
-                            } else {
-                                if (nativeAdObjSplash != null) {
-                                    openNativeAdActvity();
-                                } else {
-                                    Log.e("native_ad", "native_ad : null");
-                                    openMainActivitiy();
-                                }
-                            }
-//                        }
-//                    }, 2000);
-
-                } else {
-                    Toast.makeText(SplashScreen.this, "Fetch failed",
-                            Toast.LENGTH_SHORT).show();
-                    if (settings.getSubscriptionState()) {
-                        openMainActivitiy();
-                    } else {
-                        if (nativeAdObjSplash != null) {
-                            openNativeAdActvity();
-                        } else {
-                            Log.e("native_ad", "native_ad : null");
-                            openMainActivitiy();
-                        }
-                    }
-                }
+        //remove remote config fetching part
+        if (settings.getSubscriptionState()) {
+            openMainActivitiy();
+        } else {
+            if (nativeAdObjSplash != null) {
+                openNativeAdActvity();
+            } else {
+                Log.e("native_ad", "native_ad : null");
+                openMainActivitiy();
             }
-        });
+        }
+//        mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
+//            @Override
+//            public void onComplete(@NonNull com.google.android.gms.tasks.Task<Boolean> task) {
+//                if (task.isSuccessful()) {
+//                    boolean updated = task.getResult();
+//                    Log.d("firebaseRemoteConfig", "Config params updated: " + updated);
+////                    Toast.makeText(SplashScreen.this, "Fetch and activate succeeded",
+////                            Toast.LENGTH_SHORT).show();
+////                    new Handler().postDelayed(new Runnable() {
+////                        @Override
+////                        public void run() {
+//                            if (settings.getSubscriptionState()) {
+//                                openMainActivitiy();
+//                            } else {
+//                                if (nativeAdObjSplash != null) {
+//                                    openNativeAdActvity();
+//                                } else {
+//                                    Log.e("native_ad", "native_ad : null");
+//                                    openMainActivitiy();
+//                                }
+//                            }
+////                        }
+////                    }, 2000);
+//
+//                } else {
+//                    Toast.makeText(SplashScreen.this, "Fetch failed",
+//                            Toast.LENGTH_SHORT).show();
+//                    if (settings.getSubscriptionState()) {
+//                        openMainActivitiy();
+//                    } else {
+//                        if (nativeAdObjSplash != null) {
+//                            openNativeAdActvity();
+//                        } else {
+//                            Log.e("native_ad", "native_ad : null");
+//                            openMainActivitiy();
+//                        }
+//                    }
+//                }
+//            }
+//        });
 
     }
 

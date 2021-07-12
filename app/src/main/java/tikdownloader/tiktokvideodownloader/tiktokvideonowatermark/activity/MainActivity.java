@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             binding.tvPro.setText("BE A PRO");
             int currentCount = settings.getSubscriptionPopUpCount();
             settings.setSubscriptionPopUpCount(currentCount + 1);
-            if (settings.getSubscriptionPopUpCount() % 3 == 0) {
+            if (settings.getSubscriptionPopUpCount() % 2 == 0) {
                 openSubscriptionDialog();
             }
         }

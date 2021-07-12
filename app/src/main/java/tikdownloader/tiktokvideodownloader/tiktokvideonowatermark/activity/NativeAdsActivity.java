@@ -199,7 +199,7 @@ public class NativeAdsActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.relSkipContainer) {
-//            openMainActivitiy();
+            openMainActivitiy();
         }
     }
 }

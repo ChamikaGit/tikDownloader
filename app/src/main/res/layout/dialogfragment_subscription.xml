@@ -3,18 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="0dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark">
 
         <ScrollView
             android:id="@+id/detailsScrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
+            android:layout_above="@+id/linBtnContainer"
             android:background="@color/colorPrimaryDark">
 
             <LinearLayout
@@ -32,14 +33,69 @@
                     android:rotation="0">
 
                     <TextView
+                        android:id="@+id/tvMainTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
+                        android:layout_centerInParent="false"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="5dp"
                         android:text="Be a PRO user"
                         android:textAllCaps="false"
+                        android:layout_toEndOf="@+id/imgThumb"
                         android:textColor="@color/white"
-                        android:textSize="22sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
+
+
+                    <ImageView
+                        android:id="@+id/imgThumb"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="-7dp"
+                        android:layout_marginBottom="5dp"
+                        android:adjustViewBounds="true"
+                        android:layout_marginStart="10dp"
+                        android:scaleType="centerCrop"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/premium_icon" />
+
+                    <RelativeLayout
+                        android:id="@+id/relCloseDialog"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="5dp">
+
+                        <TextView
+                            android:id="@+id/tvClose"
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ic_close_black"/>
+
+
+                    </RelativeLayout>
+
+
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_110sdp">
+
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/bg_girl"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"/>
+
 
                 </RelativeLayout>
 
@@ -59,31 +115,45 @@
                         android:padding="8dp"
                         android:text="Would you like to get Ads free version of this app? \nSubscribe to Enjoy!"
                         android:textAllCaps="false"
-                        android:textColor="@color/gnt_yellow"
-                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
                         android:textStyle="bold" />
 
 
-                    <ImageView
-                        android:id="@+id/imgThumb"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_below="@+id/tvTitle"
-                        android:layout_marginTop="-7dp"
-                        android:layout_marginBottom="5dp"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/premium_icon" />
+<!--                    <ImageView-->
+<!--                        android:id="@+id/imgThumb"-->
+<!--                        android:layout_width="70dp"-->
+<!--                        android:layout_height="70dp"-->
+<!--                        android:layout_below="@+id/tvTitle"-->
+<!--                        android:layout_marginTop="-7dp"-->
+<!--                        android:layout_marginBottom="5dp"-->
+<!--                        android:adjustViewBounds="true"-->
+<!--                        android:scaleType="centerCrop"-->
+<!--                        android:layout_centerHorizontal="true"-->
+<!--                        android:src="@drawable/premium_icon" />-->
 
                     <LinearLayout
                         android:id="@+id/relTextContainer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/imgThumb"
+                        android:layout_below="@+id/tvTitle"
                         android:orientation="vertical"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="-10dp">
+                        android:layout_marginStart="5dp"
+                        android:layout_centerHorizontal="false"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:id="@+id/tvAccess"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="start"
+                            android:text="Unlimited Access to \nAll Features"
+                            android:textColor="@color/gnt_yellow"
+                            android:layout_marginStart="4dp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="10dp"
+                            android:textSize="15sp" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -102,14 +172,44 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:gravity="center"
-                                android:text="Remove all ads (No Ads)."
+                                android:text="Remove all ads (No Ads)"
                                 android:textColor="@color/white"
                                 android:layout_marginStart="4dp"
                                 android:textStyle="normal"
-                                android:textSize="15sp" />
+                                android:textSize="14sp" />
 
 
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="5dp"
+                            android:layout_gravity="start">
+
+                            <TextView
+                                android:layout_width="25dp"
+                                android:layout_height="20dp"
+                                android:background="@drawable/img_green_tick"/>
+
+
+                            <TextView
+                                android:id="@+id/tvOneTapDownload"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center"
+                                android:text="Download in one tap"
+                                android:textStyle="normal"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginStart="4dp"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+
+
+                        </LinearLayout>
+
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -130,12 +230,12 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:gravity="center"
-                                android:text="Increase download Speed."
+                                android:text="Increase download Speed"
                                 android:textStyle="normal"
                                 android:layout_marginTop="2dp"
                                 android:layout_marginStart="4dp"
                                 android:textColor="@color/white"
-                                android:textSize="15sp" />
+                                android:textSize="14sp" />
 
 
                         </LinearLayout>
@@ -160,12 +260,12 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:gravity="center"
-                                android:text="Get all the premium features."
+                                android:text="Get all the premium features"
                                 android:textStyle="normal"
                                 android:layout_marginTop="2dp"
                                 android:layout_marginStart="4dp"
                                 android:textColor="@color/white"
-                                android:textSize="15sp" />
+                                android:textSize="14sp" />
 
 
                         </LinearLayout>
@@ -209,7 +309,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:orientation="horizontal"
-                        android:padding="5dp"
+                        android:padding="0dp"
                         android:weightSum="2">
 
 
@@ -269,6 +369,7 @@
                                 android:background="@drawable/img_green_tick"
                                 android:layout_alignParentStart="true"
                                 android:visibility="gone"
+                                android:backgroundTint="@color/white"
                                 android:layout_margin="10dp"/>
 
 
@@ -290,6 +391,7 @@
                                 android:background="@drawable/img_green_tick"
                                 android:layout_alignParentStart="true"
                                 android:visibility="gone"
+                                android:backgroundTint="@color/white"
                                 android:layout_margin="10dp"/>
 
 
@@ -375,19 +477,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/detailsScrollView"
+            android:layout_alignParentBottom="true"
             android:orientation="vertical"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
-            android:weightSum="2">
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                android:text="Get the Awesome features.You can cancel at any time"/>
+
 
             <TextView
                 android:id="@+id/tvYes"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:layout_weight="1"
+                android:layout_height="52dp"
+                android:layout_margin="5dp"
                 android:background="@drawable/et_blue_outer"
                 android:backgroundTint="@color/gnt_blue"
                 android:gravity="center"
@@ -396,14 +508,14 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="17sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                />
 
             <TextView
                 android:id="@+id/tvNo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:layout_weight="1"
+                android:layout_height="52dp"
+                android:layout_margin="5dp"
                 android:background="@drawable/et_blue_outer"
                 android:gravity="center"
                 android:padding="14dp"
@@ -414,10 +526,11 @@
                 android:visibility="visible"
                 android:textStyle="bold" />
 
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="16dp"
                 android:gravity="center"
