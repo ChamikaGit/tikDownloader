@@ -24,6 +24,7 @@ public class SubscriptionDialogFragment extends DialogFragment implements View.O
 
     public interface OnItemClickListener {
         void subscriptionClick(String state);
+        void subscriptionCancelClick();
     }
 
     public SubscriptionDialogFragment(OnItemClickListener onItemClickListener, String subscribedItemMonthlyPrice, String subscribedItemWeeklyPrice) {
@@ -82,6 +83,7 @@ public class SubscriptionDialogFragment extends DialogFragment implements View.O
                 if (dialog != null) {
                     dialog.dismiss();
                 }
+                onItemClickListener.subscriptionCancelClick();
                 break;
 
             case R.id.tvYes:
@@ -104,6 +106,7 @@ public class SubscriptionDialogFragment extends DialogFragment implements View.O
                 break;
             case R.id.relCloseDialog:
                 getDialog().dismiss();
+                onItemClickListener.subscriptionCancelClick();
                 break;
 
         }

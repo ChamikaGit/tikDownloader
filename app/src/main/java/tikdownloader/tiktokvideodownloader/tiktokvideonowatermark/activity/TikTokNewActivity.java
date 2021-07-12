@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -74,6 +76,7 @@ import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.RestClient
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.api.RetrofitClientInstance;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.databinding.ActivityTikTokBinding;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.LockVideoDialogFragment;
+import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.SubscriptionDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.TryAgainDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.dialogFragment.VideoReadyDialogFragment;
 import tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.jni.TikTokFullCryptor;
@@ -91,7 +94,7 @@ import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Ut
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.createFileFolder;
 import static tikdownloader.tiktokvideodownloader.tiktokvideonowatermark.util.Utils.setToast;
 
-public class TikTokNewActivity extends AppCompatActivity implements TryAgainDialogFragment.OnItemClickListener, VideoReadyDialogFragment.OnItemClickListener, LockVideoDialogFragment.OnItemClickListener {
+public class TikTokNewActivity extends AppCompatActivity implements TryAgainDialogFragment.OnItemClickListener, VideoReadyDialogFragment.OnItemClickListener, LockVideoDialogFragment.OnItemClickListener,SubscriptionDialogFragment.OnItemClickListener{
     private ActivityTikTokBinding binding;
     TikTokNewActivity activity;
     CommonClassForAPI commonClassForAPI;
@@ -117,6 +120,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
     private ShimmerFrameLayout shimmerFrameLayout;
     private Settings settings;
     private RewardedAd mRewardedAd;
+    private SwitchCompat switchOneTap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +129,7 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
         hideKeyboard();
         myApplication = (MyApplication) getApplication();
         settings = new Settings(this);
+        switchOneTap = findViewById(R.id.switchOneTap);
 //        int getCount = new Settings(this).getAdShowCount();
 //        newCount = getCount + 1;
 //        new Settings(this).setAdShowCount(newCount);
@@ -154,12 +159,37 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
             loadAdDownload();
             //loadAdRewardAd();
             loadNativeAd();
+            switchOneTap.setEnabled(true);
+            switchOneTap.setClickable(true);
+            switchOneTap.setChecked(false);
         } else {
             shimmerFrameLayout.stopShimmer();
             shimmerFrameLayout.setVisibility(View.GONE);
+            switchOneTap.setEnabled(false);
+            switchOneTap.setClickable(false);
+            switchOneTap.setChecked(true);
         }
 
 
+        switchOneTap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isTouched) {
+//                    isTouched = false;
+                    if (isChecked) {
+                        openSubscriptionDialog();
+                    } else {
+//                        Toast.makeText(TikTokNewActivity.this,"false",Toast.LENGTH_SHORT).show();
+                    }
+//                }
+            }
+        });
+
+    }
+
+    private void openSubscriptionDialog() {
+        SubscriptionDialogFragment subscriptionDialogFragment = new SubscriptionDialogFragment(this, settings.getSubscribedItemMonthlyPrice(), settings.getSubscribedItemWeeklyPrice());
+        subscriptionDialogFragment.show(getSupportFragmentManager(), "SubscriptionDialogFragment");
     }
 
     private void loadAdRewardAd() {
@@ -1148,5 +1178,20 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
     public void onDismissVideoSubscribeClick(Dialog dialog) {
         setResult(Activity.RESULT_CANCELED);
         finish();
+    }
+
+    @Override
+    public void subscriptionClick(String state) {
+
+        Intent intent = new Intent();
+        intent.putExtra("state",state);
+        setResult(RESULT_CODE_FINISH,intent);
+        finish();
+
+    }
+
+    @Override
+    public void subscriptionCancelClick() {
+        switchOneTap.setChecked(false);
     }
 }

@@ -67,4 +67,11 @@
         <item name="android:windowEnterAnimation">@anim/dialog_up</item>
         <item name="android:windowExitAnimation">@anim/dialog_down</item>
     </style>
+
+    <style name="MySwitch" parent="@style/Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:textColorPrimaryDisableOnly">@color/green_50</item>
+        <item name="android:colorControlActivated">@color/colorAccent</item>
+        <item name="android:colorForeground">#f57f17</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
+    </style>
 </resources>

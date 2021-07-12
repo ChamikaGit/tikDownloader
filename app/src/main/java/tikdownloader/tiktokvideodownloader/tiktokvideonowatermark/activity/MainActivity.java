@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             binding.tvPro.setText("BE A PRO");
             int currentCount = settings.getSubscriptionPopUpCount();
             settings.setSubscriptionPopUpCount(currentCount + 1);
-            if (settings.getSubscriptionPopUpCount() % 2 == 0) {
+            if (settings.getSubscriptionPopUpCount() % 3 == 0) {
                 openSubscriptionDialog();
             }
         }
@@ -1015,7 +1015,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (result.getResultCode() == Activity.RESULT_CANCELED) {
                 // There are no request codes
 //                        Intent data = result.getData();
-                openSubscriptionDialog();
+//                openSubscriptionDialog();
+
             } else if (result.getResultCode() == Activity.RESULT_OK) {
                 if (reviewInfo != null) {
                     Utils.setToast(MainActivity.this, "Give a best rate to us!");
@@ -1032,8 +1033,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     });
                 }
-            }else if (result.getResultCode() == RESULT_CODE_FINISH){
-
+            } else if (result.getResultCode() == RESULT_CODE_FINISH) {
+                Intent data = result.getData();
+                if (data != null) {
+                    Log.e("TAG:DATA", "TAG:DATA :" + data);
+                    if (!data.getStringExtra("state").equals("")) {
+                        subscriptionBundleState = data.getStringExtra("state");
+                        if (subscriptionBundleState.equals("weekly")) {
+                            ITEM_SKU_SUBSCRIBE = ITEM_SKU_SUBSCRIBE_WEEKLY;
+                            subscribe(ITEM_SKU_SUBSCRIBE_WEEKLY);
+                        } else if (subscriptionBundleState.equals("monthly")) {
+                            ITEM_SKU_SUBSCRIBE = ITEM_SKU_SUBSCRIBE_MONTHLY;
+                            subscribe(ITEM_SKU_SUBSCRIBE_MONTHLY);
+                        }
+                    } else {
+                        Toast.makeText(MainActivity.this, "Service Not Available", Toast.LENGTH_SHORT).show();
+                    }
+                }
 //                int currentCount = settings.getSubscriptionPopUpCount();
 //                settings.setSubscriptionPopUpCount(currentCount + 1);
 //                if (settings.getSubscriptionPopUpCount() % 5 == 0) {
@@ -1128,6 +1144,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             Toast.makeText(this, "Service Not Available", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void subscriptionCancelClick() {
+
     }
 
     @Override
