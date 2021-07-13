@@ -70,6 +70,7 @@
 
     <style name="MySwitch" parent="@style/Widget.AppCompat.CompoundButton.Switch">
         <item name="android:textColorPrimaryDisableOnly">@color/green_50</item>
+        <item name="colorSwitchThumbNormal">@color/colorAccent</item>
         <item name="android:colorControlActivated">@color/colorAccent</item>
         <item name="android:colorForeground">#f57f17</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>

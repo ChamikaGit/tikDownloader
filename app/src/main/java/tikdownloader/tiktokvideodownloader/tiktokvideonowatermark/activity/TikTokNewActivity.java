@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -177,7 +178,14 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
 //                if (isTouched) {
 //                    isTouched = false;
                     if (isChecked) {
-                        openSubscriptionDialog();
+                        getMainApp().trackFireBaseEvent("ONE_TAP_SWITCH", "CLICK", "TRUE");
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                openSubscriptionDialog();
+                            }
+                        },300);
+
                     } else {
 //                        Toast.makeText(TikTokNewActivity.this,"false",Toast.LENGTH_SHORT).show();
                     }
@@ -847,8 +855,12 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                                 if (BuildConfig.DEBUG) {
                                     Log.e("marked1 ", "marked " + marked);
                                 }
-                                VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, responseBody.get("thumb").getAsString(), unifiedNativeAdObj);
-                                videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
+                                if (settings.getSubscriptionState()){
+                                    startDownload(marked, RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4", true);
+                                }else {
+                                    VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, responseBody.get("thumb").getAsString(), unifiedNativeAdObj);
+                                    videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
+                                }
 //                    startDownload(tiktokModel.getMarked().replace("http://", "https://"),
 //                            RootDirectoryTikTok, activity, "tiktok_" + System.currentTimeMillis() + ".mp4");
 //                    binding.etText.setText("");
@@ -928,8 +940,12 @@ public class TikTokNewActivity extends AppCompatActivity implements TryAgainDial
                                             if (BuildConfig.DEBUG) {
                                                 Log.e("Tiktok data url ", notMarked);
                                             }
-                                            VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, jsonObject.getString("thumbnail"), unifiedNativeAdObj);
-                                            videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
+                                            if (settings.getSubscriptionState()){
+                                                startDownload(notMarked, RootDirectoryTikTok, TikTokNewActivity.this, "tiktok_" + System.currentTimeMillis() + ".mp4", false);
+                                            }else {
+                                                VideoReadyDialogFragment videoReadyDialogFragment = new VideoReadyDialogFragment(TikTokNewActivity.this, TikTokNewActivity.this, jsonObject.getString("thumbnail"), unifiedNativeAdObj);
+                                                videoReadyDialogFragment.show(getSupportFragmentManager(), "VideoReadyDialogFragment");
+                                            }
                                         } else {
                                             Toast.makeText(TikTokNewActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
                                         }
